@@ -18,4 +18,5 @@
   <input type="file" (change)="onFileChanged($event)" style="display: none" #fileInput>
   <button (click)="fileInput.click()">Select file</button>
 </div>
+<app-image-upload [filesNumberLimit]="1" [allowedExtensions]="['.png']" (filesChange)="onFilesChange($event)"></app-image-upload>
 <!-- <h3> {{ response || 'error' }}</h3> -->

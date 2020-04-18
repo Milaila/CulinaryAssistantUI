@@ -34,4 +34,9 @@ export class OwnTestComponent implements OnInit {
     const file = event.target.files[0];
   }
 
+  onFilesChange(files: File[]){
+    var file = files?.length === 1 ? files[0] : null;
+    alert(file.name);
+  }
+
 }

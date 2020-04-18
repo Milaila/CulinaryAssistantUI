@@ -1,0 +1,66 @@
+:host {
+  width: 100%;
+  display: block;
+  * {
+      outline: none;
+  }
+}
+
+.FileSelect {
+  div[draggable] {
+      min-height: 96px;
+      border: dashed grey;
+      padding: 24px;
+      cursor: pointer;
+  }
+  &-FileCard {
+      background-color: blue;
+      padding: 8px;
+      margin-bottom: 8px;
+      min-height: 32px;
+      word-wrap: break-word;
+      &-Close {
+          float: right;
+          margin-left: 8px;
+          margin-bottom: 8px;
+      }
+  }
+  &-DropArea {
+      background: honeydew;
+  }
+  &-Prompt {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      i.material-icons {
+        color: blue;
+      }
+  }
+}
+
+.InlineFileSelect {
+  &-FileCard {
+      padding: 0 8px;
+      background-color: blue;
+      &-Close {
+          float: right;
+      }
+  }
+  &-DropArea {
+      background: honeydew;
+  }
+  &-Prompt {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &Icon {
+          margin-right: 8px;
+      }
+  }
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
