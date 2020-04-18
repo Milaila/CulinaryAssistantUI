@@ -1,0 +1,21 @@
+<h1>own-test works!</h1>
+{{ tags.length }}
+<div *ngFor="let tag of tags">
+  <h2>[{{ tag.id }}] {{tag.title}}</h2>
+</div>
+<!-- <form class="example-form">
+  <mat-form-field class="example-full-width">
+    <mat-label>Tag</mat-label>
+      <input matInput class="form-control" [(ngModel)]="newTag" />
+  </mat-form-field>
+</form> -->
+<div class="form-group">
+  <div>Tag</div>
+  <input type="text" class="form-control" name="tagSet" [(ngModel)]="newTag" />
+</div>
+<button (click)="onSave()">Save</button>
+<div style="margin-top: 20px;">
+  <input type="file" (change)="onFileChanged($event)" style="display: none" #fileInput>
+  <button (click)="fileInput.click()">Select file</button>
+</div>
+<!-- <h3> {{ response || 'error' }}</h3> -->
