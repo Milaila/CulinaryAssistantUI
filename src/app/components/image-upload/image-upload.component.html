@@ -15,7 +15,6 @@
         <i class="material-icons" aria-hidden="true">cloud_upload</i>
         <span class="FileSelect-PromptText">
           <ng-container >Drag &amp; drop {filesNumberLimit || 0, plural, =1 {file} other {files}} here, or</ng-container>
-          <!-- ng container apparently strips out adjacent and inner trailing whitespaces, so here's the way to add ONE whitespace between localized text parts -->
           <ng-container>&nbsp;</ng-container>
           <a href="#" (click)="$event.preventDefault(); $event.stopPropagation(); fileInput.click()">browse</a>
         </span>

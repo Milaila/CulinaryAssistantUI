@@ -13,7 +13,7 @@ export class ImageUploadComponent implements OnInit {
   @Input() fileSizeLimitKb: number;
   @Input() allowedExtensions: string[];
   @Output() filesChange = new EventEmitter<File[]>();
-  @Output() error = new EventEmitter<FileSelectErrorEvent>();
+  // @Output() error = new EventEmitter<FileSelectErrorEvent>();
   @Input() autoReset = false;
   @Input() inline = false;
   @Input() wrongExtensionErrorMessage = null;
@@ -59,7 +59,7 @@ export class ImageUploadComponent implements OnInit {
     this.processDragAndDropEvent(event);
   }
 
-  private processDragAndDropEvent (event: DragEvent) {
+  private processDragAndDropEvent(event: DragEvent) {
     if (!this.checkFilesLimit()) {
       return;
     }
@@ -79,7 +79,7 @@ export class ImageUploadComponent implements OnInit {
     });
   }
 
-  private processFileOrDirectory (entry: FileSystemEntry) {
+  private processFileOrDirectory(entry: FileSystemEntry) {
     if (entry.isFile) {
       (entry as FileSystemFileEntry).file(file => this.tryAddFile(file));
     }
@@ -149,11 +149,11 @@ export class ImageUploadComponent implements OnInit {
   private initErrorMessages() {
     if (this.allowedExtensions && this.allowedExtensions.length > 0) {
       let allowedExtensionsListText = `.${this.allowedExtensions[0]}`;
-      for (let i = 1; i < this.allowedExtensions.length - 1; i++) {
+      for (let i = 1; i < this.allowedExtensions.length; i++) {
         allowedExtensionsListText += `, .${this.allowedExtensions[i]}`;
       }
       if (!this.wrongExtensionErrorMessage) {
-        this.errorMessageWrongExtension = `The file should have a ${allowedExtensionsListText} file extension`
+        this.errorMessageWrongExtension = `The file should have a ${allowedExtensionsListText} file extension`;
       }
       else {
         this.errorMessageWrongExtension = this.wrongExtensionErrorMessage;
@@ -186,11 +186,12 @@ export class ImageUploadComponent implements OnInit {
     const obj = {
       doPreventDefault: false,
       error: errorMessage,
-      preventDefault: function() {
+      preventDefault() {
         this.doPreventDefault = true;
       }
     };
-    this.error.emit(obj);
+    alert(errorMessage);
+    // this.error.emit(obj);
     if (!obj.doPreventDefault) {
       // this.store.dispatch(new AddAlertAction({
       //   message: errorMessage,
@@ -211,7 +212,3 @@ export class ImageUploadComponent implements OnInit {
   }
 }
 
-interface FileSelectErrorEvent {
-  error: string;
-  preventDefault();
-}
