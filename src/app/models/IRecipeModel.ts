@@ -21,7 +21,7 @@ export interface IRecipeDetailsModel extends IRecipeModel {
 export interface IRecipeStepModel extends IModel {
   title?: string;
   description?: string;
-  order: number;
+  orderNumber: number;
   imageId?: number;
   image?: IImageModel;
 }
@@ -57,7 +57,7 @@ export interface IProductDetailsModel extends IProductModel {
 }
 
 export interface ITagModel extends IModel {
-  title: string;
+  tag: string;
 }
 
 export interface IModel {

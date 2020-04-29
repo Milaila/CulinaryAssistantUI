@@ -31,17 +31,15 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
       this.products = products;
     }));
     this.currRecipe = {
+      // id: 8,
       title: '',
       ingredients: [],
       steps: [],
       tags: [],
-      image: {
-        data: '',
-      },
     };
-    this.addIngredient();
-    this.addTag();
-    this.addStep();
+    // this.addIngredient();
+    // this.addTag();
+    // this.addStep();
   }
 
   ngOnDestroy() {
@@ -59,16 +57,13 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
 
   addTag() {
     this.currRecipe.tags.push({
-      title: '',
+      tag: '',
     });
   }
 
   addStep() {
     this.currRecipe.steps.push({
-      order: this.currRecipe.steps.length + 1,
-      image: {
-        data: '',
-      }
+      orderNumber: this.currRecipe.steps.length + 1,
     });
   }
 
@@ -93,9 +88,11 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
   }
 
   onSave(): void {
-    // this.recipeService.currRecipe = {
-    //   title: for
-    // }
+    this.currRecipe.steps?.forEach((step, index) => {
+      step.orderNumber = index + 1;
+    });
+    this.subscription.add(this.baseService.sendRecipe(this.currRecipe)
+      .subscribe(x => alert(x)));
   }
 
   uploadStepImage(stepIndex: number, event: any) {
@@ -106,8 +103,9 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
     }
 
     reader.onload = (e: any) => {
+      const src = e.target.result;
       this.currRecipe.steps[stepIndex].image = {
-        data: e.target.result,
+        data: src.slice(src.indexOf(',') + 1),
         title: image.name
       };
     };
@@ -122,8 +120,9 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
     }
 
     reader.onload = (e: any) => {
+      const src = e.target.result;
       this.currRecipe.image = {
-        data: e.target.result,
+        data: src.slice(src.indexOf(',') + 1),
         title: image.name
       };
     };

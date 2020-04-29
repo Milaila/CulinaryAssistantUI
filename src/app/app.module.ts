@@ -16,13 +16,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { CommonModule } from '@angular/common';
 import { NewRecipeComponent } from './components/new-recipe/new-recipe.component';
+import { UserComponent } from './components/user/user.component';
+import { RegistrationComponent } from './components/user/registration/registration.component';
+import { UserService } from './services/user.service';
+import { BaseService } from './services/base.service';
+import { LoginComponent } from './components/user/login/login.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OwnTestComponent,
     ImageUploadComponent,
-    NewRecipeComponent
+    NewRecipeComponent,
+    UserComponent,
+    RegistrationComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +50,10 @@ import { NewRecipeComponent } from './components/new-recipe/new-recipe.component
     MatFormFieldModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    UserService,
+    BaseService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

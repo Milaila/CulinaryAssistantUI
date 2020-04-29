@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { $ } from 'protractor';
 import { IImageModel } from '../models/IImageModel';
-import { IProductModel } from '../models/IRecipeModel';
+import { IProductModel, IRecipeDetailsModel } from '../models/IRecipeModel';
 
 @Injectable({
   providedIn: 'root'
@@ -120,9 +120,17 @@ export class BaseService {
       );
   }
 
-  // private dataUriToBlob(data: string): Blob {
+  sendRecipe(recipe: IRecipeDetailsModel): Observable<number> {
+    const url = environment.serverBaseUrl + 'recipes';
 
-  // }
+    return this.http.post<number>(url, recipe)
+      .pipe(
+        catchError(() => {
+          alert('recipe send error');
+          return throwError({});
+        })
+      );
+  }
 }
 
 export class Tag {

@@ -1,0 +1,33 @@
+<div class="Registration">
+  <h1>Sign Up</h1>
+  <form [formGroup]="userService.formModel" autocomplete="off">
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="userName" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Full name</mat-label>
+      <input matInput formControlName="fullName">
+    </mat-form-field>
+    <div formGroupName="passwords">
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input type="password" matInput formControlName="password" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input type="password" matInput formControlName="confirmPassword" required>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary"
+      [disabled]="!userService.formModel.valid"
+      (click)="onSubmit()"
+      styles="margin-top: 8px;">
+      Sign Up
+    </button>
+  </form>
+</div>

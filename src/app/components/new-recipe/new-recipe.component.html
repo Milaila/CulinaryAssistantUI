@@ -30,7 +30,7 @@
     <button (click)="recipeImage.click()" mat-raised-button>Завантажити зображення</button>
     <mat-card *ngIf="currRecipe.image?.data as data">
       <mat-card-title>Прев'ю зображення</mat-card-title>
-      <img class="imagePreview" [src]="data" />
+      <img class="imagePreview" [src]="'data:image/jpeg;base64,' + data" />
       <button (click)="removeRecipeImage()" mat-raised-button>Видалити зображення</button>
     </mat-card>
 
@@ -50,11 +50,11 @@
           [(ngModel)]="ingredient.note"></textarea>
       </mat-form-field>
       <mat-form-field class="">
-        <mat-label>Вага</mat-label>
+        <mat-label>Вага (в грамах)</mat-label>
         <input matInput type="number" name="weight-{{index}}"
           [(ngModel)]="ingredient.weight">
       </mat-form-field>
-      <mat-checkbox color="primary" [(checked)]="ingredient.necessity">Цей продукт обов'язковий</mat-checkbox>
+      <mat-checkbox name="necessity-{{index}}" color="primary" [(ngModel)]="ingredient.necessity">Цей продукт обов'язковий</mat-checkbox>
       <button (click)="removeIngredient(index)" mat-raised-button>Видалити</button>
     </mat-card>
     <button (click)="addIngredient()" mat-raised-button>Додати інгрідієнт</button>
@@ -64,7 +64,7 @@
       <mat-form-field class="">
         <mat-label>Назва</mat-label>
         <input matInput name="tagName-{{index}}"
-          [(ngModel)]="tag.title">
+          [(ngModel)]="tag.tag">
       </mat-form-field>
       <button (click)="removeTag(index)" mat-raised-button>Видалити</button>
     </mat-card>
@@ -72,11 +72,11 @@
 
     <mat-card *ngFor="let step of currRecipe.steps; let index = index">
       <mat-card-title>Крок рецепту</mat-card-title>
-      <mat-form-field class="">
+      <!-- <mat-form-field class="">
         <mat-label>Номер</mat-label>
         <input matInput name="stepOrderNumber-{{index}}" type="number"
-          [(ngModel)]="step.order">
-      </mat-form-field>
+          [(ngModel)]="step.orderNumber">
+      </mat-form-field> -->
       <mat-form-field class="">
         <mat-label>Назва</mat-label>
         <input matInput name="stepTitle-{{index}}"
@@ -91,7 +91,7 @@
       <button (click)="stepImage.click()" mat-raised-button>Завантажити зображення</button>
       <mat-card *ngIf="step.image?.data as stepImage">
         <mat-card-title>Прев'ю зображення</mat-card-title>
-        <img class="imagePreview" [src]="stepImage" />
+        <img name="imagePreviewCard-{{index}}" class="imagePreview" [src]="'data:image/jpeg;base64,' + stepImage" />
         <button (click)="removeStepImage(index)" mat-raised-button>Видалити зображення</button>
       </mat-card>
       <button (click)="removeStep(index)" mat-raised-button>Видалити</button>
