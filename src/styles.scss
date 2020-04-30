@@ -1,4 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body {
+  background-color: #acc8e7;
+  height: 100%;
+  padding: 4px;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.flex {
+  display: flex;
+  &.flex-row {
+    flex-direction: row;
+  }
+  &.flex-column {
+    flex-direction: column;
+  }
+  &.flex-end {
+    justify-content: flex-end;
+  }
+  &.flex-start {
+    justify-content: flex-start;
+  }
+  &.center {
+    justify-content: center;
+  }
+  &.space-between {
+    justify-content: space-between;
+  }
+}
+
+.m {
+  &-0 {
+    margin: 0;
+  }
+  &-4 {
+    margin: 4px;
+  }
+  &r-8 {
+    margin-right: 8px;
+  }
+  &l-8 {
+    margin-left: 8px;
+  }
+  &t-8 {
+    margin-top: 8px;
+  }
+  &b-8 {
+    margin-bottom: 8px;
+  }
+}
+
+
+

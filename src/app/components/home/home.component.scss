@@ -1,0 +1,17 @@
+:host {
+  width: 100%;
+}
+
+.menu {
+  // display: flex;
+  // justify-content: flex-end;
+  // margin-top: 4px;
+
+  button {
+    border-color: royalblue;
+    margin-right: 16px;
+    &:last-of-type{
+      margin-right: 0px;
+    }
+  }
+}

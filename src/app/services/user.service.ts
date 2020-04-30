@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -39,7 +39,7 @@ export class UserService {
       fullName: this.formModel.value.fullName,
       password: this.formModel.value.passwords.password,
     };
-    return this.http.post('https://localhost:44351/api/applicationuser/register', body);
+    return this.http.post('https://localhost:44351/api/auth/signup', body);
   }
 
   login(model: { userName: string, password: string}) {
@@ -47,6 +47,13 @@ export class UserService {
       userName: model.userName,
       password: model.password,
     };
-    return this.http.post('https://localhost:44351/api/applicationuser/login', body);
+    return this.http.post('https://localhost:44351/api/auth/signin', body);
+  }
+
+  getUserProfile() {
+    // const tokenHeader = new HttpHeaders({
+    //   Authorization: `Bearer ${localStorage.getItem('token')}`
+    // });
+    return this.http.get('https://localhost:44351/api/profiles/current'); // , { headers: tokenHeader });
   }
 }

@@ -1,1 +1,17 @@
-<p>home works!</p>
+<mat-card class="menu">
+  <div class="flex space-between">
+    <h2 class="m-0">Culinary Assistant</h2>
+    <div class="flex flex-end">
+      <button mat-stroked-button (click)="onLogout()">Logout</button>
+      <button mat-stroked-button>Login</button>
+    </div>
+  </div>
+</mat-card>
+
+<mat-card class="mt-8" style="max-width: 600px;" *ngIf="userDetails">
+  <ul>
+    <!-- <li><strong>User name:</strong> {{ userDetails.name }}</li> -->
+    <li><strong>Full name:</strong> {{ userDetails.name }}</li>
+    <li><strong>Email:</strong> {{ userDetails.email }}</li>
+  </ul>
+</mat-card>
