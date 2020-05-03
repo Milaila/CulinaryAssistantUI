@@ -1,7 +1,6 @@
-import { IModel } from './IRecipeModel';
+import { IModel } from './base-model';
 
 export interface IImageModel extends IModel {
-  id?: number;
   title?: string;
   data: string;
 }

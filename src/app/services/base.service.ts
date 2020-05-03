@@ -5,8 +5,9 @@ import { catchError, map } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { $ } from 'protractor';
-import { IImageModel } from '../models/IImageModel';
-import { IProductModel, IRecipeDetailsModel } from '../models/IRecipeModel';
+import { IImageModel } from '../models/server/image-model';
+import { IProductModel } from '../models/server/product-model';
+import { IRecipeModel } from '../models/server/recipe-models';
 
 @Injectable({
   providedIn: 'root'
@@ -120,13 +121,25 @@ export class BaseService {
       );
   }
 
-  sendRecipe(recipe: IRecipeDetailsModel): Observable<number> {
-    const url = environment.serverBaseUrl + 'recipes';
+  sendRecipe(recipe: IRecipeModel): Observable<number> {
+    const url = environment.serverBaseUrl + 'recipes/create';
 
     return this.http.post<number>(url, recipe)
       .pipe(
         catchError(() => {
           alert('recipe send error');
+          return throwError({});
+        })
+      );
+  }
+
+  getRecipe(id: number): Observable<IRecipeModel> {
+    const url = environment.serverBaseUrl + `recipes/${id}/details`;
+
+    return this.http.get<IRecipeModel>(url)
+      .pipe(
+        catchError(error => {
+          alert('recipe get error');
           return throwError({});
         })
       );

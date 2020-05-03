@@ -1,5 +1,13 @@
 <mat-card class="RecipeContainer">
   <form>
+    <mat-card>
+      <mat-label>Завантажити існуючий рецепт</mat-label>
+      <mat-form-field>
+        <mat-label>Номер рецепту</mat-label>
+        <input type="number" matInput #recipeId>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="getRecipe(recipeId.value)">Завантажити</button>
+    </mat-card>
     <mat-form-field class="">
       <mat-label>Назва рецепту</mat-label>
       <input matInput name="recipeTitle"

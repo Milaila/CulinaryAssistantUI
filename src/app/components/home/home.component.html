@@ -7,11 +7,11 @@
     </div>
   </div>
 </mat-card>
-
+<button class="mt-8" mat-button routerLink="/recipes/new" mat-raised-button>New recipe</button>
 <mat-card class="mt-8" style="max-width: 600px;" *ngIf="userDetails">
   <ul>
     <!-- <li><strong>User name:</strong> {{ userDetails.name }}</li> -->
-    <li><strong>Full name:</strong> {{ userDetails.name }}</li>
+    <li><strong>Full name:</strong> {{ userDetails.displayName }}</li>
     <li><strong>Email:</strong> {{ userDetails.email }}</li>
   </ul>
 </mat-card>

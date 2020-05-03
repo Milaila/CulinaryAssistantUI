@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-import { IRecipeDetailsModel } from '../models/IRecipeModel';
+import { IRecipeTagModel, IRecipeModel } from '../models/server/recipe-models';
+import { IModel } from '../models/server/base-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
 
-  public currRecipe: IRecipeDetailsModel = {
+  public currRecipe: IRecipeModel = {
+    id: 0,
     title: ''
   };
-  public newRecipe: IRecipeDetailsModel;
-  public recipes: IRecipeDetailsModel[];
+  public newRecipe: IRecipeModel;
+  public recipes: IRecipeModel[];
   constructor() { }
 }

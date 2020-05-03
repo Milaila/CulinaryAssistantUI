@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseService, Tag } from 'src/app/services/base.service';
-import { IImageModel } from 'src/app/models/IImageModel';
+import { IImageModel } from 'src/app/models/server/image-model';
 
 @Component({
   selector: 'app-own-test',
@@ -63,6 +63,7 @@ export class OwnTestComponent implements OnInit {
     const data = this.imageSrc.slice(this.imageSrc.indexOf(',') + 1);
     alert(`Upload image: ${data}`);
     this.baseService.sendImage({
+      id: 0,
       title: this.imageFile.name,
       data
     }).subscribe(x => alert(`Id = ${x}`));

@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  serverBaseUrl: 'http://localhost:44351/api/',
-  imagesUrl: 'http://localhost:44351/api/images',
+  serverBaseUrl: 'https://localhost:44351/api/',
+  imagesUrl: 'https://localhost:44351/api/images',
   // productsUrl: 'http://localhost:8888/api/products',
-  productsUrl: 'http://localhost:44351/api/products',
+  productsUrl: 'https://localhost:44351/api/products',
   serverBaseUrl2: 'https://localhost:44385/api/',
 };
 

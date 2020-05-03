@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { BaseService } from 'src/app/services/base.service';
-import { IRecipeDetailsModel, IRecipeStepModel, IRecipeModel, IProductModel } from 'src/app/models/IRecipeModel';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { Subscription } from 'rxjs';
+import { IRecipeModel } from 'src/app/models/server/recipe-models';
+import { IProduct } from 'src/app/models/server/product-model';
 
 @Component({
   selector: 'app-new-recipe',
@@ -12,9 +13,9 @@ import { Subscription } from 'rxjs';
 })
 export class NewRecipeComponent implements OnInit, OnDestroy {
 
-  currRecipe: IRecipeDetailsModel;
-  products: IProductModel[] = [];
-  newRecipe: IRecipeDetailsModel;
+  currRecipe: IRecipeModel;
+  products: IProduct[] = [];
+  // newRecipe: IRecipeModel;
   subscription = new Subscription();
 
   recipeForm: FormGroup;
@@ -31,7 +32,7 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
       this.products = products;
     }));
     this.currRecipe = {
-      // id: 8,
+      id: 0,
       title: '',
       ingredients: [],
       steps: [],
@@ -48,22 +49,26 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
 
   addIngredient() {
     this.currRecipe.ingredients.push({
+      id: 0,
       // product: null
       // productId: null,
       weight: 0,
       necessity: true,
+      productId: 0,
     });
   }
 
   addTag() {
     this.currRecipe.tags.push({
+      id: 0,
       tag: '',
     });
   }
 
   addStep() {
     this.currRecipe.steps.push({
-      orderNumber: this.currRecipe.steps.length + 1,
+      id: 0,
+      // orderNumber: this.currRecipe.steps.length + 1,
     });
   }
 
@@ -88,9 +93,21 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
   }
 
   onSave(): void {
-    this.currRecipe.steps?.forEach((step, index) => {
-      step.orderNumber = index + 1;
+    this.currRecipe.id = 0;
+    if (this.currRecipe.image?.id){
+      this.currRecipe.image.id = null;
+    }
+    this.currRecipe.ingredients?.forEach(x => x.id = 0);
+    this.currRecipe.steps?.forEach(x => x.id = 0);
+    this.currRecipe.tags?.forEach(x => x.id = 0);
+    this.currRecipe.steps?.forEach(x => {
+      if (x?.image){
+        x.image.id = 0;
+      }
     });
+    // this.currRecipe.steps?.forEach((step, index) => {
+    //   step.orderNumber = index + 1;
+    // });
     this.subscription.add(this.baseService.sendRecipe(this.currRecipe)
       .subscribe(x => alert(x)));
   }
@@ -105,6 +122,7 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
     reader.onload = (e: any) => {
       const src = e.target.result;
       this.currRecipe.steps[stepIndex].image = {
+        id: 0,
         data: src.slice(src.indexOf(',') + 1),
         title: image.name
       };
@@ -122,10 +140,22 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
     reader.onload = (e: any) => {
       const src = e.target.result;
       this.currRecipe.image = {
+        id: 0,
         data: src.slice(src.indexOf(',') + 1),
         title: image.name
       };
     };
     reader.readAsDataURL(image);
+  }
+
+  getRecipe(id: number) {
+    this.subscription.add(this.baseService.getRecipe(id).subscribe(recipe => {
+      console.log('Get recipe success', recipe);
+      this.currRecipe = recipe;
+      // if (recipe.image) {
+      //   const resizebase64 = require('resize-base64');
+      //   this.currRecipe.image = resizebase64(recipe.image, 50, 50);
+      // }
+    }));
   }
 }
