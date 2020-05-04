@@ -8,6 +8,8 @@ import { OwnTestComponent } from './components/own-test/own-test.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -46,6 +48,8 @@ import { ServerHttpService } from './services/server-http.sevice';
     MatCheckboxModule,
     MatCardModule,
     FormsModule,
+    MatIconModule,
+    MatSidenavModule,
     MatButtonModule,
     HttpClientModule,
     MatInputModule,
