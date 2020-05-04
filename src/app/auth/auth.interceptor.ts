@@ -3,15 +3,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AuthUtils } from '../shared/auth-utils';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (localStorage.getItem('token')) {
+    if (AuthUtils.isAuthorized) {
       const clonedReq = req.clone({
-        headers: req.headers.set('Authorization', `Bearer ${localStorage.getItem('token')}`)
+        headers: req.headers.set('Authorization', `Bearer ${AuthUtils.getToken()}`)
       });
       return next.handle(clonedReq).pipe(
         tap(
@@ -19,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
           err => {
             if (err.status === 401) {
               alert('Token expired!');
-              localStorage.removeItem('token');
+              AuthUtils.clearToken();
               this.router.navigate(['/user/login']);
             }
           }

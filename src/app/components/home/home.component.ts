@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { AuthInterceptor } from 'src/app/auth/auth.interceptor';
+import { AuthUtils } from 'src/app/shared/auth-utils';
+import { ServerHttpService } from 'src/app/services/server-http.sevice';
 
 @Component({
   selector: 'app-home',
@@ -11,19 +14,19 @@ export class HomeComponent implements OnInit {
 
   userDetails: any;
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router, private serverService: ServerHttpService) { }
 
   ngOnInit(): void {
     this.getUserProfile();
   }
 
   onLogout() {
-    localStorage.removeItem('token');
+    AuthUtils.clearToken();
     this.router.navigate(['/user/login']);
   }
 
   getUserProfile() {
-    this.userService.getUserProfile().subscribe(
+    this.serverService.getCurrentProfile().subscribe(
       res => {
         this.userDetails = res;
       },

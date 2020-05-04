@@ -11,7 +11,7 @@ export class UserService {
   constructor(private formBuilder: FormBuilder, private http: HttpClient) { }
 
   formModel: FormGroup = this.formBuilder.group({
-    userName: ['', Validators.required],
+    login: ['', Validators.required],
     email: ['', Validators.email],
     fullName: [''],
     passwords: this.formBuilder.group({

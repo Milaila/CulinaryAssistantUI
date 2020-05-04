@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
-import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { AuthUtils } from 'src/app/shared/auth-utils';
+import { ISignInModel } from 'src/app/models/server/sign-in-model';
+import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { CompileShallowModuleMetadata } from '@angular/compiler';
 
 @Component({
   selector: 'app-login',
@@ -10,21 +13,23 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  formModel = {
-    userName: '',
+  formModel: ISignInModel = {
+    login: '',
     password: ''
   };
 
-  constructor(public userService: UserService, private router: Router) { }
+  constructor(public userService: UserService,
+              private serverService: ServerHttpService,
+              private router: Router) { }
 
   ngOnInit(): void {
   }
 
   onSubmit() {
-    this.userService.login(this.formModel).subscribe(
-      (res: any) => {
-        localStorage.setItem('token', res.token);
-        alert(res.token);
+    this.serverService.signIn(this.formModel).subscribe(
+      res => {
+        AuthUtils.setToken(res.token);
+        console.log(res);
         this.router.navigateByUrl('/home');
       },
       err => {

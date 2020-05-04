@@ -47,9 +47,9 @@
       <mat-card-subtitle *ngIf="ingredient?.product?.name as productName">{{ productName }}</mat-card-subtitle>
       <mat-form-field>
         <mat-label>Продукт</mat-label>
-        <mat-select name="productSelect-{{index}}" [(ngModel)]="ingredient.product" placeholder="Оберіть продукт">
+        <mat-select name="productSelect-{{index}}" [(ngModel)]="ingredient.productId" placeholder="Оберіть продукт">
           <!-- <input placeholder="Оберіть продукт" class="matSearch" matInput> -->
-          <mat-option *ngFor="let product of products" [value]="product">{{ product.name }} [{{product.id}}]</mat-option>
+          <mat-option *ngFor="let product of products" [value]="product.id">{{ product.name }} [{{product.id}}]</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="">

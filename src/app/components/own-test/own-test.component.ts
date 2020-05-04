@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseService, Tag } from 'src/app/services/base.service';
 import { IImageModel } from 'src/app/models/server/image-model';
+import { ServerHttpService } from 'src/app/services/server-http.sevice';
 
 @Component({
   selector: 'app-own-test',
@@ -9,31 +10,23 @@ import { IImageModel } from 'src/app/models/server/image-model';
 })
 export class OwnTestComponent implements OnInit {
 
-  constructor(protected baseService: BaseService) { }
+  constructor(protected serverService: ServerHttpService) { }
 
-  public tags: Tag[] = [];
+  public tags: string[] = [];
   public response: any;
-  public newTag = '';
   imageSrc = '';
   imageFile: File;
-  images: IImageModel[] = [];
 
   ngOnInit(): void {
-    this.baseService.getTags().subscribe(t => {
+    this.serverService.getTags().subscribe(t => {
       this.tags = t;
     });
     // this.baseService.getTags2().subscribe(t => {
     //   this.response = t;
     // });
-    this.baseService.getImages().subscribe(t => {
-      this.images = t;
-    });
   }
 
   onSave(){
-    this.baseService.sendTag(this.newTag).subscribe(t => {
-      alert(t);
-    });
     this.onUpload();
   }
 
@@ -62,7 +55,7 @@ export class OwnTestComponent implements OnInit {
   onUpload() {
     const data = this.imageSrc.slice(this.imageSrc.indexOf(',') + 1);
     alert(`Upload image: ${data}`);
-    this.baseService.sendImage({
+    this.serverService.postImage({
       id: 0,
       title: this.imageFile.name,
       data

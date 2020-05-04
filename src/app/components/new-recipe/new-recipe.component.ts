@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { BaseService } from 'src/app/services/base.service';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import { RecipeService } from 'src/app/services/recipe.service';
 import { Subscription } from 'rxjs';
 import { IRecipeModel } from 'src/app/models/server/recipe-models';
 import { IProduct } from 'src/app/models/server/product-model';
+import { ServerHttpService } from 'src/app/services/server-http.sevice';
 
 @Component({
   selector: 'app-new-recipe',
@@ -21,14 +21,14 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
   recipeForm: FormGroup;
 
   constructor(
-    private baseService: BaseService,
-    private recipeService: RecipeService,
-    private formBuilder: FormBuilder,
+    private serverService: ServerHttpService,
+    // private baseService: BaseService,
+    // private formBuilder: FormBuilder,
     // private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    this.subscription.add(this.baseService.getProducts().subscribe(products => {
+    this.subscription.add(this.serverService.getProducts().subscribe(products => {
       this.products = products;
     }));
     this.currRecipe = {
@@ -108,7 +108,7 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
     // this.currRecipe.steps?.forEach((step, index) => {
     //   step.orderNumber = index + 1;
     // });
-    this.subscription.add(this.baseService.sendRecipe(this.currRecipe)
+    this.subscription.add(this.serverService.createRecipe(this.currRecipe)
       .subscribe(x => alert(x)));
   }
 
@@ -149,7 +149,7 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
   }
 
   getRecipe(id: number) {
-    this.subscription.add(this.baseService.getRecipe(id).subscribe(recipe => {
+    this.subscription.add(this.serverService.getRecipeWithDetails(id).subscribe(recipe => {
       console.log('Get recipe success', recipe);
       this.currRecipe = recipe;
       // if (recipe.image) {

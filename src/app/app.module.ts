@@ -23,6 +23,7 @@ import { BaseService } from './services/base.service';
 import { LoginComponent } from './components/user/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { ServerHttpService } from './services/server-http.sevice';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
   ],
   providers: [
     UserService,
+    ServerHttpService,
     BaseService,
     {
       provide: HTTP_INTERCEPTORS,
