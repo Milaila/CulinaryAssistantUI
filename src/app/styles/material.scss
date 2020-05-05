@@ -1,0 +1,5 @@
+$my-primary: #55034a;
+$my-accent: #777722;
+$my-warn: #41b115;
+$my-theme: mat-light-theme($my-primary, $my-accent, $my-warn);
+@include angular-material-theme($my-theme);

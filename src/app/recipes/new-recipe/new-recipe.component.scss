@@ -1,7 +1,10 @@
+:host {
+  width: 100%;
+}
 
 .RecipeContainer {
   margin-bottom: 16px;
-  max-width: 1200px;
+  // max-width: 1200px;
 
   .imagePreview {
     max-width: 400px;

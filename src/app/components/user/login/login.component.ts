@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
-import { AuthUtils } from 'src/app/shared/auth-utils';
 import { ISignInModel } from 'src/app/models/server/sign-in-model';
 import { ServerHttpService } from 'src/app/services/server-http.sevice';
 import { CompileShallowModuleMetadata } from '@angular/compiler';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   };
 
   constructor(public userService: UserService,
+              private authService: AuthService,
               private serverService: ServerHttpService,
               private router: Router) { }
 
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.serverService.signIn(this.formModel).subscribe(
       res => {
-        AuthUtils.setToken(res.token);
+        this.authService.setToken(res.token);
         console.log(res);
         this.router.navigateByUrl('/home');
       },

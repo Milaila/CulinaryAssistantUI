@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
 import { IRecipeModel, IRecipeGeneralModel } from '../models/server/recipe-models';
 import { serverUrls } from '../shared/server-urls';
 import { IFilterModel, IFilterGeneralModel } from '../models/server/filter-models';
-import { AuthUtils } from '../shared/auth-utils';
 import { error } from 'protractor';
 import { ISignUpModel } from '../models/server/sign-in-response-model';
 import { ISignInModel } from '../models/server/sign-in-model';
