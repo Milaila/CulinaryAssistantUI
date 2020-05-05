@@ -75,3 +75,8 @@ $primary: mat-palette($mat-cyan,800);
 // .material-dark-theme {
 //   @include angular-material-theme($dark-theme);
 // }
+
+
+mat-toolbar {
+  width: 100%;
+}

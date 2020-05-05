@@ -25,12 +25,14 @@ import { MatLineModule, MatOptionModule, MatCommonModule } from '@angular/materi
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FiltersSearchSectionComponent } from './filters-search-section/filters-search-section.component';
 import { IngredientsSearchSectionComponent } from './ingredients-search-section/ingredients-search-section.component';
 import { TagsSearchSectionComponent } from './tags-search-section/tags-search-section.component';
 import { LimitsSearchSectionComponent } from './limits-search-section/limits-search-section.component';
 import { PreviewSearchSectionComponent } from './preview-search-section/preview-search-section.component';
+import { ExpansionPanelComponent } from '../components/expansion-panel/expansion-panel.component';
 
 
 @NgModule({
@@ -39,6 +41,7 @@ import { PreviewSearchSectionComponent } from './preview-search-section/preview-
     RecipeSearchComponent,
     RecipeListComponent,
     NewRecipeComponent,
+    ExpansionPanelComponent,
     RecipeEditorComponent,
     FiltersSearchSectionComponent,
     IngredientsSearchSectionComponent,
@@ -61,6 +64,7 @@ import { PreviewSearchSectionComponent } from './preview-search-section/preview-
     MatLineModule,
     MatOptionModule,
     MatCommonModule,
+    MatDividerModule,
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,

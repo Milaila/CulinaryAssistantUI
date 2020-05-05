@@ -1,0 +1,20 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{ headerTitle }}</mat-panel-title>
+    <mat-panel-description>{{ description }}</mat-panel-description>
+  </mat-expansion-panel-header>
+  <mat-divider></mat-divider>
+  <ng-template matExpansionPanelContent>
+    <ng-content></ng-content>
+  </ng-template>
+  <mat-action-row *ngIf="actions && actions.length">
+    <ng-container *ngFor="let action of actions">
+      <button mat-button
+        *ngIf="action && (!action.visible || action.visible())"
+        [title]="action.hint || ''"
+        [disabled]="action.disabled || false"
+        (click)="action.click ? action.click() : null"
+      >{{ action.label }}</button>
+    </ng-container>
+  </mat-action-row>
+</mat-expansion-panel>

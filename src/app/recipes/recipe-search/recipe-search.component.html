@@ -1,1 +1,33 @@
-
+<mat-toolbar color="primary"><h1>Пошук рецептів</h1></mat-toolbar>
+<div class="RecipeSearch">
+  <mat-accordion multi="true">
+    <app-expansion-panel
+      headerTitle="Фільтри"
+      description="Використати готові фільтри"
+      [actions]="filterActions">
+      <app-filters-search-section></app-filters-search-section>
+    </app-expansion-panel>
+    <app-expansion-panel
+      headerTitle="Інгредієнти"
+      description="Пошук за інгредієнтами">
+      <app-ingredients-search-section></app-ingredients-search-section>
+    </app-expansion-panel>
+    <app-expansion-panel
+      headerTitle="Тегі"
+      description="Пошук за тегами">
+      <app-tags-search-section></app-tags-search-section>
+    </app-expansion-panel>
+    <app-expansion-panel
+      headerTitle="Інші обмеження"
+      description="Обмеження за калоріями та часом">
+      <app-limits-search-section></app-limits-search-section>
+    </app-expansion-panel>
+    <app-expansion-panel
+      headerTitle="Прев'ю"
+      description="Фільтр">
+      <app-preview-search-section></app-preview-search-section>
+    </app-expansion-panel>
+  </mat-accordion>
+  <button mat-raised-button class="mt-8" color="primary" (click)="onSearch()">Пошук</button>
+  <app-recipe-list></app-recipe-list>
+</div>

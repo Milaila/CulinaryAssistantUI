@@ -33,7 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     CommonModule,
     ProductsRoutingModule,
-    BrowserModule,
+    // BrowserModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -52,7 +52,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatExpansionModule,
     MatInputModule,
     MatFormFieldModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
   ]
 })
 export class ProductsModule { }

@@ -35,6 +35,8 @@ import { ServerHttpService } from './services/server-http.sevice';
 import { MatLineModule, MatOptionModule, MatCommonModule } from '@angular/material/core';
 import { HeaderComponent } from './components/header/header.component';
 import { AuthService } from './services/auth.service';
+import { MatDividerModule } from '@angular/material/divider';
+import { ExpansionPanelComponent } from './components/expansion-panel/expansion-panel.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,8 @@ import { AuthService } from './services/auth.service';
     RegistrationComponent,
     LoginComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    // ExpansionPanelComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +72,7 @@ import { AuthService } from './services/auth.service';
     HttpClientModule,
     MatExpansionModule,
     MatInputModule,
+    MatDividerModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
     NgbModule,
@@ -83,6 +87,7 @@ import { AuthService } from './services/auth.service';
     MatCheckboxModule,
     MatCardModule,
     FormsModule,
+    MatDividerModule,
     MatIconModule,
     MatSidenavModule,
     MatLineModule,
