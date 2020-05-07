@@ -1,1 +1,9 @@
-<p>preview-search-section works!</p>
+<div class="SearchPreview">
+  <div class="ProductsContainer">
+    <mat-selection-list #ings>
+      <mat-list-option *ngFor="let ingredient of ingredients">
+        {{ingredient.name}}
+      </mat-list-option>
+    </mat-selection-list>
+  </div>
+</div>

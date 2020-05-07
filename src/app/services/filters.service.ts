@@ -3,10 +3,12 @@ import { Injectable } from '@angular/core';
 import { IFilterModel, IFilter, IFilterIngredientModel, IFilterTagModel, IFilterGeneralModel, IFilterProduct, ProductNecessity, IFilterGeneralProduct } from '../models/server/filter-models';
 import { AuthService } from './auth.service';
 import { ServerHttpService } from './server-http.sevice';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription, BehaviorSubject, Subject } from 'rxjs';
 import { take, catchError, map } from 'rxjs/operators';
 import { IProductGeneralModel, IProductModel } from '../models/server/product-model';
 import { isNumber } from 'util';
+import { MatRadioChange } from '@angular/material/radio';
+import { EventEmitter } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +20,12 @@ export class FiltersService {
   private currRootProductId: number;
   private breadCrumbs: number[] = [];
 
-  filtersChanged: BehaviorSubject<IFilterGeneralModel[]> = new BehaviorSubject<IFilterGeneralModel[]>(null);
+  filtersChanged$: BehaviorSubject<IFilterGeneralModel[]> = new BehaviorSubject<IFilterGeneralModel[]>(null);
   // productsChanged: BehaviorSubject<IFilterGeneralProduct[]> = new BehaviorSubject<IFilterGeneralProduct[]>(null);
-  // filtersChanged: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
-  currProductsChanged: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
-  currRootProductChanged: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  // filtersChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
+  currProductsChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
+  onProductsUpdated$: Subject<any> = new Subject();
+  currRootProductChanged$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
 
   currFilter: IFilterModel = {
     filterTitle: '',
@@ -39,52 +42,52 @@ export class FiltersService {
     private server: ServerHttpService,
   ) { }
 
-  // getFiltersArray(): IFilterGeneralModel[] {
-  //   console.log('Get filters array');
-  //   return [...(this.filters.values())];
-  // }
-
-  // getProductsArray(): IFilterProduct[] {
-  //   console.log('Get products array');
-  //   return [...(this.products.values())];
-  // }
-
   updateProducts() {
     this.server.getProductsWithRelations().pipe(
       take(1),
     ).subscribe(
       products => {
         this.products = new Map();
-        const necessity = ProductNecessity.Available;
+        const necessity = ProductNecessity.Undefined;
         products.forEach(product => this.products.set(product.id, {...product, necessity}));
-        // const currProducts = this.filterProductsByChildren([...this.products.values()])
-        //   .map(product => product.id);
-        // this.currProductsChanged.next(currProducts);
-        this.setCurrProducts();
+        this.setRootProduct(null, false);
+        this.onProductsUpdated$.next(true);
       },
       _ => alert('Error while getting products!')
     );
   }
 
-  // private filterProductsByChildren(products: IFilterProduct[]) {
-  //   return products.sort((x, y) => x?.subcategories?.length - y?.subcategories?.length);
-  // }
+  private setCurrProductsByRoot(rootProduct?: number) {
+    const products = [...this.products.values()];
+    const currProducts = rootProduct
+      ? products.filter(x => x?.categories?.includes(rootProduct))
+      : products.filter(x => !x.categories?.length);
+    this.currProductsChanged$.next(this.sortProductsByNameAndType(currProducts));
+  }
 
-  private setCurrProducts(rootProduct?: number) {
+  setCurrProductsByName(namePart: string) {
+    this.breadCrumbs = [];
+    this.currRootProductId = null;
+    this.currRootProductChanged$.next(null);
     let products = [...this.products.values()];
-    if (rootProduct){
-      products = products.filter(x => x?.categories?.includes(rootProduct));
+    if (namePart) {
+      const check = new RegExp(namePart, 'i');
+      products = products.filter(x => check.test(x.name));
     }
-    const currProducts = products
+    this.currProductsChanged$.next(this.sortProductsByNameAndType(products));
+  }
+
+  private sortProductsByNameAndType(products: IFilterProduct[]) {
+    return products
       .sort((x, y) => {
-        // (x?.subcategories?.length !!y?.subcategories?.length) ?
-        // -1 : (x?.categories?.length - y?.categories?.length)
-        return (!x?.subcategories?.length && !!y?.subcategories?.length)
-          ? 1
-          : (x?.categories?.length - y?.categories?.length);
+        const xChildren = x.subcategories?.length ? 1 : 0;
+        const yChildren = y.subcategories?.length ? 1 : 0;
+        if (xChildren === yChildren) {
+          return x.name > y.name ? 1 : -1;
+        }
+        return yChildren - xChildren;
       })
       .map(product => product.id);
-    this.currProductsChanged.next(currProducts);
   }
 
   setRootProduct(id: number, saveBreadCrumb = true) {
@@ -95,14 +98,15 @@ export class FiltersService {
     // }
     this.currRootProductFull = newRoot;
     if (newRoot && !newRoot?.subcategories?.length) {
+      alert('Return root ' + id);
       return;
     }
     if (saveBreadCrumb) {
       this.breadCrumbs.push(this.currRootProductId);
     }
     this.currRootProductId = id;
-    this.currRootProductChanged.next(id);
-    this.setCurrProducts(id);
+    this.currRootProductChanged$.next(id);
+    this.setCurrProductsByRoot(id);
   }
 
   updateFilters() {
@@ -118,22 +122,21 @@ export class FiltersService {
     );
   }
 
-  selectProduct(productId: number, necessity: ProductNecessity, needUpdate: boolean = false) {
+  selectProduct(productId: number, necessity: ProductNecessity, needUpdate: boolean = true) {
     const product = this.products?.get(productId);
     if (product) {
       product.necessity = necessity;
       // TO DO: check for forbidden
-      // if (needUpdate) {
-      //   this.onChangeProducts();
-      // }
+      if (needUpdate) {
+        this.onProductsUpdated$.next(true);
+      }
     }
   }
 
   returnBack() {
-    this.setRootProduct(this.breadCrumbs.pop(), false);
-    // if (this.hasBreadCrumbs) {
-    //   this.setRootProduct(this.breadCrumbs.pop(), false);
-    // }
+    if (this.hasBreadCrumbs) {
+      this.setRootProduct(this.breadCrumbs.pop(), false);
+    }
   }
 
   displayFilter(filterId: number) {
@@ -149,7 +152,6 @@ export class FiltersService {
           this.filters.set(filterId, newFilter);
           this.currFilter = newFilter; // TO DO: clear ingredients and tags?
           this.updateProductsNecessity(newFilter.ingredients, newFilter.byAvailableProducts);
-          // this.onChangeProducts();
         },
         _ => alert('Error during getting filter details')
       );
@@ -157,32 +159,44 @@ export class FiltersService {
   }
 
   updateProductsNecessity(ingredients: IFilterIngredientModel[], byAvailableProducts: boolean) {
-    this.clearProductsNecessity(byAvailableProducts);
+    this.clearProductsNecessity(byAvailableProducts, false);
     ingredients?.filter(x => x?.productId).forEach(ingredient => {
       const necessity = ingredient.necessity
         ? ProductNecessity.Required
         : byAvailableProducts
           ? ProductNecessity.Available
           : ProductNecessity.Forbidden;
-      this.selectProduct(ingredient.productId, necessity);
+      this.selectProduct(ingredient.productId, necessity, false);
     });
+    this.onProductsUpdated$.next(true);
   }
 
-  clearProductsNecessity(byAvailableProducts: boolean, needUpdate = false) {
-    const necessity = byAvailableProducts ? ProductNecessity.Forbidden : ProductNecessity.Available;
-    this.products?.forEach(product => product.necessity = necessity);
-    // if (needUpdate) {
-    //   this.onChangeProducts();
-    // }
+  clearProductsNecessity(byAvailableProducts: boolean, needUpdate = true) {
+    // const necessity = byAvailableProducts ? ProductNecessity.Forbidden : ProductNecessity.Available;
+    this.products?.forEach(product => product.necessity = ProductNecessity.Undefined);
+    if (needUpdate) {
+      this.onProductsUpdated$.next(true);
+    }
+  }
+
+  setByAvailableProducts(byAvailableProducts: boolean) {
+    if (this.currFilter.byAvailableProducts === byAvailableProducts) {
+      return;
+    }
+    this.currFilter.byAvailableProducts = byAvailableProducts;
+    this.products?.forEach(product => product.necessity = ProductNecessity.Undefined);
+    if (byAvailableProducts) {
+      this.onProductsUpdated$.next(true);
+    }
   }
   // TO DO: functionality reverting byAvailableProducts
 
-  // private onChangeProducts() {
-  //   this.productsChanged.next([...this.products.values()]);
-  // }
+  public getProductsByNecessity(necessity: ProductNecessity): IFilterProduct[] {
+    return [...this.products.values()].filter(x => x.necessity === necessity);
+  }
 
   private onChangeFilters() {
-    this.filtersChanged.next([...this.filters.values()]);
+    this.filtersChanged$.next([...this.filters.values()]);
   }
 
   getProduct(id: number): IFilterProduct {
@@ -190,28 +204,3 @@ export class FiltersService {
   }
 }
 
-// export class FilterProduct implements IProductModel {
-//   id = 0;
-//   name: string;
-//   necessity: ProductNecessity = ProductNecessity.Available;
-//   expanded = false;
-//   subcategories?: number[];
-//   categories?: number[];
-//   childrenLength = () => this.subcategories.length;
-// }
-
-export interface CurrFilter extends IFilterGeneralModel {
-  recipeTitle: string;
-  filterTitle: string;
-  description?: string;
-  isDefault: boolean;
-  onlyProducts: boolean;
-  byAvailableProducts: boolean;
-  authorId?: number;
-  minDuration?: number;
-  maxDuration?: number;
-  minCalories?: number;
-  maxCalories?: number;
-  ingredients?: () => IFilterIngredientModel[];
-  tags?: IFilterTagModel[];
-}

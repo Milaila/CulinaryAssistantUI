@@ -1,8 +1,44 @@
 .IngredientsSearchSection {
+  &-content {
+    max-height: 500px;
+    overflow: auto;
+  }
+
   &-header {
     font-size: 16px;
     font-weight: 500;
+    line-height: 48px;
+    height: 48px;
     align-items: center;
-    // display: flex;
+
+    button {
+      height: 48px;
+    }
   }
+
+  mat-list-item {
+    border: 2px dotted white;
+    margin: 2px 0px;
+  }
+  // color: rgb(255, 255, 136);
+
+  mat-form-field {
+    margin-bottom: -16px;
+  }
+  // mat-radio-button {
+  //   &.red {
+  //     color: red;
+  //   }
+  //   &.green {
+  //     color: green;
+  //   }
+  //   &.orange {
+  //     color: orange;
+  //   }
+  //   &.blue {
+  //     color: blue;
+  //   }
+  // }
+
+
 }

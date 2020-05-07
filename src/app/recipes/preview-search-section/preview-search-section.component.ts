@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FiltersService } from 'src/app/services/filters.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-preview-search-section',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PreviewSearchSectionComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(public filterService: FiltersService) { }
 
   ngOnInit(): void {
+  }
+
+  get byAvailableProducts() {
   }
 
 }

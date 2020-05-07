@@ -14,7 +14,7 @@ export class FiltersSearchSectionComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterService.updateFilters();
-    this.filterService.filtersChanged.subscribe(f => this.filters = f);
+    this.filterService.filtersChanged$.subscribe(f => this.filters = f);
   }
 
   setFilter(id: number) {

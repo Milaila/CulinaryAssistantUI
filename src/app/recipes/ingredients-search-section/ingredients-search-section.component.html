@@ -10,23 +10,55 @@
 <!-- <button mat-icon-button><mat-icon class="mat-icon-rtl-mirror">done</mat-icon></button>
 <button mat-icon-button><mat-icon>done</mat-icon></button> -->
 <div class="IngredientsSearchSection">
-  <div class="IngredientsSearchSection-header" *ngIf="rootProduct$ | async as rootProduct">
-    <button mat-icon-button (click)="goBack()">
-      <mat-icon class="mat-icon-rtl-mirror">keyboard_return</mat-icon>
-    </button>
-    {{ getProduct(rootProduct)?.name }}
+  <mat-form-field appearance="outline" class="">
+    <input matInput name="product-search" placeholder="Пошук за назвою..."
+      #searchProducts (input)="searchByName(searchProducts.value)">
+  </mat-form-field>
+  <mat-divider></mat-divider>
+  <div class="IngredientsSearchSection-header">
+    <ng-template let-rootProduct
+      [ngTemplateOutletContext]="{ $implicit: rootProduct$ | async }"
+      [ngTemplateOutlet]="currT" #currT>
+      <button *ngIf="rootProduct" mat-icon-button (click)="goBack()">
+        <mat-icon class="mat-icon-rtl-mirror">keyboard_return</mat-icon>
+      </button>
+      {{ getProduct(rootProduct)?.name || 'Усі продукти'}}
+      <mat-radio-group class="ml-8" aria-label="Select an option">
+        <mat-radio-button *ngIf="!byAvailable" class="red" value="1"></mat-radio-button>
+        <mat-radio-button class="blue" value="-1"></mat-radio-button>
+        <mat-radio-button *ngIf="byAvailable" class="orange" value="2"></mat-radio-button>
+        <mat-radio-button class="green" value="3"></mat-radio-button>
+      </mat-radio-group>
+    </ng-template>
     <mat-divider class="dotted"></mat-divider>
   </div>
-  <mat-action-list>
-    <div *ngFor="let product of (currProducts$ | async)">
-      <button mat-list-item (click)="changeRootProduct(product)">
-        <ng-container *ngIf="getProduct(product) as product">
-          <mat-icon *ngIf="product.subcategories?.length">expand_more</mat-icon>
-          {{ product?.name }} ({{ product?.subcategories?.length || 0 }}) [{{ product?.categories?.length || 0 }}]
-        </ng-container>
-      </button>
-    </div>
-  </mat-action-list>
+  <mat-list class="IngredientsSearchSection-content">
+    <ng-container *ngFor="let productId of (currProducts$ | async)">
+      <ng-container *ngIf="getProduct(productId) as product">
+        <mat-list-item [style.border-color]="getProductColor(product.necessity)">
+          <!-- <ng-container *ngIf="getProduct(productId) as product"> -->
+            <button *ngIf="product.subcategories?.length" mat-icon-button (click)="changeRootProduct(productId)">
+              <mat-icon >expand_more</mat-icon>
+            </button>
+            <span>{{ product?.name }}
+              ({{ product?.subcategories?.length || 0 }})
+              [{{ product?.categories?.length || 0 }}]
+              {{ product?.necessity }}</span>
+            <mat-radio-group class="ml-8" aria-label="Select necessity"
+              (change)="onChangeNecessity(productId, $event)" [ngModel]="product.necessity?.toString()">
+              <mat-radio-button *ngIf="!byAvailable" class="red" value="2"></mat-radio-button>
+              <mat-radio-button class="blue" value="1"></mat-radio-button>
+              <mat-radio-button *ngIf="byAvailable" class="orange" value="3"></mat-radio-button>
+              <mat-radio-button class="green" value="4"></mat-radio-button>
+            </mat-radio-group>
+          <!-- </ng-container> -->
+        </mat-list-item >
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!(currProducts$ | async)?.length">
+      Нема продуктів
+    </ng-container>
+  </mat-list>
 </div>
 
 <!-- <div *ngFor="let icon of icons">

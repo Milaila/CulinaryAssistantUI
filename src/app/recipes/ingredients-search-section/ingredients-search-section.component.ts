@@ -4,7 +4,8 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { IProductModel } from 'src/app/models/server/product-model';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { BehaviorSubject, of, Observable } from 'rxjs';
-import { IFilterProduct, IFilterGeneralProduct } from 'src/app/models/server/filter-models';
+import { IFilterProduct, IFilterGeneralProduct, ProductNecessity } from 'src/app/models/server/filter-models';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-ingredients-search-section',
@@ -40,8 +41,8 @@ export class IngredientsSearchSectionComponent implements OnInit {
   constructor(private filterService: FiltersService) { }
 
   ngOnInit(): void {
-    this.currProducts$ = this.filterService.currProductsChanged;
-    this.rootProduct$ = this.filterService.currRootProductChanged;
+    this.currProducts$ = this.filterService.currProductsChanged$;
+    this.rootProduct$ = this.filterService.currRootProductChanged$;
   }
 
   changeRootProduct(id: number) {
@@ -54,6 +55,40 @@ export class IngredientsSearchSectionComponent implements OnInit {
 
   getProduct(id: number): ExpandedProduct {
     return this.filterService.getProduct(id);
+  }
+
+  searchByName(name: string) {
+    console.log(name);
+    this.filterService.setCurrProductsByName(name);
+  }
+
+  onChangeNecessity(productId: number, mrChange: MatRadioChange) {
+    this.filterService.selectProduct(productId, mrChange?.value);
+  }
+
+  log(event, object) {
+    console.log(event, object);
+  }
+
+  get byAvailable(): boolean {
+    return this.filterService.currFilter.byAvailableProducts;
+  }
+
+  getProductColor(necessity: number): string {
+    // console.log(necessity);
+    // const necessity = this.getProduct(productId).necessity;
+    let color;
+    switch (+necessity){
+      case ProductNecessity.Available: color = '#ffff88'; break;
+      case ProductNecessity.BecomeAvailable: color = '#fafae8'; break;
+      case ProductNecessity.BecomeForbidden: color = '#ffcccc'; break;
+      case ProductNecessity.BecomeRequired: color = '#d4f8cd'; break;
+      case ProductNecessity.Forbidden: color = '#f58585'; break;
+      case ProductNecessity.Required: color = '#acfa9d'; break;
+      default: color = '#ffffff';
+    }
+    // console.log(color);
+    return color;
   }
 }
 

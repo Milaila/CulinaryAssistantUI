@@ -80,3 +80,76 @@ $primary: mat-palette($mat-cyan,800);
 mat-toolbar {
   width: 100%;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mat-radio-button {
+  .mat-radio-container {
+    height: 16px;
+    width: 16px;
+  }
+  .mat-radio-outer-circle{
+    height: 16px;
+    width: 16px;
+  }
+  .mat-radio-inner-circle{
+    height: 16px;
+    width: 16px;
+  }
+  .mat-radio-button .mat-radio-ripple{
+    height: 32px; //double of your required circle radius
+    width: 32px;  //double of your required circle radius
+    left: calc(50% - 16px); //'10px'-same as your required circle radius
+    top: calc(50% - 16px); //'10px'-same as your required circle radius
+  }
+  &.red {
+    border-color: #bb2323 !important;
+    .mat-radio-outer-circle {
+      border-color: #bb2323 !important;
+    }
+    .mat-radio-inner-circle {
+      background-color: #bb2323 !important;
+    }
+  }
+  &.green {
+    border-color: #189c07 !important;
+    .mat-radio-outer-circle {
+      border-color: #189c07 !important;
+    }
+    .mat-radio-inner-circle {
+      background-color: #189c07 !important;
+    }
+  }
+  &.orange {
+    border-color: #f3b407 !important;
+    .mat-radio-outer-circle {
+      border-color: #f3b407 !important;
+    }
+    .mat-radio-inner-circle {
+      background-color: #f3b407 !important;
+    }
+  }
+  &.blue {
+    border-color: #294f96 !important;
+    .mat-radio-outer-circle {
+      border-color: #294f96 !important;
+    }
+    .mat-radio-inner-circle {
+      background-color: #294f96 !important;
+    }
+  }
+}
