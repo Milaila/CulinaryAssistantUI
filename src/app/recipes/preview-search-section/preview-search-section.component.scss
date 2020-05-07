@@ -1,0 +1,18 @@
+.SearchPreview {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .ProductsContainer {
+    // width: 40%;
+    min-width: 250px;
+    word-wrap: break-word;
+    max-height: 500px;
+    overflow: auto;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    &:not(:last-of-type) {
+      margin-right: 16px;
+    }
+  }
+}

@@ -153,3 +153,11 @@ mat-radio-button {
     }
   }
 }
+
+mat-form-field[appearance="outline"] {
+  margin-bottom: -16px;
+  margin-top: 4px;
+  input {
+    line-height: 16px;
+  }
+}

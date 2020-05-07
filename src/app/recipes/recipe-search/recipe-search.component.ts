@@ -17,8 +17,6 @@ export class RecipeSearchComponent implements OnInit {
     private serverService: ServerHttpService,
   ) { }
 
-  filterActions: IActionItem[] = [{label: 'Click me' }];
-
   ngOnInit(): void {
     this.filterService.updateProducts();
   }

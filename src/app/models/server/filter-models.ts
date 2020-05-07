@@ -51,7 +51,7 @@ export enum ProductNecessity {
   Forbidden = 2,
   Available = 3,
   Required = 4,
-  BecomeRequired,
-  BecomeForbidden,
-  BecomeAvailable
+  // BecomeRequired,
+  // BecomeForbidden,
+  // BecomeAvailable
 }

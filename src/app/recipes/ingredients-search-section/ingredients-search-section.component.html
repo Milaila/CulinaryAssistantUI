@@ -10,8 +10,9 @@
 <!-- <button mat-icon-button><mat-icon class="mat-icon-rtl-mirror">done</mat-icon></button>
 <button mat-icon-button><mat-icon>done</mat-icon></button> -->
 <div class="IngredientsSearchSection">
-  <mat-form-field appearance="outline" class="">
-    <input matInput name="product-search" placeholder="Пошук за назвою..."
+  <mat-form-field appearance="outline">
+    <mat-label>Пошук за назвою</mat-label>
+    <input matInput name="product-search"
       #searchProducts (input)="searchByName(searchProducts.value)">
   </mat-form-field>
   <mat-divider></mat-divider>

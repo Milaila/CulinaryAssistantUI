@@ -63,7 +63,7 @@ export class IngredientsSearchSectionComponent implements OnInit {
   }
 
   onChangeNecessity(productId: number, mrChange: MatRadioChange) {
-    this.filterService.selectProduct(productId, mrChange?.value);
+    this.filterService.selectProduct(productId, +mrChange?.value);
   }
 
   log(event, object) {
@@ -80,9 +80,9 @@ export class IngredientsSearchSectionComponent implements OnInit {
     let color;
     switch (+necessity){
       case ProductNecessity.Available: color = '#ffff88'; break;
-      case ProductNecessity.BecomeAvailable: color = '#fafae8'; break;
-      case ProductNecessity.BecomeForbidden: color = '#ffcccc'; break;
-      case ProductNecessity.BecomeRequired: color = '#d4f8cd'; break;
+      // case ProductNecessity.BecomeAvailable: color = '#fafae8'; break;
+      // case ProductNecessity.BecomeForbidden: color = '#ffcccc'; break;
+      // case ProductNecessity.BecomeRequired: color = '#d4f8cd'; break;
       case ProductNecessity.Forbidden: color = '#f58585'; break;
       case ProductNecessity.Required: color = '#acfa9d'; break;
       default: color = '#ffffff';

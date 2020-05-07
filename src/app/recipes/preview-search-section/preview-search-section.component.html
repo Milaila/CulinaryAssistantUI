@@ -1,9 +1,32 @@
 <div class="SearchPreview">
-  <div class="ProductsContainer">
-    <mat-selection-list #ings>
-      <mat-list-option *ngFor="let ingredient of ingredients">
-        {{ingredient.name}}
+  <mat-card class="ProductsContainer" *ngIf="forbiddenProducts">
+    <mat-card-subtitle>Заборонені продукти</mat-card-subtitle>
+    <mat-divider></mat-divider>
+    <mat-selection-list #forbidden>
+      <mat-list-option *ngFor="let product of forbiddenProducts">
+        {{ product.name }}
       </mat-list-option>
     </mat-selection-list>
-  </div>
+  </mat-card>
+  <mat-card class="ProductsContainer"*ngIf="availableProducts">
+    <mat-card-subtitle>Наявні продукти</mat-card-subtitle>
+    <mat-divider></mat-divider>
+    <mat-selection-list #available>
+      <mat-list-option *ngFor="let product of availableProducts">
+        {{ product.name }}
+      </mat-list-option>
+      <mat-list-option *ngFor="let product of requiredProducts" disabled>
+        {{ product.name }}
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-card>
+  <mat-card class="ProductsContainer" *ngIf="requiredProducts">
+    <mat-card-subtitle>Обов'язкові продукти</mat-card-subtitle>
+    <mat-divider></mat-divider>
+    <mat-selection-list #required>
+      <mat-list-option *ngFor="let product of requiredProducts">
+        {{ product.name }}
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-card>
 </div>

@@ -159,7 +159,7 @@ export class FiltersService {
   }
 
   updateProductsNecessity(ingredients: IFilterIngredientModel[], byAvailableProducts: boolean) {
-    this.clearProductsNecessity(byAvailableProducts, false);
+    this.clearProductsNecessity(false);
     ingredients?.filter(x => x?.productId).forEach(ingredient => {
       const necessity = ingredient.necessity
         ? ProductNecessity.Required
@@ -171,7 +171,7 @@ export class FiltersService {
     this.onProductsUpdated$.next(true);
   }
 
-  clearProductsNecessity(byAvailableProducts: boolean, needUpdate = true) {
+  clearProductsNecessity(needUpdate = true) {
     // const necessity = byAvailableProducts ? ProductNecessity.Forbidden : ProductNecessity.Available;
     this.products?.forEach(product => product.necessity = ProductNecessity.Undefined);
     if (needUpdate) {
@@ -180,18 +180,15 @@ export class FiltersService {
   }
 
   setByAvailableProducts(byAvailableProducts: boolean) {
-    if (this.currFilter.byAvailableProducts === byAvailableProducts) {
-      return;
-    }
+    // if (this.currFilter.byAvailableProducts === byAvailableProducts) {
+    //   return;
+    // }
     this.currFilter.byAvailableProducts = byAvailableProducts;
-    this.products?.forEach(product => product.necessity = ProductNecessity.Undefined);
-    if (byAvailableProducts) {
-      this.onProductsUpdated$.next(true);
-    }
+    this.clearProductsNecessity();
+      // TO DO: functionality reverting byAvailableProducts
   }
-  // TO DO: functionality reverting byAvailableProducts
 
-  public getProductsByNecessity(necessity: ProductNecessity): IFilterProduct[] {
+  getProductsByNecessity(necessity: ProductNecessity): IFilterProduct[] {
     return [...this.products.values()].filter(x => x.necessity === necessity);
   }
 
