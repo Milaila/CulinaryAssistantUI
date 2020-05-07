@@ -3,12 +3,8 @@
     {{ingredient.name}}
   </mat-list-option>
 </mat-selection-list>
+<p>Options selected: {{ings.selectedOptions.selected.length}}</p> -->
 
-<p>
-  Options selected: {{ings.selectedOptions.selected.length}}
-</p> -->
-<!-- <button mat-icon-button><mat-icon class="mat-icon-rtl-mirror">done</mat-icon></button>
-<button mat-icon-button><mat-icon>done</mat-icon></button> -->
 <div class="IngredientsSearchSection">
   <mat-form-field appearance="outline">
     <mat-label>Пошук за назвою</mat-label>
@@ -33,11 +29,53 @@
     </ng-template>
     <mat-divider class="dotted"></mat-divider>
   </div>
-  <mat-list class="IngredientsSearchSection-content">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 IngredientsSearchSection-content">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="calories">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Cals (g) </th>
+      <td mat-cell *matCellDef="let element"> {{element.calories}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fats">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fats </th>
+      <td mat-cell *matCellDef="let element"> {{element.fats}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+      <td mat-cell *matCellDef="let element">
+        <button *ngIf="element.subcategories?.length" mat-icon-button (click)="changeRootProduct(element.id)">
+          <mat-icon >expand_more</mat-icon>
+        </button>
+        <mat-radio-group class="ml-8" aria-label="Select necessity"
+          (change)="onChangeNecessity(element.id, $event)" [ngModel]="element.necessity?.toString()">
+          <mat-radio-button *ngIf="!byAvailable" class="red" value="2"></mat-radio-button>
+          <mat-radio-button class="blue" value="1"></mat-radio-button>
+          <mat-radio-button *ngIf="byAvailable" class="orange" value="3"></mat-radio-button>
+          <mat-radio-button class="green" value="4"></mat-radio-button>
+        </mat-radio-group>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <!-- <mat-list class="IngredientsSearchSection-content">
     <ng-container *ngFor="let productId of (currProducts$ | async)">
       <ng-container *ngIf="getProduct(productId) as product">
         <mat-list-item [style.border-color]="getProductColor(product.necessity)">
-          <!-- <ng-container *ngIf="getProduct(productId) as product"> -->
             <button *ngIf="product.subcategories?.length" mat-icon-button (click)="changeRootProduct(productId)">
               <mat-icon >expand_more</mat-icon>
             </button>
@@ -52,14 +90,13 @@
               <mat-radio-button *ngIf="byAvailable" class="orange" value="3"></mat-radio-button>
               <mat-radio-button class="green" value="4"></mat-radio-button>
             </mat-radio-group>
-          <!-- </ng-container> -->
         </mat-list-item >
       </ng-container>
     </ng-container>
     <ng-container *ngIf="!(currProducts$ | async)?.length">
       Нема продуктів
     </ng-container>
-  </mat-list>
+  </mat-list> -->
 </div>
 
 <!-- <div *ngFor="let icon of icons">

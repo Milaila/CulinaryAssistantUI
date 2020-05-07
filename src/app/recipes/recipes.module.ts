@@ -30,6 +30,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTreeModule } from '@angular/material/tree';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FiltersSearchSectionComponent } from './filters-search-section/filters-search-section.component';
 import { IngredientsSearchSectionComponent } from './ingredients-search-section/ingredients-search-section.component';
@@ -66,6 +68,8 @@ import { ExpansionPanelComponent } from '../components/expansion-panel/expansion
     MatCardModule,
     FormsModule,
     MatIconModule,
+    MatTableModule,
+    MatSortModule,
     MatSidenavModule,
     MatLineModule,
     MatOptionModule,

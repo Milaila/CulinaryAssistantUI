@@ -16,7 +16,7 @@ import { IRecipeModel, IRecipeGeneralModel } from '../models/server/recipe-model
 })
 export class FiltersService {
   private filters: Map<number, IFilter> = new Map();
-  private products: Map<number, IFilterProduct> = new Map();
+  products: Map<number, IFilterProduct> = new Map();
   private currRootProductFull: IProductModel;
   private currRootProductId: number;
   private breadCrumbs: number[] = [];
