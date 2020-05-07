@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { IFilterModel, IFilter, IFilterIngredientModel, IFilterTagModel, IFilterGeneralModel, IFilterProduct, ProductNecessity, IFilterGeneralProduct } from '../models/server/filter-models';
 import { AuthService } from './auth.service';
 import { ServerHttpService } from './server-http.sevice';
-import { Subscription, BehaviorSubject, Subject } from 'rxjs';
+import { Subscription, BehaviorSubject, Subject, Observable } from 'rxjs';
 import { take, catchError, map } from 'rxjs/operators';
 import { IProductGeneralModel, IProductModel } from '../models/server/product-model';
 import { isNumber } from 'util';
 import { MatRadioChange } from '@angular/material/radio';
 import { EventEmitter } from 'protractor';
+import { IRecipeModel, IRecipeGeneralModel } from '../models/server/recipe-models';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,9 @@ export class FiltersService {
   currFilter: IFilterModel = {
     filterTitle: '',
     isDefault: false,
-    id: 0
+    id: 0,
+    onlyProducts: false,
+    byAvailableProducts: false,
   };
 
   get hasBreadCrumbs(): boolean {
@@ -198,6 +201,58 @@ export class FiltersService {
 
   getProduct(id: number): IFilterProduct {
     return this.products.get(id);
+  }
+
+  getRecipesByCurrentFilter(): Observable<IRecipeGeneralModel[]> {
+    return this.server.getRecipesByFilter(this.getCurrentFilterModel());
+  }
+
+  saveCurrFilter(filterName: string) {
+    const filterModel = this.getCurrentFilterModel(filterName);
+    return this.server.createFilter(filterModel).pipe(take(1))
+      .subscribe(
+        id => {
+          this.filters.set(id, { ...filterModel, loadDetails: true });
+          this.onChangeFilters();
+        },
+        _ => alert('Error during saving filter')
+      );
+  }
+
+  private getCurrentFilterModel(filterTitle: string = ''): IFilterModel {
+    const products = [...this.products.values()];
+    const ingredients: IFilterIngredientModel[] = [];
+    products.forEach(product => {
+      if (product.necessity === ProductNecessity.Required) {
+        ingredients.push({
+          id: 0,
+          productId: product.id,
+          necessity: true
+        });
+      } else if (product.necessity === ProductNecessity.Available || product.necessity === ProductNecessity.Forbidden) {
+        ingredients.push({
+          id: 0,
+          productId: product.id,
+          necessity: false
+        });
+      }
+    });
+    return {
+      id: 0,
+      recipeTitle: this.currFilter.recipeTitle,
+      onlyProducts: this.currFilter.onlyProducts,
+      byAvailableProducts: this.currFilter.byAvailableProducts,
+      authorId: this.currFilter.authorId,
+      minDuration: this.currFilter.minDuration,
+      maxDuration: this.currFilter.maxDuration,
+      minCalories: this.currFilter.minCalories,
+      maxCalories: this.currFilter.maxCalories,
+      ingredients,
+      tags: this.currFilter.tags, // TO DO: change tags
+      filterTitle,
+      description: this.currFilter.description,
+      isDefault: false,
+    };
   }
 }
 

@@ -3,4 +3,12 @@
     <h5>{{ filter.filterTitle }}</h5>
     <button mat-stroked-button color="primary" (click)="setFilter(filter.id)">Використати</button>
   </mat-card>
+  <div *ngIf="auth.isAuthorized">
+    <mat-form-field appearance="outline" >
+      <mat-label>Назва фільтру</mat-label>
+      <input matInput name="filters-search" #filterName>
+    </mat-form-field>
+    <button mat-stroked-button class="ml-8" color="primary" (click)="saveFilter(filterName.value)">
+      Зберегти поточний фільтр</button>
+  </div>
 </div>

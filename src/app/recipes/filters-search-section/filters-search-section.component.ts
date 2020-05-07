@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FiltersService } from 'src/app/services/filters.service';
 import { IFilterGeneralModel, IFilterGeneralProduct } from 'src/app/models/server/filter-models';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-filters-search-section',
@@ -10,7 +11,10 @@ import { IFilterGeneralModel, IFilterGeneralProduct } from 'src/app/models/serve
 export class FiltersSearchSectionComponent implements OnInit {
 
   filters: IFilterGeneralModel[];
-  constructor(public filterService: FiltersService) { }
+  constructor(
+    public filterService: FiltersService,
+    public auth: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.filterService.updateFilters();
@@ -20,5 +24,9 @@ export class FiltersSearchSectionComponent implements OnInit {
   setFilter(id: number) {
     console.log('Set filter ' + id);
     this.filterService.displayFilter(id);
+  }
+
+  saveFilter(title: string) {
+    this.filterService.saveCurrFilter(title);
   }
 }
