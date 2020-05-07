@@ -4,14 +4,19 @@ import { IImageModel } from './image-model';
 export interface IProductModel extends IProductRelations, IProductGeneralModel, IProductDetails {
 }
 
-export interface IProduct extends IProductGeneralModel {
-  details?: IProductDetails;
-  relations?: IProductRelations;
+// export interface IProduct extends IProductGeneralModel {
+//   details?: IProductDetails;
+//   relations?: IProductRelations;
+// }
+
+export interface IProduct extends IProductModel {
+  loadDetails?: boolean;
+  loadRelations?: boolean;
 }
 
 export interface IProductRelations {
-  subcategories?: number[] | IProductRelationModel[];
-  categories?: number[] | IProductRelationModel[];
+  subcategories?: number[]; //| IProductRelationModel[]; //TO DO: change it!
+  categories?: number[]; //| IProductRelationModel[];
 }
 
 export interface IProductGeneralModel extends IModel {

@@ -1,1 +1,48 @@
-<p>ingredients-search-section works!</p>
+<!-- <mat-selection-list #ings>
+  <mat-list-option *ngFor="let ingredient of ingredients">
+    {{ingredient.name}}
+  </mat-list-option>
+</mat-selection-list>
+
+<p>
+  Options selected: {{ings.selectedOptions.selected.length}}
+</p> -->
+<!-- <button mat-icon-button><mat-icon class="mat-icon-rtl-mirror">done</mat-icon></button>
+<button mat-icon-button><mat-icon>done</mat-icon></button> -->
+<div class="IngredientsSearchSection">
+  <div class="IngredientsSearchSection-header" *ngIf="rootProduct$ | async as rootProduct">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon class="mat-icon-rtl-mirror">keyboard_return</mat-icon>
+    </button>
+    {{ getProduct(rootProduct)?.name }}
+    <mat-divider class="dotted"></mat-divider>
+  </div>
+  <mat-action-list>
+    <div *ngFor="let product of (currProducts$ | async)">
+      <button mat-list-item (click)="changeRootProduct(product)">
+        <ng-container *ngIf="getProduct(product) as product">
+          <mat-icon *ngIf="product.subcategories?.length">expand_more</mat-icon>
+          {{ product?.name }} ({{ product?.subcategories?.length || 0 }}) [{{ product?.categories?.length || 0 }}]
+        </ng-container>
+      </button>
+    </div>
+  </mat-action-list>
+</div>
+
+<!-- <div *ngFor="let icon of icons">
+  <button mat-icon-button (click)="isExpanded = !isExpanded">
+    <mat-icon class="" color="primary">
+      {{isExpanded ? icon.start : icon.end}}
+    </mat-icon>
+  </button>
+  <button mat-icon-button (click)="isExpanded = !isExpanded">
+    <mat-icon class="" color="primary">
+      {{!isExpanded ? icon.start : icon.end}}
+    </mat-icon>
+  </button>
+  <mat-divider></mat-divider>
+</div>
+<mat-radio-group aria-label="Select an option">
+  <mat-radio-button value="1">Option 1</mat-radio-button>
+  <mat-radio-button value="2">Option 2</mat-radio-button>
+</mat-radio-group> -->

@@ -1,10 +1,6 @@
-
-      <mat-form-field>
-        <mat-label>First name</mat-label>
-        <input matInput>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Age</mat-label>
-        <input matInput type="number" min="1">
-      </mat-form-field>
+<div class="FiltersSearchSection">
+  <mat-card *ngFor="let filter of filters">
+    <h5>{{ filter.filterTitle }}</h5>
+    <button mat-stroked-button color="primary" (click)="setFilter(filter.id)">Використати</button>
+  </mat-card>
+</div>

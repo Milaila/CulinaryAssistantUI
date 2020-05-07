@@ -26,6 +26,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FiltersSearchSectionComponent } from './filters-search-section/filters-search-section.component';
 import { IngredientsSearchSectionComponent } from './ingredients-search-section/ingredients-search-section.component';
@@ -54,7 +58,9 @@ import { ExpansionPanelComponent } from '../components/expansion-panel/expansion
     // BrowserModule,
     CommonModule,
     ReactiveFormsModule,
+    MatListModule,
     MatFormFieldModule,
+    MatGridListModule,
     MatSelectModule,
     MatCheckboxModule,
     MatCardModule,
@@ -63,7 +69,9 @@ import { ExpansionPanelComponent } from '../components/expansion-panel/expansion
     MatSidenavModule,
     MatLineModule,
     MatOptionModule,
+    MatRadioModule,
     MatCommonModule,
+    MatTreeModule,
     MatDividerModule,
     MatToolbarModule,
     MatMenuModule,

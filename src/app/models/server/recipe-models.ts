@@ -5,8 +5,9 @@ import { IImageModel } from './image-model';
 export interface IRecipeModel extends IRecipeGeneralModel, IRecipeDetails {
 }
 
-export interface IRecipe extends IRecipeGeneralModel {
-  details?: IRecipeDetails;
+export interface IRecipe extends IRecipeModel {
+  loadDetails?: boolean;
+  // details?: IRecipeDetails;
 }
 
 export interface IRecipeDetails {

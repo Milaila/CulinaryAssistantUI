@@ -4,8 +4,12 @@ import { IImageModel } from './image-model';
 export interface IProfileModel extends IProfileGeneralModel, IProfileDetails {
 }
 
-export interface IProfile extends IProfileGeneralModel {
-  details?: IProfileDetails;
+// export interface IProfile extends IProfileGeneralModel {
+//   details?: IProfileDetails;
+// }
+
+export interface IProfile extends IProfileModel {
+  loadDetails?: boolean;
 }
 
 export interface IProfileGeneralModel extends IModel {

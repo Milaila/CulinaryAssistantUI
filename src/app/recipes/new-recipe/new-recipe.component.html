@@ -2,33 +2,33 @@
   <form>
     <mat-card>
       <mat-label>Завантажити існуючий рецепт</mat-label>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Номер рецепту</mat-label>
         <input type="number" matInput #recipeId>
       </mat-form-field>
       <button mat-raised-button color="primary" (click)="getRecipe(recipeId.value)">Завантажити</button>
     </mat-card>
-    <mat-form-field class="">
+    <mat-form-field appearance="outline" class="">
       <mat-label>Назва рецепту</mat-label>
       <input matInput name="recipeTitle"
         [(ngModel)]="currRecipe.title">
     </mat-form-field>
-    <mat-form-field class="">
+    <mat-form-field appearance="outline" class="">
       <mat-label>Опис рецепту</mat-label>
       <textarea matInput name="recipeDescription"
         [(ngModel)]="currRecipe.description"></textarea>
     </mat-form-field>
-    <mat-form-field class="">
+    <mat-form-field appearance="outline" class="">
       <mat-label>Вміст калорій (на 100 гр)</mat-label>
       <input matInput type="number" name="calories"
         [(ngModel)]="currRecipe.calories">
     </mat-form-field>
-    <mat-form-field class="">
+    <mat-form-field appearance="outline" class="">
       <mat-label>Кількість порцій</mat-label>
       <input matInput type="number" name="portions"
         [(ngModel)]="currRecipe.portions">
     </mat-form-field>
-    <mat-form-field class="">
+    <mat-form-field appearance="outline" class="">
       <mat-label>Час приготування (в хвилинах)</mat-label>
       <input matInput type="number" name="duration"
         [(ngModel)]="currRecipe.duration">
@@ -45,19 +45,19 @@
     <mat-card *ngFor="let ingredient of currRecipe.ingredients; let index = index">
       <mat-card-title>Інгрідієнт</mat-card-title>
       <mat-card-subtitle *ngIf="ingredient?.product?.name as productName">{{ productName }}</mat-card-subtitle>
-      <mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Продукт</mat-label>
         <mat-select name="productSelect-{{index}}" [(ngModel)]="ingredient.productId" placeholder="Оберіть продукт">
           <!-- <input placeholder="Оберіть продукт" class="matSearch" matInput> -->
           <mat-option *ngFor="let product of products" [value]="product.id">{{ product.name }} [{{product.id}}]</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="">
+      <mat-form-field appearance="outline" class="">
         <mat-label>Примітка</mat-label>
         <textarea matInput name='ingredientName-{{index}}'
           [(ngModel)]="ingredient.note"></textarea>
       </mat-form-field>
-      <mat-form-field class="">
+      <mat-form-field appearance="outline" class="">
         <mat-label>Вага (в грамах)</mat-label>
         <input matInput type="number" name="weight-{{index}}"
           [(ngModel)]="ingredient.weight">
@@ -69,7 +69,7 @@
 
     <mat-card *ngFor="let tag of currRecipe.tags; let index = index">
       <mat-card-title>Тег</mat-card-title>
-      <mat-form-field class="">
+      <mat-form-field appearance="outline" class="">
         <mat-label>Назва</mat-label>
         <input matInput name="tagName-{{index}}"
           [(ngModel)]="tag.tag">
@@ -80,17 +80,17 @@
 
     <mat-card *ngFor="let step of currRecipe.steps; let index = index">
       <mat-card-title>Крок рецепту</mat-card-title>
-      <!-- <mat-form-field class="">
+      <!-- <mat-form-field appearance="outline" class="">
         <mat-label>Номер</mat-label>
         <input matInput name="stepOrderNumber-{{index}}" type="number"
           [(ngModel)]="step.orderNumber">
       </mat-form-field> -->
-      <mat-form-field class="">
+      <mat-form-field appearance="outline" class="">
         <mat-label>Назва</mat-label>
         <input matInput name="stepTitle-{{index}}"
           [(ngModel)]="step.title">
       </mat-form-field>
-      <mat-form-field class="">
+      <mat-form-field appearance="outline" class="">
         <mat-label>Опис</mat-label>
         <textarea matInput name="stepDescription-{{index}}"
           [(ngModel)]="step.description"></textarea>

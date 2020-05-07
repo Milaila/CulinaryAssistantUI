@@ -1,18 +1,18 @@
 import { IModel } from './base-model';
-import { IProductModel } from './product-model';
+import { IProductModel, IProduct, IProductGeneralModel, IProductDetails } from './product-model';
 import { IImageModel } from './image-model';
 
 export interface IFilterModel extends IFilterDetails, IFilterGeneralModel {
 }
 
-export interface IFilter extends IFilterGeneralModel {
-  details?: IFilterDetails;
+export interface IFilter extends IFilterModel {
+  loadDetails?: boolean;
 }
 
 export interface IFilterDetails {
-  recipeTitle: string;
-  onlyProducts: boolean;
-  byAvailableProducts: boolean;
+  recipeTitle?: string;
+  onlyProducts?: boolean; // REQUIRED!
+  byAvailableProducts?: boolean; // REQUIRED!
   authorId?: number;
   minDuration?: number;
   maxDuration?: number;
@@ -36,4 +36,20 @@ export interface IFilterTagModel extends IModel {
 export interface IFilterIngredientModel extends IModel {
   necessity: boolean;
   productId: number;
+}
+
+export interface IFilterProduct extends IProductModel {
+  necessity: ProductNecessity;
+}
+
+export interface IFilterGeneralProduct extends IProductGeneralModel {
+  necessity: ProductNecessity;
+}
+
+export enum ProductNecessity {
+  Available,
+  Required,
+  Forbidden,
+  BecomeRequired,
+  BecomeForbidden
 }
