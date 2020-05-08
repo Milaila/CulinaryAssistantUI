@@ -1,0 +1,19 @@
+.TagsSection {
+  mat-form-field {
+    width: 100%;
+    input {
+      line-height: 16px;
+    }
+    &.required {
+      margin-top: 16px;
+      mat-chip {
+        background-color: #d8ffd5;
+      }
+    }
+    &.forbidden {
+      mat-chip {
+        background-color: #ffd5d5
+      }
+    }
+  }
+}

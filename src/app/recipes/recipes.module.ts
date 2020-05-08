@@ -11,34 +11,15 @@ import { ServerHttpService } from '../services/server-http.sevice';
 import { AuthService } from '../services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '../auth/auth.interceptor';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatLineModule, MatOptionModule, MatCommonModule } from '@angular/material/core';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatListModule } from '@angular/material/list';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FiltersSearchSectionComponent } from './filters-search-section/filters-search-section.component';
 import { IngredientsSearchSectionComponent } from './ingredients-search-section/ingredients-search-section.component';
 import { TagsSearchSectionComponent } from './tags-search-section/tags-search-section.component';
 import { LimitsSearchSectionComponent } from './limits-search-section/limits-search-section.component';
 import { PreviewSearchSectionComponent } from './preview-search-section/preview-search-section.component';
 import { ExpansionPanelComponent } from '../components/expansion-panel/expansion-panel.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MaterialModule } from '../shared/material.module';
 
 
 @NgModule({
@@ -60,30 +41,9 @@ import { ExpansionPanelComponent } from '../components/expansion-panel/expansion
     // BrowserModule,
     CommonModule,
     ReactiveFormsModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatGridListModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatCardModule,
     FormsModule,
-    MatIconModule,
-    MatTableModule,
-    MatSortModule,
-    MatSidenavModule,
-    MatLineModule,
-    MatOptionModule,
-    MatRadioModule,
-    MatCommonModule,
-    MatTreeModule,
-    MatDividerModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatButtonModule,
+    MaterialModule,
     HttpClientModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatFormFieldModule,
     // BrowserAnimationsModule,
   ],
   // providers: [

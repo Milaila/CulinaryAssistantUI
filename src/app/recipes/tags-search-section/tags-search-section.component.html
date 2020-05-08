@@ -1,1 +1,42 @@
-<p>tags-search-section works!</p>
+<div class="TagsSection">
+  <mat-form-field class="required">
+    <mat-chip-list #requiredList>
+      <mat-chip *ngFor="let tag of requiredTags" selectable="true" removable="true" (removed)="removeTag(tag)">
+        {{ tag }}<mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Обов'язкові тегі"
+        #requiredTagInput
+        [formControl]="requiredTagsCtrl"
+        [matAutocomplete]="autoRequired"
+        [matChipInputFor]="requiredList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="addRequiredTag($event)">
+    </mat-chip-list>
+    <mat-autocomplete #autoRequired="matAutocomplete" (optionSelected)="selectRequired($event)">
+      <mat-option *ngFor="let tag of filteredRequiredTags$ | async" [value]="tag">
+        {{ tag?.toLocaleLowerCase() }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field class="forbidden">
+    <mat-chip-list #forbiddenList>
+      <mat-chip *ngFor="let tag of forbiddenTags" selectable="true" removable="true" (removed)="removeTag(tag)">
+        {{ tag }}<mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        placeholder="Заборонені тегі"
+        #forbiddenTagInput
+        [formControl]="forbiddenTagsCtrl"
+        [matAutocomplete]="autoForbidden"
+        [matChipInputFor]="forbiddenList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="addForbiddenTag($event)">
+    </mat-chip-list>
+    <mat-autocomplete #autoForbidden="matAutocomplete" (optionSelected)="selectForbidden($event)">
+      <mat-option *ngFor="let tag of filteredForbiddenTags$ | async" [value]="tag">
+      {{ tag?.toLocaleLowerCase() }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

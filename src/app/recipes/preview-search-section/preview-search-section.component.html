@@ -1,32 +1,46 @@
 <div class="SearchPreview">
-  <mat-card class="ProductsContainer" *ngIf="forbiddenProducts">
-    <mat-card-subtitle>Заборонені продукти</mat-card-subtitle>
-    <mat-divider></mat-divider>
-    <mat-selection-list #forbidden>
-      <mat-list-option *ngFor="let product of forbiddenProducts">
-        {{ product.name }}
-      </mat-list-option>
-    </mat-selection-list>
-  </mat-card>
-  <mat-card class="ProductsContainer"*ngIf="availableProducts">
-    <mat-card-subtitle>Наявні продукти</mat-card-subtitle>
-    <mat-divider></mat-divider>
-    <mat-selection-list #available>
-      <mat-list-option *ngFor="let product of availableProducts">
-        {{ product.name }}
-      </mat-list-option>
-      <mat-list-option *ngFor="let product of requiredProducts" disabled>
-        {{ product.name }}
-      </mat-list-option>
-    </mat-selection-list>
-  </mat-card>
-  <mat-card class="ProductsContainer" *ngIf="requiredProducts">
-    <mat-card-subtitle>Обов'язкові продукти</mat-card-subtitle>
-    <mat-divider></mat-divider>
-    <mat-selection-list #required>
-      <mat-list-option *ngFor="let product of requiredProducts">
-        {{ product.name }}
-      </mat-list-option>
-    </mat-selection-list>
-  </mat-card>
+  <div class="SearchPreview-products">
+    <mat-card class="ProductsContainer" *ngIf="forbiddenProducts">
+      <mat-card-subtitle>Заборонені продукти</mat-card-subtitle>
+      <mat-divider></mat-divider>
+      <mat-selection-list #forbidden>
+        <mat-list-option *ngFor="let product of forbiddenProducts">
+          {{ product.name }}
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card>
+    <mat-card class="ProductsContainer"*ngIf="availableProducts">
+      <mat-card-subtitle>Наявні продукти</mat-card-subtitle>
+      <mat-divider></mat-divider>
+      <mat-selection-list #available>
+        <mat-list-option *ngFor="let product of availableProducts">
+          {{ product.name }}
+        </mat-list-option>
+        <mat-list-option *ngFor="let product of requiredProducts" disabled>
+          {{ product.name }}
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card>
+    <mat-card class="ProductsContainer" *ngIf="requiredProducts">
+      <mat-card-subtitle>Обов'язкові продукти</mat-card-subtitle>
+      <mat-divider></mat-divider>
+      <mat-selection-list #required>
+        <mat-list-option *ngFor="let product of requiredProducts">
+          {{ product.name }}
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-card>
+  </div>
+  <div class="SearchPreview-tags">
+    <mat-chip-list class="required">
+      <mat-chip *ngFor="let tag of requiredTags" selectable="true" removable="true" (removed)="removeTag(tag)">
+        {{ tag }} <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+    <mat-chip-list class="forbidden">
+      <mat-chip *ngFor="let tag of forbiddenTags" removable="true" (removed)="removeTag(tag)">
+        {{ tag }} <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
 </div>

@@ -9,24 +9,27 @@ import { IProductGeneralModel, IProductModel } from '../models/server/product-mo
 import { isNumber } from 'util';
 import { MatRadioChange } from '@angular/material/radio';
 import { EventEmitter } from 'protractor';
-import { IRecipeModel, IRecipeGeneralModel } from '../models/server/recipe-models';
+import { IRecipeModel, IRecipeGeneralModel, IRecipeTagModel } from '../models/server/recipe-models';
+import { TagsSearchSectionComponent } from '../recipes/tags-search-section/tags-search-section.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FiltersService {
-  private filters: Map<number, IFilter> = new Map();
+  private filters: Map<number, IFilterModel> = new Map();
   products: Map<number, IFilterProduct> = new Map();
   private currRootProductFull: IProductModel;
   private currRootProductId: number;
   private breadCrumbs: number[] = [];
 
-  filtersChanged$: BehaviorSubject<IFilterGeneralModel[]> = new BehaviorSubject<IFilterGeneralModel[]>(null);
+  readonly filtersChanged$: BehaviorSubject<IFilterGeneralModel[]> = new BehaviorSubject<IFilterGeneralModel[]>(null);
   // productsChanged: BehaviorSubject<IFilterGeneralProduct[]> = new BehaviorSubject<IFilterGeneralProduct[]>(null);
   // filtersChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
-  currProductsChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
-  onProductsUpdated$: Subject<any> = new Subject();
-  currRootProductChanged$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  readonly currProductsChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
+  readonly onProductsUpdated$: Subject<any> = new Subject();
+  readonly currRootProductChanged$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  readonly requiredTags: Set<string> = new Set();
+  readonly forbiddenTags: Set<string> = new Set();
 
   currFilter: IFilterModel = {
     filterTitle: '',
@@ -64,7 +67,7 @@ export class FiltersService {
     const products = [...this.products.values()];
     const currProducts = rootProduct
       ? products.filter(x => x?.categories?.includes(rootProduct))
-      : products.filter(x => !x.categories?.length);
+      : products; //products.filter(x => !x.categories?.length);
     this.currProductsChanged$.next(this.sortProductsByNameAndType(currProducts));
   }
 
@@ -78,6 +81,22 @@ export class FiltersService {
       products = products.filter(x => check.test(x.name));
     }
     this.currProductsChanged$.next(this.sortProductsByNameAndType(products));
+  }
+
+  selectTag(tag: string, isRequired: boolean) {
+    if (isRequired) {
+      this.forbiddenTags.delete(tag);
+      this.requiredTags.add(tag);
+    }
+    else {
+      this.forbiddenTags.add(tag);
+      this.requiredTags.delete(tag);
+    }
+  }
+
+  removeTag(tag: string) {
+    this.forbiddenTags.delete(tag);
+    this.requiredTags.delete(tag);
   }
 
   private sortProductsByNameAndType(products: IFilterProduct[]) {
@@ -142,26 +161,30 @@ export class FiltersService {
     }
   }
 
-  displayFilter(filterId: number) {
+  applyFilter(filterId: number) {
     const filter = this.filters.get(filterId);
-    if (!filter?.loadDetails) {
-      this.server.getFilter(filterId).pipe(take(1)).subscribe(
-        filterModel => {
-          if (!filterModel) {
-            return; // DISPLAY error?
-          }
-          const newFilter = (filterModel as IFilter);
-          newFilter.loadDetails = true;
-          this.filters.set(filterId, newFilter);
-          this.currFilter = newFilter; // TO DO: clear ingredients and tags?
-          this.updateProductsNecessity(newFilter.ingredients, newFilter.byAvailableProducts);
-        },
-        _ => alert('Error during getting filter details')
-      );
-    }
+    this.server.getFilter(filterId).pipe(take(1)).subscribe(
+      filterModel => {
+        if (!filterModel) {
+          return; // DISPLAY error?
+        }
+        const newFilter = (filterModel as IFilter);
+        this.filters.set(filterId, newFilter);
+        this.currFilter = newFilter; // TO DO: clear ingredients and tags?
+        this.updateProductsNecessity(newFilter.ingredients, newFilter.byAvailableProducts);
+        this.updateTags(this.currFilter.tags);
+      },
+      _ => alert('Error during getting filter details')
+    );
   }
 
-  updateProductsNecessity(ingredients: IFilterIngredientModel[], byAvailableProducts: boolean) {
+  private updateTags(tags: IFilterTagModel[]) {
+    this.requiredTags.clear();
+    this.forbiddenTags.clear();
+    tags?.forEach(tag => this.selectTag(tag.tag.toLocaleLowerCase(), tag.necessity));
+  }
+
+  private updateProductsNecessity(ingredients: IFilterIngredientModel[], byAvailableProducts: boolean) {
     this.clearProductsNecessity(false);
     ingredients?.filter(x => x?.productId).forEach(ingredient => {
       const necessity = ingredient.necessity
@@ -221,6 +244,7 @@ export class FiltersService {
 
   private getCurrentFilterModel(filterTitle: string = ''): IFilterModel {
     const products = [...this.products.values()];
+    const tags: IFilterTagModel[] = [];
     const ingredients: IFilterIngredientModel[] = [];
     products.forEach(product => {
       if (product.necessity === ProductNecessity.Required) {
@@ -237,6 +261,9 @@ export class FiltersService {
         });
       }
     });
+    this.requiredTags.forEach(tag => tags.push({ id: 0, tag, necessity: true }));
+    this.forbiddenTags.forEach(tag => tags.push({ id: 0, tag, necessity: false }));
+
     return {
       id: 0,
       recipeTitle: this.currFilter.recipeTitle,
@@ -248,7 +275,7 @@ export class FiltersService {
       minCalories: this.currFilter.minCalories,
       maxCalories: this.currFilter.maxCalories,
       ingredients,
-      tags: this.currFilter.tags, // TO DO: change tags
+      tags,
       filterTitle,
       description: this.currFilter.description,
       isDefault: false,

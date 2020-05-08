@@ -23,7 +23,7 @@ export class FiltersSearchSectionComponent implements OnInit {
 
   setFilter(id: number) {
     console.log('Set filter ' + id);
-    this.filterService.displayFilter(id);
+    this.filterService.applyFilter(id);
   }
 
   saveFilter(title: string) {
