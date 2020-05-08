@@ -19,6 +19,16 @@
     }
   }
 
+  &-general {
+    .label {
+      strong {
+        font-weight: 500;
+        padding-right: 8px;
+      }
+      padding: 8px 0px;
+    }
+  }
+
   &-tags {
     mat-chip-list {
       &.required {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FiltersService } from 'src/app/services/filters.service';
 import { IFilterGeneralModel, IFilterGeneralProduct } from 'src/app/models/server/filter-models';
 import { AuthService } from 'src/app/services/auth.service';
@@ -9,8 +9,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./filters-search-section.component.scss']
 })
 export class FiltersSearchSectionComponent implements OnInit {
-
+  @Output() search = new EventEmitter();
   filters: IFilterGeneralModel[];
+
   constructor(
     public filterService: FiltersService,
     public auth: AuthService

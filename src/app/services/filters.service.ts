@@ -4,7 +4,7 @@ import { IFilterModel, IFilter, IFilterIngredientModel, IFilterTagModel, IFilter
 import { AuthService } from './auth.service';
 import { ServerHttpService } from './server-http.sevice';
 import { Subscription, BehaviorSubject, Subject, Observable } from 'rxjs';
-import { take, catchError, map } from 'rxjs/operators';
+import { take, catchError, map, filter } from 'rxjs/operators';
 import { IProductGeneralModel, IProductModel } from '../models/server/product-model';
 import { isNumber } from 'util';
 import { MatRadioChange } from '@angular/material/radio';
@@ -30,6 +30,7 @@ export class FiltersService {
   readonly currRootProductChanged$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   readonly requiredTags: Set<string> = new Set();
   readonly forbiddenTags: Set<string> = new Set();
+  readonly onCurrFilterChanged$: Subject<IFilterModel> = new Subject();
 
   currFilter: IFilterModel = {
     filterTitle: '',
@@ -67,7 +68,7 @@ export class FiltersService {
     const products = [...this.products.values()];
     const currProducts = rootProduct
       ? products.filter(x => x?.categories?.includes(rootProduct))
-      : products; //products.filter(x => !x.categories?.length);
+      : products; // products.filter(x => !x.categories?.length);
     this.currProductsChanged$.next(this.sortProductsByNameAndType(currProducts));
   }
 
@@ -162,15 +163,12 @@ export class FiltersService {
   }
 
   applyFilter(filterId: number) {
-    const filter = this.filters.get(filterId);
-    this.server.getFilter(filterId).pipe(take(1)).subscribe(
+    this.server.getFilter(filterId).pipe(take(1), filter(f => !!f)).subscribe(
       filterModel => {
-        if (!filterModel) {
-          return; // DISPLAY error?
-        }
         const newFilter = (filterModel as IFilter);
         this.filters.set(filterId, newFilter);
         this.currFilter = newFilter; // TO DO: clear ingredients and tags?
+        this.onCurrFilterChanged$.next(this.currFilter);
         this.updateProductsNecessity(newFilter.ingredients, newFilter.byAvailableProducts);
         this.updateTags(this.currFilter.tags);
       },
@@ -230,12 +228,16 @@ export class FiltersService {
     return this.server.getRecipesByFilter(this.getCurrentFilterModel());
   }
 
+  getRecipesByFilter(filterId: number): Observable<IRecipeGeneralModel[]> {
+    return this.server.getRecipesByFilterId(filterId);
+  }
+
   saveCurrFilter(filterName: string) {
     const filterModel = this.getCurrentFilterModel(filterName);
     return this.server.createFilter(filterModel).pipe(take(1))
       .subscribe(
         id => {
-          this.filters.set(id, { ...filterModel, loadDetails: true });
+          this.filters.set(id, filterModel);
           this.onChangeFilters();
         },
         _ => alert('Error during saving filter')

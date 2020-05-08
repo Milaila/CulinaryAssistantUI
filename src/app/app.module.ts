@@ -14,7 +14,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSelectModule } from '@angular/material/select';
 // tslint:disable-next-line: max-line-length
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -75,7 +74,6 @@ import { ExpansionPanelComponent } from './components/expansion-panel/expansion-
     MatDividerModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
-    NgbModule,
   ],
   exports: [
     BrowserModule,
@@ -101,7 +99,6 @@ import { ExpansionPanelComponent } from './components/expansion-panel/expansion-
     MatInputModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
-    NgbModule,
   ],
   providers: [
     UserService,

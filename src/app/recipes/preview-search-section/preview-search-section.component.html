@@ -1,4 +1,9 @@
 <div class="SearchPreview">
+  <div class="SearchPreview-general">
+    <div class="label"><strong>Назва рецепту повинна містити:</strong> {{ recipeTitleLabel }}</div>
+    <div class="label"><strong>Тривалість приготування:</strong> {{ durationLabel }}</div>
+    <div class="label"><strong>Калорійність (на 100 гр):</strong> {{ caloriesLabel }}</div>
+  </div>
   <div class="SearchPreview-products">
     <mat-card class="ProductsContainer" *ngIf="forbiddenProducts">
       <mat-card-subtitle>Заборонені продукти</mat-card-subtitle>

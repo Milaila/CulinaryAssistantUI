@@ -1,1 +1,32 @@
-<p>limits-search-section works!</p>
+<div class="LimitsSection">
+  <form [formGroup]="formModel" *ngIf="formModel">
+    <mat-form-field class="mt-8" appearance="outline">
+      <mat-label>Назва рецепту</mat-label>
+      <input type="text" formControlName="name" matInput>
+    </mat-form-field>
+    <div class="flex flex-row limit-container" formGroupName="duration">
+      <span class="limit-label">Тривалість приготування: </span>
+      <span>від</span>
+      <mat-form-field>
+        <input type="number" formControlName="min" matInput>
+      </mat-form-field>
+      <span>до</span>
+      <mat-form-field>
+        <input type="number" formControlName="max" matInput>
+      </mat-form-field>
+      <span>(хв)</span>
+    </div>
+    <div class="flex flex-row limit-container" formGroupName="calories">
+      <span class="limit-label">Калорійність (на 100 гр): </span>
+      <span>від</span>
+      <mat-form-field>
+        <input type="number" formControlName="min" matInput>
+      </mat-form-field>
+      <span>до</span>
+      <mat-form-field>
+        <input type="number" formControlName="max" matInput>
+      </mat-form-field>
+      <span>(кКал)</span>
+    </div>
+  </form>
+</div>
