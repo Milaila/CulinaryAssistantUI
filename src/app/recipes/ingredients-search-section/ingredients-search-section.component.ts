@@ -21,7 +21,7 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = [
     'subcategories', 'name', 'requiredSelect', 'notRequiredSelect', 'calories',
-    'fats', 'squirrels', 'carbohydrates', //'sugar',
+    'fats', 'squirrels', 'carbohydrates', 'sugar',
   ];
   productsSource: MatTableDataSource<IFilterProduct> = new MatTableDataSource([]);
 
@@ -136,7 +136,7 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   }
 
   get notRequiredHint(): string {
-    return this.byAvailable ? 'наявність продукту' : 'заборона продукту';
+    return this.byAvailable ? 'опціональні продукти' : 'заборонені продукти';
   }
 
   changeProductStatus(productId: number) {
