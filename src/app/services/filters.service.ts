@@ -18,13 +18,14 @@ import { TagsSearchSectionComponent } from '../recipes/tags-search-section/tags-
 export class FiltersService {
   private filters: Map<number, IFilterModel> = new Map();
   products: Map<number, IFilterProduct> = new Map();
-  private currRootProductFull: IProductModel;
+  // private currRootProductFull: IProductModel;
   private currRootProductId: number;
   private breadCrumbs: number[] = [];
 
   readonly filtersChanged$: BehaviorSubject<IFilterGeneralModel[]> = new BehaviorSubject<IFilterGeneralModel[]>(null);
   // productsChanged: BehaviorSubject<IFilterGeneralProduct[]> = new BehaviorSubject<IFilterGeneralProduct[]>(null);
   // filtersChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
+  private currProducts: number[] = [];
   readonly currProductsChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
   readonly onProductsUpdated$: Subject<any> = new Subject();
   readonly currRootProductChanged$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
@@ -58,7 +59,7 @@ export class FiltersService {
         const necessity = ProductNecessity.Undefined;
         products.forEach(product => this.products.set(product.id, {...product, necessity}));
         this.setRootProduct(null, false);
-        this.onProductsUpdated$.next(true);
+        this.onProductsUpdated$.next(null);
       },
       _ => alert('Error while getting products!')
     );
@@ -69,7 +70,8 @@ export class FiltersService {
     const currProducts = rootProduct
       ? products.filter(x => x?.categories?.includes(rootProduct))
       : products; // products.filter(x => !x.categories?.length);
-    this.currProductsChanged$.next(this.sortProductsByNameAndType(currProducts));
+    this.currProducts = this.sortProductsByNameAndType(currProducts);
+    this.currProductsChanged$.next(this.currProducts);
   }
 
   setCurrProductsByName(namePart: string) {
@@ -81,7 +83,8 @@ export class FiltersService {
       const check = new RegExp(namePart, 'i');
       products = products.filter(x => check.test(x.name));
     }
-    this.currProductsChanged$.next(this.sortProductsByNameAndType(products));
+    this.currProducts = this.sortProductsByNameAndType(products);
+    this.currProductsChanged$.next(this.currProducts);
   }
 
   selectTag(tag: string, isRequired: boolean) {
@@ -95,12 +98,70 @@ export class FiltersService {
     }
   }
 
+  // getProductNecessity(productId: number): boolean {
+  //   const necessity = this.products.get(productId)?.necessity;
+  //   switch (necessity) {
+  //     case ProductNecessity.Required: return true;
+  //     case ProductNecessity.NotRequired: return false;
+  //     default: return null;
+  //   }
+  // }
+
+  isProductSelected(productId: number, necessity: ProductNecessity): boolean {
+    return this.products.get(productId)?.necessity === necessity;
+  }
+
+  areAllCurrentProductsSelected(necessity: ProductNecessity): boolean {
+    for (const id of this.currProducts) {
+      if (this.products.get(id).necessity !== necessity) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  areNotAllCurrentProductsSelected(necessity: ProductNecessity): boolean {
+    let anySelected = false;
+    let anyNotSelected = false;
+    for (const id of this.currProducts) {
+      if (this.products.get(id).necessity === necessity) {
+        if (!anySelected) {
+          if (anyNotSelected) {
+            return true;
+          }
+          anySelected = true;
+        }
+      } else if (!anyNotSelected) {
+        if (anySelected) {
+          return true;
+        }
+        anyNotSelected = true;
+      }
+    }
+    return false;
+  }
+
+  selectAllCurrentProducts(necessity: ProductNecessity) {
+    this.currProducts.forEach(id => this.products.get(id).necessity = necessity);
+    this.onProductsUpdated$.next(true);
+  }
+
+  unselectAllCurrentProductsByNecessity(necessity: ProductNecessity){
+    this.currProducts.forEach(id => {
+      const product = this.products.get(id);
+      if (product.necessity === necessity){
+        product.necessity = ProductNecessity.Undefined;
+      }
+    });
+    this.onProductsUpdated$.next(true);
+  }
+
   removeTag(tag: string) {
     this.forbiddenTags.delete(tag);
     this.requiredTags.delete(tag);
   }
 
-  private sortProductsByNameAndType(products: IFilterProduct[]) {
+  private sortProductsByNameAndType(products: IFilterProduct[]): number[] {
     return products
       .sort((x, y) => {
         const xChildren = x.subcategories?.length ? 1 : 0;
@@ -119,7 +180,7 @@ export class FiltersService {
     //   console.log('Invalid new root product');
     //   return;
     // }
-    this.currRootProductFull = newRoot;
+    // this.currRootProductFull = newRoot;
     if (newRoot && !newRoot?.subcategories?.length) {
       alert('Return root ' + id);
       return;
@@ -138,21 +199,34 @@ export class FiltersService {
     ).subscribe(
       filters => {
         this.filters = new Map();
-        filters.forEach(filter => this.filters.set(filter.id, filter));
+        filters.forEach(f => this.filters.set(f.id, f));
         this.onChangeFilters();
       },
       _ => alert('Error while getting filters!')
     );
   }
 
-  selectProduct(productId: number, necessity: ProductNecessity, needUpdate: boolean = true) {
+  setProductNecessity(productId: number, necessity: ProductNecessity, needUpdate: boolean = true) {
     const product = this.products?.get(productId);
     if (product) {
       product.necessity = necessity;
       // TO DO: check for forbidden
       if (needUpdate) {
-        this.onProductsUpdated$.next(true);
+        this.onProductsUpdated$.next(productId);
       }
+    }
+  }
+
+  selectProduct(productId: number) {
+    const product = this.products?.get(productId);
+    if (product) {
+      const currNecessity = product.necessity;
+      switch (product.necessity) {
+        case ProductNecessity.Required: product.necessity = ProductNecessity.NotRequired; break;
+        case ProductNecessity.NotRequired: product.necessity = ProductNecessity.Undefined; break;
+        default: product.necessity = ProductNecessity.Required;
+      }
+      this.onProductsUpdated$.next(productId);
     }
   }
 
@@ -187,10 +261,8 @@ export class FiltersService {
     ingredients?.filter(x => x?.productId).forEach(ingredient => {
       const necessity = ingredient.necessity
         ? ProductNecessity.Required
-        : byAvailableProducts
-          ? ProductNecessity.Available
-          : ProductNecessity.Forbidden;
-      this.selectProduct(ingredient.productId, necessity, false);
+        : ProductNecessity.NotRequired;
+      this.setProductNecessity(ingredient.productId, necessity, false);
     });
     this.onProductsUpdated$.next(true);
   }
@@ -203,14 +275,20 @@ export class FiltersService {
     }
   }
 
-  setByAvailableProducts(byAvailableProducts: boolean) {
-    // if (this.currFilter.byAvailableProducts === byAvailableProducts) {
-    //   return;
-    // }
-    this.currFilter.byAvailableProducts = byAvailableProducts;
-    this.clearProductsNecessity();
-      // TO DO: functionality reverting byAvailableProducts
+  changeByAvailableProducts(byAvailable: boolean) {
+    this.currFilter.byAvailableProducts = byAvailable;
+    this.products?.forEach(product => {
+      if (product.necessity === ProductNecessity.NotRequired) {
+        product.necessity = ProductNecessity.Undefined;
+      }
+    });
+    this.onProductsUpdated$.next(true);
   }
+
+  // setByAvailableProducts(byAvailableProducts: boolean) {
+  //   this.currFilter.byAvailableProducts = byAvailableProducts;
+  //   this.clearProductsNecessity();
+  // }
 
   getProductsByNecessity(necessity: ProductNecessity): IFilterProduct[] {
     return [...this.products.values()].filter(x => x.necessity === necessity);
@@ -248,21 +326,14 @@ export class FiltersService {
     const products = [...this.products.values()];
     const tags: IFilterTagModel[] = [];
     const ingredients: IFilterIngredientModel[] = [];
-    products.forEach(product => {
-      if (product.necessity === ProductNecessity.Required) {
+    products.filter(p => p.necessity !== ProductNecessity.Undefined)
+      .forEach(product => {
         ingredients.push({
           id: 0,
           productId: product.id,
-          necessity: true
+          necessity: product.necessity === ProductNecessity.Required
         });
-      } else if (product.necessity === ProductNecessity.Available || product.necessity === ProductNecessity.Forbidden) {
-        ingredients.push({
-          id: 0,
-          productId: product.id,
-          necessity: false
-        });
-      }
-    });
+      });
     this.requiredTags.forEach(tag => tags.push({ id: 0, tag, necessity: true }));
     this.forbiddenTags.forEach(tag => tags.push({ id: 0, tag, necessity: false }));
 

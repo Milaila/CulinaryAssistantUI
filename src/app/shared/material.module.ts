@@ -23,7 +23,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   imports: [
@@ -46,6 +46,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatTreeModule,
     MatDividerModule,
     MatToolbarModule,
+    MatSlideToggleModule,
     MatChipsModule,
     MatMenuModule,
     MatButtonModule,
@@ -55,6 +56,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   ],
   exports: [
     MatListModule,
+    MatSlideToggleModule,
     MatFormFieldModule,
     MatGridListModule,
     MatSelectModule,

@@ -8,37 +8,49 @@
     font-size: 16px;
     font-weight: 500;
     line-height: 48px;
-    height: 48px;
+    min-height: 48px;
     align-items: center;
+    word-break: break-word;
 
     button {
       height: 48px;
     }
   }
 
-  mat-list-item {
-    border: 2px dotted white;
-    margin: 2px 0px;
+  mat-slide-toggle {
+    height: 32px;
   }
-  // color: rgb(255, 255, 136);
+
+
+    // td.mat-column-requiredSelect, td.mat-column-notRequiredSelect  {
+    //   min-width: 50px;
+    // }
+
+    // td.mat-column-star {
+    //   width: 20px;
+    //   padding-right: 8px;
+    // }
+
+    // th.mat-column-position, td.mat-column-position {
+    //   padding-left: 8px;
+    // }
+
+    // .mat-table-sticky:nth-child(2) {
+    //   border-right: 1px solid #e0e0e0;
+    // }
+
+    // .mat-table-sticky:nth-last-child(2) {
+    //   border-left: 1px solid #e0e0e0;
+    // }
+
+
+  // mat-list-item {
+  //   border: 2px dotted white;
+  //   margin: 2px 0px;
+  // }
 
   mat-form-field {
     margin-bottom: -16px;
   }
-  // mat-radio-button {
-  //   &.red {
-  //     color: red;
-  //   }
-  //   &.green {
-  //     color: green;
-  //   }
-  //   &.orange {
-  //     color: orange;
-  //   }
-  //   &.blue {
-  //     color: blue;
-  //   }
-  // }
-
 
 }

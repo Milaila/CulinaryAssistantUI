@@ -25,14 +25,10 @@ export class PreviewSearchSectionComponent implements OnInit, OnDestroy {
 
     this.subscription.add(this.filterService.onProductsUpdated$.subscribe(_ => {
       this.requiredProducts = this.filterService.getProductsByNecessity(ProductNecessity.Required);
-      if (this.filterService.currFilter?.byAvailableProducts) {
-        this.availableProducts = this.filterService.getProductsByNecessity(ProductNecessity.Available);
-        this.forbiddenProducts = null;
-      }
-      else {
-        this.forbiddenProducts = this.filterService.getProductsByNecessity(ProductNecessity.Forbidden);
-        this.availableProducts = null;
-      }
+      const byAvailable = this.filterService.currFilter?.byAvailableProducts;
+      const notRequiredProducts =  this.filterService.getProductsByNecessity(ProductNecessity.NotRequired);
+      this.availableProducts = byAvailable ? notRequiredProducts : null;
+      this.forbiddenProducts = byAvailable ? null : notRequiredProducts;
     }));
   }
 

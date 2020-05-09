@@ -162,3 +162,39 @@ mat-form-field[appearance="outline"] {
     line-height: 16px;
   }
 }
+
+
+.table-container {
+  max-height: 500px;
+  // width: 800px;
+  overflow: auto;
+
+  table {
+    width: 100%;
+    td.mat-column-name {
+      width: 200px;
+      word-wrap: break-word;
+    }
+
+    .td {
+      align-items: center;
+      padding: 4px;
+    }
+
+    td.mat-column-subcategories {
+      width: 48px;
+    }
+
+    td.mat-column-requiredSelect {
+      min-width: 20px;
+      max-width: 32px;
+      margin-left: 8px;
+    }
+
+    td.mat-column-notRequiredSelect {
+      min-width: 20px;
+      max-width: 32px;
+      margin-left: 8px;
+    }
+  }
+}

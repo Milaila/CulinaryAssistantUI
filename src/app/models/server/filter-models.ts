@@ -48,10 +48,6 @@ export interface IFilterGeneralProduct extends IProductGeneralModel {
 
 export enum ProductNecessity {
   Undefined = 1,
-  Forbidden = 2,
-  Available = 3,
-  Required = 4,
-  // BecomeRequired,
-  // BecomeForbidden,
-  // BecomeAvailable
+  NotRequired = 2,
+  Required = 3,
 }

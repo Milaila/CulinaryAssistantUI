@@ -1,77 +1,112 @@
-<!-- <mat-selection-list #ings>
-  <mat-list-option *ngFor="let ingredient of ingredients">
-    {{ingredient.name}}
-  </mat-list-option>
-</mat-selection-list>
-<p>Options selected: {{ings.selectedOptions.selected.length}}</p> -->
-
 <div class="IngredientsSearchSection">
-  <mat-form-field appearance="outline">
+  <!-- <mat-form-field appearance="outline">
     <mat-label>Пошук за назвою</mat-label>
     <input matInput name="product-search"
       #searchProducts (input)="searchByName(searchProducts.value)">
-  </mat-form-field>
+  </mat-form-field> -->
+  <mat-slide-toggle
+    [checked]="byAvailable"
+    (change)="toggleByAvailableProducts($event.checked)">
+    Шукати за наявними продуктами</mat-slide-toggle>
   <mat-divider></mat-divider>
   <div class="IngredientsSearchSection-header">
     <ng-template let-rootProduct
-      [ngTemplateOutletContext]="{ $implicit: rootProduct$ | async }"
+      [ngTemplateOutletContext]="{ $implicit: getProduct(rootProduct$ | async) }"
       [ngTemplateOutlet]="currT" #currT>
       <button *ngIf="rootProduct" mat-icon-button (click)="goBack()">
         <mat-icon class="mat-icon-rtl-mirror">keyboard_return</mat-icon>
       </button>
-      {{ getProduct(rootProduct)?.name || 'Усі продукти'}}
-      <mat-radio-group class="ml-8" aria-label="Select an option">
-        <mat-radio-button *ngIf="!byAvailable" class="red" value="1"></mat-radio-button>
-        <mat-radio-button class="blue" value="-1"></mat-radio-button>
-        <mat-radio-button *ngIf="byAvailable" class="orange" value="2"></mat-radio-button>
-        <mat-radio-button class="green" value="3"></mat-radio-button>
-      </mat-radio-group>
+      {{ rootProduct?.name || 'Усі продукти'}}
+      <mat-chip *ngIf="rootProduct"
+        class="ml-8"
+        (click)="changeProductStatus(rootProduct.id)"
+        [style.background-color]="statusColor(rootProduct.necessity)">
+        {{ statusLabel(rootProduct.necessity) }}
+      </mat-chip>
     </ng-template>
     <mat-divider class="dotted"></mat-divider>
   </div>
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 IngredientsSearchSection-content">
+  <div class="table-container">
+    <table mat-table [dataSource]="productsSource" matSort>
+      <ng-container matColumnDef="subcategories">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Продукти</th>
+        <td mat-cell *matCellDef="let row">
+          <button *ngIf="row.subcategories?.length" mat-icon-button (click)="changeRootProduct(row.id)">
+            <mat-icon >expand_more</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Назва </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
+      <ng-container matColumnDef="calories">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Калорії (кКал) </th>
+        <td mat-cell *matCellDef="let element"> {{element.calories}} </td>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
+      <ng-container matColumnDef="squirrels">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Білки (г) </th>
+        <td mat-cell *matCellDef="let element"> {{element.squirrels}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="calories">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Cals (g) </th>
-      <td mat-cell *matCellDef="let element"> {{element.calories}} </td>
-    </ng-container>
+      <ng-container matColumnDef="carbohydrates">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Вуглеводи (г) </th>
+        <td mat-cell *matCellDef="let element"> {{element.carbohydrates}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="fats">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Fats </th>
-      <td mat-cell *matCellDef="let element"> {{element.fats}} </td>
-    </ng-container>
+      <ng-container matColumnDef="fats">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Жири (г) </th>
+        <td mat-cell *matCellDef="let element"> {{element.fats}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
-      <td mat-cell *matCellDef="let element">
-        <button *ngIf="element.subcategories?.length" mat-icon-button (click)="changeRootProduct(element.id)">
-          <mat-icon >expand_more</mat-icon>
-        </button>
-        <mat-radio-group class="ml-8" aria-label="Select necessity"
-          (change)="onChangeNecessity(element.id, $event)" [ngModel]="element.necessity?.toString()">
-          <mat-radio-button *ngIf="!byAvailable" class="red" value="2"></mat-radio-button>
-          <mat-radio-button class="blue" value="1"></mat-radio-button>
-          <mat-radio-button *ngIf="byAvailable" class="orange" value="3"></mat-radio-button>
-          <mat-radio-button class="green" value="4"></mat-radio-button>
-        </mat-radio-group>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="sugar">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Сахар (г) </th>
+        <td mat-cell *matCellDef="let element"> {{element.sugar}} </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+      <ng-container matColumnDef="requiredSelect">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="onGroupRequiredChecked($event)"
+                        [checked]="isAllRequired"
+                        title="обов'язковість продукту"
+                        color="primary"
+                        [indeterminate]="areAnyRequired">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="onRequiredChecked($event, row)"
+                        title="обов'язковість продукту"
+                        color="primary"
+                        [checked]="isRequired(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="notRequiredSelect">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="onGroupNotRequiredChecked($event)"
+                        [title]="notRequiredHint"
+                        [checked]="isAllNotRequired"
+                        [indeterminate]="areAnyNotRequired">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="onNotRequiredChecked($event, row)"
+                        [title]="notRequiredHint"
+                        [checked]="isNotRequired(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+  </div>
   <!-- <mat-list class="IngredientsSearchSection-content">
     <ng-container *ngFor="let productId of (currProducts$ | async)">
       <ng-container *ngIf="getProduct(productId) as product">
