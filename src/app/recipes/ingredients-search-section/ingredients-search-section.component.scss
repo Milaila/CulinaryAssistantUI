@@ -11,14 +11,13 @@
     min-height: 48px;
     align-items: center;
     word-break: break-word;
-
-    button {
-      height: 48px;
-    }
   }
 
   mat-slide-toggle {
     height: 32px;
+    &:first-of-type {
+      margin-right: 32px;
+    }
   }
 
   mat-chip-list {

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FiltersService } from 'src/app/services/filters.service';
-import { BehaviorSubject, of, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, of, Observable, combineLatest, Subscription } from 'rxjs';
 import { IFilterProduct, IFilterGeneralProduct, ProductNecessity } from 'src/app/models/server/filter-models';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -17,7 +17,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
   templateUrl: './ingredients-search-section.component.html',
   styleUrls: ['./ingredients-search-section.component.scss']
 })
-export class IngredientsSearchSectionComponent implements OnInit {
+export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = [
     'subcategories', 'name', 'requiredSelect', 'notRequiredSelect', 'calories',
@@ -29,18 +29,28 @@ export class IngredientsSearchSectionComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   products: IFilterProduct[];
-  rootProduct$: Observable<number>;
+  rootProductId: number;
+  subscriptions = new Subscription();
 
   constructor(private filterService: FiltersService) { }
 
   ngOnInit(): void {
+    this.subscriptions.add(this.filterService.currRootProductChanged$
+      .subscribe(productId => this.rootProductId = productId));
     const currProducts$ = this.filterService.currProductsChanged$.pipe(filter(p => !!p));
-    this.rootProduct$ = this.filterService.currRootProductChanged$;
-    currProducts$.subscribe(products => {
-      this.productsSource = new MatTableDataSource(products?.map(id => this.filterService.getProduct(id)));
+    this.subscriptions.add(currProducts$.subscribe(products => {
+      this.productsSource = new MatTableDataSource(products?.map(id => this.getProduct(id)));
       this.productsSource.sort = this.sort;
       this.productsSource.paginator = this.paginator;
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
+  get areAllProducts(): boolean {
+    return !(this.rootProductId >= 0);
   }
 
   changeRootProduct(id: number) {

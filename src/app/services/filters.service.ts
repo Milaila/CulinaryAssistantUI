@@ -27,7 +27,7 @@ export class FiltersService {
   // filtersChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
   private currProducts: number[] = [];
   readonly currProductsChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
-  readonly onProductsUpdated$: Subject<any> = new Subject();
+  readonly onProductsUpdated$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   readonly currRootProductChanged$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   readonly requiredTags: Set<string> = new Set();
   readonly forbiddenTags: Set<string> = new Set();
@@ -58,7 +58,7 @@ export class FiltersService {
         this.products = new Map();
         const necessity = ProductNecessity.Undefined;
         products.forEach(product => this.products.set(product.id, {...product, necessity}));
-        this.setRootProduct(null, false);
+        this.setRootProduct(0, false);
         this.onProductsUpdated$.next(null);
       },
       _ => alert('Error while getting products!')
@@ -66,11 +66,14 @@ export class FiltersService {
   }
 
   private setCurrProductsByRoot(rootProduct?: number) {
-    const products = [...this.products.values()];
-    const currProducts = rootProduct
-      ? products.filter(x => x?.categories?.includes(rootProduct))
-      : products; // products.filter(x => !x.categories?.length);
-    this.currProducts = this.sortProductsByNameAndType(currProducts);
+    let products = [...this.products.values()];
+    if (rootProduct) {
+      products = products.filter(x => x?.categories?.includes(rootProduct))
+    }
+    else if (rootProduct === 0) {
+      products = products.filter(x => !x.categories?.length);
+    }
+    this.currProducts = this.sortProductsByNameAndType(products);
     this.currProductsChanged$.next(this.currProducts);
   }
 
@@ -175,15 +178,11 @@ export class FiltersService {
   }
 
   setRootProduct(id: number, saveBreadCrumb = true) {
-    const newRoot = this.products.get(id);
-    // if (!newRoot) {
-    //   console.log('Invalid new root product');
+    // if (this.currRootProductId === id) {
     //   return;
     // }
-    // this.currRootProductFull = newRoot;
-    if (newRoot && !newRoot?.subcategories?.length) {
-      alert('Return root ' + id);
-      return;
+    if (!id) {
+      this.breadCrumbs = [];
     }
     if (saveBreadCrumb) {
       this.breadCrumbs.push(this.currRootProductId);
