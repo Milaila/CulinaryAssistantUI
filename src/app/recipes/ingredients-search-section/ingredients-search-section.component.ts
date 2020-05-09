@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FiltersService } from 'src/app/services/filters.service';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { IProductModel } from 'src/app/models/server/product-model';
-import { NestedTreeControl } from '@angular/cdk/tree';
 import { BehaviorSubject, of, Observable, combineLatest } from 'rxjs';
 import { IFilterProduct, IFilterGeneralProduct, ProductNecessity } from 'src/app/models/server/filter-models';
 import { MatRadioChange } from '@angular/material/radio';
@@ -12,6 +9,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { filter } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'app-ingredients-search-section',
@@ -72,7 +71,6 @@ export class IngredientsSearchSectionComponent implements OnInit {
   }
 
   get byAvailable(): boolean {
-    console.log('ByAv', new Date(3));
     return this.filterService.currFilter.byAvailableProducts;
   }
 
@@ -154,7 +152,6 @@ export class IngredientsSearchSectionComponent implements OnInit {
   }
 
   // getProductColor(necessity: number): string {
-  //   // console.log(necessity);
   //   // const necessity = this.getProduct(productId).necessity;
   //   switch (+necessity) {
   //     // case ProductNecessity.Available: color = '#ffff88'; break;

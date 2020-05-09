@@ -17,12 +17,14 @@
         <mat-icon class="mat-icon-rtl-mirror">keyboard_return</mat-icon>
       </button>
       {{ rootProduct?.name || 'Усі продукти'}}
-      <mat-chip *ngIf="rootProduct"
-        class="ml-8"
-        (click)="changeProductStatus(rootProduct.id)"
-        [style.background-color]="statusColor(rootProduct.necessity)">
-        {{ statusLabel(rootProduct.necessity) }}
-      </mat-chip>
+      <mat-chip-list>
+        <mat-chip *ngIf="rootProduct"
+          class="ml-8"
+          (click)="changeProductStatus(rootProduct.id)"
+          [style.background-color]="statusColor(rootProduct.necessity)">
+          {{ statusLabel(rootProduct.necessity) }}
+        </mat-chip>
+      </mat-chip-list>
     </ng-template>
     <mat-divider class="dotted"></mat-divider>
   </div>
