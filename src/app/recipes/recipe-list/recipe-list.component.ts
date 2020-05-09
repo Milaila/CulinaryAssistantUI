@@ -4,6 +4,7 @@ import { ImagesService } from 'src/app/services/images.service';
 import { Observable } from 'rxjs';
 import { IImageModel } from 'src/app/models/server/image-model';
 import { map, filter } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -14,6 +15,7 @@ export class RecipeListComponent implements OnInit {
   @Input() recipes: IRecipeGeneralModel[] = [];
 
   constructor(
+    public auth: AuthService,
     private imageStore: ImagesService
   ) { }
 

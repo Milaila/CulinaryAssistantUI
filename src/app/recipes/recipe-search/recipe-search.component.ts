@@ -12,7 +12,7 @@ import { take, filter } from 'rxjs/operators';
   styleUrls: ['./recipe-search.component.scss']
 })
 export class RecipeSearchComponent implements OnInit {
-  recipes: IRecipeGeneralModel[];
+  recipes: IRecipeGeneralModel[] = [];
 
   constructor(
     private authService: AuthService,
@@ -27,7 +27,7 @@ export class RecipeSearchComponent implements OnInit {
   onSearch() {
     this.filterService.getRecipesByCurrentFilter().pipe(take(1))
       .subscribe(
-        recipes => this.recipes = recipes,
+        recipes => this.recipes = recipes || [],
         _ => alert('Error during filtering recipes')
       );
   }
@@ -35,7 +35,7 @@ export class RecipeSearchComponent implements OnInit {
   onSearchByFilter(filterId: number) {
     this.filterService.getRecipesByFilter(+filterId)
       .subscribe(
-        recipes => this.recipes = recipes,
+        recipes => this.recipes = recipes || [],
         _ => alert('Error during filtering recipes by filter id')
       );
   }

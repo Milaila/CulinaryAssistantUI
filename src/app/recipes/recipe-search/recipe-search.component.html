@@ -18,7 +18,8 @@
       </mat-expansion-panel-header>
       <mat-divider></mat-divider>
       <ng-template matExpansionPanelContent>
-        <app-filters-search-section *ngIf="filtersPanel.expanded"></app-filters-search-section>
+        <app-filters-search-section (search)="onSearchByFilter($event)">
+        </app-filters-search-section>
       </ng-template>
     </mat-expansion-panel>
     <mat-expansion-panel #productsPanel>
@@ -53,5 +54,5 @@
     </mat-expansion-panel>
   </mat-accordion>
   <button mat-raised-button class="ml-8 mt-8" color="primary" (click)="onSearch()">Пошук</button>
-  <app-recipe-list></app-recipe-list>
+  <app-recipe-list [recipes]="recipes"></app-recipe-list>
 </div>
