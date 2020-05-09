@@ -1,1 +1,19 @@
-<p>recipe-list works!</p>
+<div class="RecipeList">
+  <mat-card class="recipe-card" *ngFor="let recipe of recipes">
+    <div class="recipe-card-content">
+      <div class="image-container" *ngIf="getImageSrc(recipe.imageId) | async as image">
+        <img [src]="image">
+      </div>
+      <div class="text-container">
+        <mat-card-title> {{ recipe.title }}</mat-card-title>
+        <div class="description" maxlength="256">{{ recipe.description }}</div>
+      </div>
+    </div>
+    <mat-card-actions>
+      <button mat-button>Деталі</button>
+    </mat-card-actions>
+  </mat-card>
+  <div *ngIf="!recipes?.length" class="no-recipes">
+    <h3>Нема рецептів, що відповідають заданому пошуку</h3>
+  </div>
+</div>
