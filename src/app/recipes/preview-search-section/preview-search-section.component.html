@@ -3,36 +3,49 @@
     <div class="label"><strong>Назва рецепту повинна містити:</strong> {{ recipeTitleLabel }}</div>
     <div class="label"><strong>Тривалість приготування:</strong> {{ durationLabel }}</div>
     <div class="label"><strong>Калорійність (на 100 гр):</strong> {{ caloriesLabel }}</div>
+    <div class="label" *ngIf="filterName"><strong>На основі фільтру:</strong> "{{ filterName }}"</div>
   </div>
   <div class="SearchPreview-products">
     <mat-card class="ProductsContainer" *ngIf="forbiddenProducts">
       <mat-card-subtitle>Заборонені продукти</mat-card-subtitle>
       <mat-divider></mat-divider>
-      <mat-selection-list #forbidden>
-        <mat-list-option *ngFor="let product of forbiddenProducts">
-          {{ product.name }}
-        </mat-list-option>
-      </mat-selection-list>
+      <mat-list #forbidden>
+        <mat-list-item *ngFor="let product of forbiddenProducts">
+          <span matLine [title]="product.name">{{ product.name }}</span>
+          <button mat-icon-button (click)="removeProduct(product.id)">
+             <mat-icon>clear</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
     </mat-card>
     <mat-card class="ProductsContainer"*ngIf="availableProducts">
       <mat-card-subtitle>Наявні продукти</mat-card-subtitle>
       <mat-divider></mat-divider>
-      <mat-selection-list #available>
-        <mat-list-option *ngFor="let product of availableProducts">
-          {{ product.name }}
-        </mat-list-option>
-        <mat-list-option *ngFor="let product of requiredProducts" disabled>
-          {{ product.name }}
-        </mat-list-option>
-      </mat-selection-list>
+      <mat-list #available>
+        <mat-list-item *ngFor="let product of availableProducts">
+          <span matLine [title]="product.name">{{ product.name }}</span>
+          <button mat-icon-button (click)="removeProduct(product.id)">
+             <mat-icon>clear</mat-icon>
+          </button>
+        </mat-list-item>
+        <mat-list-item *ngFor="let product of requiredProducts" disabled>
+          <span matLine>{{ product.name }}</span>
+          <button mat-icon-button (click)="removeProduct(product.id)" disabled>
+             <mat-icon>clear</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
     </mat-card>
     <mat-card class="ProductsContainer" *ngIf="requiredProducts">
       <mat-card-subtitle>Обов'язкові продукти</mat-card-subtitle>
       <mat-divider></mat-divider>
       <mat-selection-list #required>
-        <mat-list-option *ngFor="let product of requiredProducts">
-          {{ product.name }}
-        </mat-list-option>
+        <mat-list-item *ngFor="let product of requiredProducts">
+          <span matLine [title]="product.name">{{ product.name }}</span>
+          <button mat-icon-button (click)="removeProduct(product.id)">
+             <mat-icon>clear</mat-icon>
+          </button>
+        </mat-list-item>
       </mat-selection-list>
     </mat-card>
   </div>

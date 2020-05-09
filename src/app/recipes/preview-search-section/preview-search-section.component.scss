@@ -9,12 +9,17 @@
       // width: 40%;
       min-width: 250px;
       word-wrap: break-word;
-      max-height: 500px;
-      overflow: auto;
       margin-bottom: 16px;
       margin-top: 16px;
+      mat-selection-list {
+        max-height: 400px;
+        overflow: auto;
+      }
       &:not(:last-of-type) {
         margin-right: 16px;
+      }
+      mat-icon {
+        font-size: 20px;;
       }
     }
   }

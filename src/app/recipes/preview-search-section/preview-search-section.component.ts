@@ -36,8 +36,16 @@ export class PreviewSearchSectionComponent implements OnInit, OnDestroy {
     return this.filterService.currFilter?.byAvailableProducts;
   }
 
+  get filterName(): string {
+    return this.filterService.currFilter.filterTitle;
+  }
+
   removeTag(tag: string) {
     this.filterService.removeTag(tag);
+  }
+
+  removeProduct(productId: number) {
+    this.filterService.setProductNecessity(productId, ProductNecessity.Undefined, true);
   }
 
   get requiredTags(): Set<string> {
