@@ -22,8 +22,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
 
 @NgModule({
   imports: [
@@ -81,6 +82,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatExpansionModule,
     MatInputModule,
     MatFormFieldModule,
+  ],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: ukrainianPaginatorIntl() }
   ]
 })
 export class MaterialModule { }

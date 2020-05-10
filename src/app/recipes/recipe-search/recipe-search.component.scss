@@ -4,4 +4,22 @@
 
 .RecipeSearch {
   width: 100%;
+
+  .search-toolbar {
+    height: 72px;
+
+    .search-button {
+      font-size: 16px;
+      height: 40px;
+      margin-right: 16px;
+      mat-icon {
+        margin-left: 8px;
+      }
+    }
+
+    mat-form-field {
+      margin-bottom: -16px;
+      font-size: 14px;
+    }
+  }
 }

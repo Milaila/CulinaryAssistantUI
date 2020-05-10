@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ServerHttpService } from './server-http.sevice';
 import { AuthService } from './auth.service';
 import { IImageModel } from '../models/server/image-model';
-import { Observable, of, Subject, BehaviorSubject, iif } from 'rxjs';
+import { Observable, of, Subject, BehaviorSubject, iif, from } from 'rxjs';
 import { take, filter, switchMap, switchMapTo, map } from 'rxjs/operators';
 
 @Injectable({
@@ -54,6 +54,14 @@ export class ImagesService {
     this.updateImageFromServer(id, this.images.get(id));
   }
 
+  // getImages(ids: number[]): Observable<string[]> {
+  //   const im = from(ids.map(id => this.getImage(id)))
+  // }
+
+  // setImages(images: number[]) {
+  //   images.
+  // }
+
   // updateImages(images: number[]) {
   //   images.forEach(id => images.)
   //   this.updateImageFromServer(id, this.images.get(id));
@@ -64,8 +72,12 @@ export class ImagesService {
       imageSubj = new BehaviorSubject<string>(null);
       this.images.set(id, imageSubj);
     }
-    this.server.getImage(id).pipe(take(1)).subscribe(
-      newImage => imageSubj.next(newImage?.data),
+    this.server.getImage(id).pipe(
+      take(1),
+      filter(image => !!image?.data),
+      map(image => 'data:image/jpeg;base64,' + image.data)
+    ).subscribe(
+      newImage => imageSubj.next(newImage),
       _ => alert('Error during getting image')
     );
   }

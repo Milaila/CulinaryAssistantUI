@@ -66,7 +66,10 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   }
 
   searchByName(name: string) {
-    console.log(name);
+    this.productsSource.filter = name.toLocaleLowerCase();
+  }
+
+  searchAllByName(name: string) {
     this.filterService.setCurrProductsByName(name);
   }
 

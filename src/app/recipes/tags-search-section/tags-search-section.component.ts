@@ -6,7 +6,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
-import { startWith, map, withLatestFrom, catchError, share } from 'rxjs/operators';
+import { startWith, map, withLatestFrom, catchError, share, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tags-search-section',
@@ -40,6 +40,7 @@ export class TagsSearchSectionComponent implements OnInit {
       })
     );
     this.filteredRequiredTags$ = combineLatest([this.requiredTagsCtrl.valueChanges, this.availableTags$]).pipe(
+      tap(x => console.log('filtere', this.filteredRequiredTags$)),
       map(([tag, tags]) => tag ? this.filterTags(tags, tag) : tags)
     );
     this.filteredForbiddenTags$ = combineLatest([this.forbiddenTagsCtrl.valueChanges, this.availableTags$]).pipe(

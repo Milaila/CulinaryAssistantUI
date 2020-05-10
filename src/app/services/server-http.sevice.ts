@@ -60,8 +60,8 @@ export class ServerHttpService {
     return this.http.get<IRecipeGeneralModel[]>(url).pipe(tap(x => console.log(x)));
   }
 
-  getRecipes(): Observable<IRecipeGeneralModel> {
-    return this.http.get<IRecipeGeneralModel>(serverUrls.recipes).pipe(tap(x => console.log(x)));
+  getRecipes(): Observable<IRecipeGeneralModel[]> {
+    return this.http.get<IRecipeGeneralModel[]>(serverUrls.recipes).pipe(tap(x => console.log(x)));
   }
 
   createRecipe(recipe: IRecipeModel): Observable<number> {

@@ -1,4 +1,6 @@
 .IngredientsSearchSection {
+  padding-top: 4px;
+
   &-content {
     max-height: 500px;
     overflow: auto;
@@ -22,6 +24,12 @@
 
   mat-chip-list {
     display: inline-block;
+  }
+
+  mat-form-field.search {
+    margin-right: 32px;
+    margin-bottom: -18px;
+    line-height: 16px;
   }
 
     // td.mat-column-requiredSelect, td.mat-column-notRequiredSelect  {

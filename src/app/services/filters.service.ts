@@ -5,12 +5,7 @@ import { AuthService } from './auth.service';
 import { ServerHttpService } from './server-http.sevice';
 import { Subscription, BehaviorSubject, Subject, Observable } from 'rxjs';
 import { take, catchError, map, filter } from 'rxjs/operators';
-import { IProductGeneralModel, IProductModel } from '../models/server/product-model';
-import { isNumber } from 'util';
-import { MatRadioChange } from '@angular/material/radio';
-import { EventEmitter } from 'protractor';
 import { IRecipeModel, IRecipeGeneralModel, IRecipeTagModel } from '../models/server/recipe-models';
-import { TagsSearchSectionComponent } from '../recipes/tags-search-section/tags-search-section.component';
 
 @Injectable({
   providedIn: 'root'
@@ -31,15 +26,9 @@ export class FiltersService {
   readonly currRootProductChanged$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   readonly requiredTags: Set<string> = new Set();
   readonly forbiddenTags: Set<string> = new Set();
-  readonly onCurrFilterChanged$: Subject<IFilterModel> = new Subject();
+  readonly onCurrFilterChanged$: BehaviorSubject<IFilterModel> = new BehaviorSubject(null);
 
-  currFilter: IFilterModel = {
-    filterTitle: '',
-    isDefault: false,
-    id: 0,
-    onlyProducts: false,
-    byAvailableProducts: false,
-  };
+  currFilter: IFilterModel;
 
   get hasBreadCrumbs(): boolean {
     return !!this.breadCrumbs?.length;
@@ -48,7 +37,9 @@ export class FiltersService {
   constructor(
     private auth: AuthService,
     private server: ServerHttpService,
-  ) { }
+  ) {
+    this.initCurrFilter();
+  }
 
   updateProducts() {
     this.server.getProductsWithRelations().pipe(
@@ -236,6 +227,11 @@ export class FiltersService {
   }
 
   applyFilter(filterId: number) {
+    if (!filterId) {
+      this.resetCurrentFilter();
+      return;
+    }
+
     this.server.getFilter(filterId).pipe(take(1), filter(f => !!f)).subscribe(
       filterModel => {
         const newFilter = (filterModel as IFilter);
@@ -247,6 +243,12 @@ export class FiltersService {
       },
       _ => alert('Error during getting filter details')
     );
+  }
+
+  resetCurrentFilter() {
+    this.initCurrFilter();
+    this.updateProductsNecessity([], false);
+    this.updateTags([]);
   }
 
   private updateTags(tags: IFilterTagModel[]) {
@@ -315,6 +317,7 @@ export class FiltersService {
       .subscribe(
         id => {
           this.filters.set(id, filterModel);
+          this.currFilter.id = 0;
           this.onChangeFilters();
         },
         _ => alert('Error during saving filter')
@@ -352,6 +355,17 @@ export class FiltersService {
       description: this.currFilter.description,
       isDefault: false,
     };
+  }
+
+  private initCurrFilter() {
+    this.currFilter = {
+      id: 0,
+      filterTitle: '',
+      isDefault: false,
+      onlyProducts: false,
+      byAvailableProducts: false,
+    };
+    this.onCurrFilterChanged$.next(this.currFilter);
   }
 }
 

@@ -1,23 +1,32 @@
 <div class="RecipeList">
-  <mat-card class="recipe-card" *ngFor="let recipe of recipes">
-    <div class="recipe-card-content">
-      <div class="imageContainer" *ngIf="getImageSrc(recipe.imageId) | async as image">
-        <img mat-card-image [src]="image">
+  <mat-paginator [length]="recipesCount"
+    #paginator
+    [pageSize]="itemsPerPage"
+    [pageIndex]="currentPage"
+    (page)="pageEvent = onChangePage($event)"
+    [pageSizeOptions]="itemsOptions">
+  </mat-paginator>
+  <div class="RecipeList-recipes">
+    <mat-card class="recipe-card" *ngFor="let recipe of currRecipes">
+      <div class="recipe-card-content">
+        <div class="imageContainer" *ngIf="recipe.imageSrc | async as image">
+          <img mat-card-image [src]="image">
+        </div>
+        <mat-card-title>{{ recipe.title }}</mat-card-title>
+        <mat-card-content>
+          {{ recipe.description }}
+        </mat-card-content>
       </div>
-      <mat-card-title>{{ recipe.title }}</mat-card-title>
-      <mat-card-content>
-        {{ recipe.description }}
-      </mat-card-content>
-    </div>
-    <div class="recipe-card-footer">
-      <mat-divider></mat-divider>
-      <div class="actions">
-        <button mat-button>Деталі</button>
-        <button mat-button *ngIf="auth.isAuthorized">Редагувати</button>
+      <div class="recipe-card-footer">
+        <mat-divider></mat-divider>
+        <div class="actions">
+          <button mat-stroked-button color="primary">Деталі</button>
+          <button mat-stroked-button *ngIf="auth.isAuthorized">Редагувати</button>
+        </div>
       </div>
-    </div>
-  </mat-card>
-  <div *ngIf="!recipes?.length" class="no-recipes">
-    <h3>Нема рецептів, що відповідають заданому пошуку</h3>
+    </mat-card>
+  </div>
+  <div *ngIf="!recipesCount" class="RecipeList-noRecipes">
+    <h3 class="thin">Нема рецептів, що відповідають заданому пошуку</h3>
   </div>
 </div>

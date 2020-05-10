@@ -53,6 +53,15 @@
       </ng-template>
     </mat-expansion-panel>
   </mat-accordion>
-  <button mat-raised-button class="ml-8 mt-8" color="primary" (click)="onSearch()">Пошук</button>
-  <app-recipe-list [recipes]="recipes"></app-recipe-list>
+  <mat-toolbar class="search-toolbar" color="primary">
+    <button mat-raised-button color="accent" class="search-button" (click)="onSearch()">
+      Застосувати фільтр<mat-icon>search</mat-icon>
+    </button>
+    <mat-form-field appearance="fill">
+      <mat-label>Пошук серед результатів</mat-label>
+      <input matInput placeholder="Назва рецепту..." #searchRecipes (input)="searchByRecipeName(searchRecipes.value)">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </mat-toolbar>
+  <app-recipe-list [recipes]="currRecipes"></app-recipe-list>
 </div>

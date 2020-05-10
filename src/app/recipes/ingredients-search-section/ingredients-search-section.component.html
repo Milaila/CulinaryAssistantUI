@@ -1,9 +1,10 @@
 <div class="IngredientsSearchSection">
-  <!-- <mat-form-field appearance="outline">
-    <mat-label>Пошук за назвою</mat-label>
+  <mat-form-field class="search">
+    <mat-label>Фільтрація за назвою</mat-label>
     <input matInput name="product-search"
-      #searchProducts (input)="searchByName(searchProducts.value)">
-  </mat-form-field> -->
+      #searchProducts  (input)="searchByName(searchProducts.value)" placeholder="Назва продукту...">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
   <mat-slide-toggle
     [checked]="byAvailable"
     (change)="toggleByAvailableProducts($event.checked)">
@@ -139,21 +140,3 @@
     </ng-container>
   </mat-list> -->
 </div>
-
-<!-- <div *ngFor="let icon of icons">
-  <button mat-icon-button (click)="isExpanded = !isExpanded">
-    <mat-icon class="" color="primary">
-      {{isExpanded ? icon.start : icon.end}}
-    </mat-icon>
-  </button>
-  <button mat-icon-button (click)="isExpanded = !isExpanded">
-    <mat-icon class="" color="primary">
-      {{!isExpanded ? icon.start : icon.end}}
-    </mat-icon>
-  </button>
-  <mat-divider></mat-divider>
-</div>
-<mat-radio-group aria-label="Select an option">
-  <mat-radio-button value="1">Option 1</mat-radio-button>
-  <mat-radio-button value="2">Option 2</mat-radio-button>
-</mat-radio-group> -->
