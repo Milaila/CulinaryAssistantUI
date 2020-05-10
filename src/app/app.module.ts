@@ -36,6 +36,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { AuthService } from './services/auth.service';
 import { MatDividerModule } from '@angular/material/divider';
 import { ExpansionPanelComponent } from './components/expansion-panel/expansion-panel.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { ExpansionPanelComponent } from './components/expansion-panel/expansion-
     LoginComponent,
     HomeComponent,
     HeaderComponent,
+    NotFoundComponent,
     // ExpansionPanelComponent
   ],
   imports: [

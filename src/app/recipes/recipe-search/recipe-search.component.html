@@ -1,76 +1,78 @@
 <mat-toolbar color="primary"><h1>Пошук рецептів</h1></mat-toolbar>
-<div class="RecipeSearch">
-  <mat-accordion multi="true">
-    <mat-expansion-panel #generalPanel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Загальні обмеження</mat-panel-title>
-        <mat-panel-description>Назва, тривалість, калорійність</mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-divider></mat-divider>
-      <ng-template matExpansionPanelContent>
-        <app-limits-search-section *ngIf="generalPanel.expanded"></app-limits-search-section>
-      </ng-template>
-    </mat-expansion-panel>
-    <mat-expansion-panel #filtersPanel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Фільтри</mat-panel-title>
-        <mat-panel-description>Збережені фільтри</mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-divider></mat-divider>
-      <ng-template matExpansionPanelContent>
-        <app-filters-search-section (search)="onSearchByFilter($event)">
-        </app-filters-search-section>
-      </ng-template>
-    </mat-expansion-panel>
-    <mat-expansion-panel #productsPanel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Інгредієнти</mat-panel-title>
-        <mat-panel-description>Пошук за інгредієнтами</mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-divider></mat-divider>
-      <ng-template matExpansionPanelContent>
-        <app-ingredients-search-section *ngIf="productsPanel.expanded"></app-ingredients-search-section>
-      </ng-template>
-    </mat-expansion-panel>
-    <mat-expansion-panel #tagsPanel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Тегі</mat-panel-title>
-        <mat-panel-description>Пошук за тегами</mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-divider></mat-divider>
-      <ng-template matExpansionPanelContent>
-        <app-tags-search-section *ngIf="tagsPanel.expanded"></app-tags-search-section>
-      </ng-template>
-    </mat-expansion-panel>
-    <mat-expansion-panel #previewPanel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Прев'ю</mat-panel-title>
-        <mat-panel-description>Усі критерії пошуку</mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-divider></mat-divider>
-      <ng-template matExpansionPanelContent>
-        <app-preview-search-section *ngIf="previewPanel.expanded"></app-preview-search-section>
-      </ng-template>
-      <mat-action-row>
-        <button mat-stroked-button color="primary" (click)="onSearch()"> Застосувати фільтр </button>
-        <button mat-stroked-button (click)="resetFilter()"> Скинути фільтр </button>
-      </mat-action-row>
-    </mat-expansion-panel>
-  </mat-accordion>
-  <mat-toolbar class="search-toolbar" color="accent">
-    <button mat-raised-button color="primary" class="search-button" (click)="onSearch()">
-      Застосувати фільтр<mat-icon>search</mat-icon>
-    </button>
-    <button mat-raised-button color="basic" class="search-button" (click)="displayAllRecipes()">
-      Усі рецепти<mat-icon>all_inclusive</mat-icon>
-    </button>
-    <mat-form-field appearance="fill">
-      <mat-label>Пошук серед результатів</mat-label>
-      <input matInput placeholder="Назва рецепту..." #searchRecipes (input)="searchByRecipeName(searchRecipes.value)">
-      <button mat-icon-button matSuffix (click)="searchByRecipeName(searchRecipes.value)">
-        <mat-icon>search</mat-icon>
+<div class="RecipeSearch-container">
+  <div class="RecipeSearch-content">
+    <mat-accordion multi="true">
+      <mat-expansion-panel #generalPanel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Загальні обмеження</mat-panel-title>
+          <mat-panel-description>Назва, тривалість, калорійність</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <ng-template matExpansionPanelContent>
+          <app-limits-search-section *ngIf="generalPanel.expanded"></app-limits-search-section>
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel #filtersPanel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Фільтри</mat-panel-title>
+          <mat-panel-description>Збережені фільтри</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <ng-template matExpansionPanelContent>
+          <app-filters-search-section (search)="onSearchByFilter($event)">
+          </app-filters-search-section>
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel #productsPanel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Інгредієнти</mat-panel-title>
+          <mat-panel-description>Пошук за інгредієнтами</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <ng-template matExpansionPanelContent>
+          <app-ingredients-search-section *ngIf="productsPanel.expanded"></app-ingredients-search-section>
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel #tagsPanel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Тегі</mat-panel-title>
+          <mat-panel-description>Пошук за тегами</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <ng-template matExpansionPanelContent>
+          <app-tags-search-section *ngIf="tagsPanel.expanded"></app-tags-search-section>
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel #previewPanel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Прев'ю</mat-panel-title>
+          <mat-panel-description>Усі критерії пошуку</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <ng-template matExpansionPanelContent>
+          <app-preview-search-section *ngIf="previewPanel.expanded"></app-preview-search-section>
+        </ng-template>
+        <mat-action-row>
+          <button mat-stroked-button color="primary" (click)="onSearch()"> Застосувати фільтр </button>
+          <button mat-stroked-button (click)="resetFilter()"> Скинути фільтр </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-toolbar class="search-toolbar" color="accent">
+      <button mat-raised-button color="primary" class="search-button" (click)="onSearch()">
+        Застосувати фільтр<mat-icon>search</mat-icon>
       </button>
-    </mat-form-field>
-  </mat-toolbar>
-  <app-recipe-list [recipes]="currRecipes"></app-recipe-list>
+      <button mat-raised-button color="basic" class="search-button" (click)="displayAllRecipes()">
+        Усі рецепти<mat-icon>all_inclusive</mat-icon>
+      </button>
+      <mat-form-field appearance="fill">
+        <mat-label>Пошук серед результатів</mat-label>
+        <input matInput placeholder="Назва рецепту..." #searchRecipes (input)="searchByRecipeName(searchRecipes.value)">
+        <button mat-icon-button matSuffix (click)="searchByRecipeName(searchRecipes.value)">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </mat-toolbar>
+    <app-recipe-list [recipes]="currRecipes"></app-recipe-list>
+  </div>
 </div>

@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { RecipesModule } from './recipes/recipes.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { ProductsModule } from './products/products.module';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,7 @@ const routes: Routes = [
     // loadChildren: './products/products.module#ProductsModule'
   },
   // { path: 'recipes/new', component: NewRecipeComponent },
+  { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: 'user/registration', pathMatch: 'full' },
   {
     path: 'user', component: UserComponent,
@@ -39,6 +41,7 @@ const routes: Routes = [
     ]
   },
   { path: 'home', component: HomeComponent },
+  { path: '**', redirectTo: '404', pathMatch: 'full'},
 ];
 
 @NgModule({

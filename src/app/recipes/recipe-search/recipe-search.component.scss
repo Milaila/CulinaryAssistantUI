@@ -3,35 +3,43 @@
 }
 
 .RecipeSearch {
-  width: 100%;
+  &-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 
-  .search-toolbar {
-    flex-wrap: wrap;
-    height: fit-content;
-    padding-bottom: 8px;
+  &-content {
+    max-width: 1600px;
 
-    .search-button {
-      font-size: 16px;
-      height: 40px;
-      margin-top: 8px;
-      margin-right: 16px;
-      mat-icon {
-        margin-left: 8px;
+    .search-toolbar {
+      flex-wrap: wrap;
+      height: fit-content;
+      padding-bottom: 8px;
+
+      .search-button {
+        font-size: 16px;
+        height: 40px;
+        margin-top: 8px;
+        margin-right: 16px;
+        mat-icon {
+          margin-left: 8px;
+        }
+      }
+
+      mat-form-field {
+        margin-top: 8px;
+        margin-bottom: -16px;
+        line-height: 16px;
+        font-size: 14px;
       }
     }
 
-    mat-form-field {
-      margin-top: 8px;
-      margin-bottom: -16px;
-      line-height: 16px;
-      font-size: 14px;
-    }
-  }
-
-  mat-action-row {
-    justify-content: flex-start;
-    button:first-of-type {
-      margin-right: 8px;
+    mat-action-row {
+      justify-content: flex-start;
+      button:first-of-type {
+        margin-right: 8px;
+      }
     }
   }
 }
