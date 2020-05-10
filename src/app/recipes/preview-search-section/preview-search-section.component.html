@@ -4,6 +4,12 @@
     <div class="label"><strong>Тривалість приготування:</strong> {{ durationLabel }}</div>
     <div class="label"><strong>Калорійність (на 100 гр):</strong> {{ caloriesLabel }}</div>
     <div class="label" *ngIf="filterName"><strong>На основі фільтру:</strong> "{{ filterName }}"</div>
+    <div class="label" *ngIf="onlyProducts">
+      <strong>Пошук за точною назвою продуктів (не враховуючи категорії)</strong>
+      <button mat-icon-button (click)="onlyProducts = false">
+         <mat-icon>clear</mat-icon>
+      </button>
+    </div>
   </div>
   <div class="SearchPreview-products">
     <mat-card class="ProductsContainer" *ngIf="forbiddenProducts">

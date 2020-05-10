@@ -10,4 +10,18 @@
       margin-bottom: 0px;
     }
   }
+
+  mat-chip-list {
+    margin-left: 8px;
+    display: inline-block;
+  }
+
+  .filters-list {
+    max-height: 300px;
+    overflow: auto;
+
+    mat-icon {
+      font-size: 20px;
+    }
+  }
 }

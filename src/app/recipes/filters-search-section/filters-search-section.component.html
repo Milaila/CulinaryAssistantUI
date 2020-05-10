@@ -1,9 +1,32 @@
 <div class="FiltersSearchSection">
-  <mat-card *ngFor="let filter of filters">
+  <!-- <mat-card *ngFor="let filter of filters">
     <h3>{{ filter.filterTitle }}</h3>
     <button mat-stroked-button color="primary" (click)="setFilter(filter.id)">Використати</button>
     <button mat-stroked-button color="primary" (click)="search.emit(filter.id)">Миттєвий пошук</button>
-  </mat-card>
+  </mat-card> -->
+  <mat-list role="filtersList">
+    <mat-list-item role="listitem">
+      <mat-radio-button color="primary" (change)="setFilter(0)" [checked]="!currFilterId">
+        <strong>Новий фільтр</strong>
+      </mat-radio-button>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <div class="filters-list">
+      <mat-list-item role="listitem" *ngFor="let filter of filters">
+        <mat-radio-button color="primary"
+          [checked]="currFilterId === filter.id"
+          (change)="setFilter(filter?.id)">
+          {{ filter?.filterTitle }}
+          <mat-chip-list *ngIf="filter.isDefault" selectable="false">
+            <mat-chip>стандартний</mat-chip>
+          </mat-chip-list>
+        </mat-radio-button>
+        <button mat-icon-button *ngIf="!filter.isDefault" (click)="removeFilter(filter.id)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-list-item>
+    </div>
+  </mat-list>
   <div *ngIf="auth.isAuthorized">
     <mat-form-field appearance="outline" >
       <mat-label>Назва фільтру</mat-label>

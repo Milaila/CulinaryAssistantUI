@@ -40,6 +40,14 @@ export class PreviewSearchSectionComponent implements OnInit, OnDestroy {
     return this.filterService.currFilter.filterTitle;
   }
 
+  get onlyProducts(): boolean {
+    return this.filterService.currFilter.onlyProducts;
+  }
+
+  set onlyProducts(value: boolean) {
+    this.filterService.currFilter.onlyProducts = value;
+  }
+
   removeTag(tag: string) {
     this.filterService.removeTag(tag);
   }

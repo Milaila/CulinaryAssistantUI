@@ -1,20 +1,33 @@
 <div class="IngredientsSearchSection">
-  <mat-form-field class="search">
-    <mat-label>Фільтрація за назвою</mat-label>
-    <input matInput name="product-search"
-      #searchProducts  (input)="searchByName(searchProducts.value)" placeholder="Назва продукту...">
-    <mat-icon matSuffix>search</mat-icon>
-  </mat-form-field>
   <mat-slide-toggle
     [checked]="byAvailable"
     (change)="toggleByAvailableProducts($event.checked)">
     Шукати за наявними продуктами
   </mat-slide-toggle>
   <mat-slide-toggle
-    [checked]="areAllProducts"
-    (change)="changeRootProduct($event.checked ? null : 0)">
-    Показати усі продукти
+    [checked]="byExactProducts"
+    title="пошук за продуктами, не враховуючи категорії"
+    (change)="toggleByExactProducts($event.checked)">
+    Шукати за точною назвою продуктів
   </mat-slide-toggle>
+  <mat-divider></mat-divider>
+  <div class="filter-header">  <mat-form-field class="search">
+      <mat-label>Фільтрація за назвою продукту</mat-label>
+      <input matInput name="product-search"
+        #searchProducts (input)="searchByName(searchProducts.value)" placeholder="Назва продукту...">
+      <button mat-icon-button matSuffix (click)="searchByName(searchProducts.value)">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+    <button mat-stroked-button
+      (click)="changeRootProduct(null)">
+      Показати усі продукти
+    </button>
+    <button mat-stroked-button
+      (click)="changeRootProduct(0)">
+      Показати усі корневі категорії
+    </button>
+  </div>
   <mat-divider></mat-divider>
   <div class="IngredientsSearchSection-header">
     <ng-template let-rootProduct

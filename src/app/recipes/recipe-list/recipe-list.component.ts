@@ -29,6 +29,7 @@ export class RecipeListComponent implements OnInit {
   readonly images: Map<number, Observable<string>> = new Map();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginatorFooter: MatPaginator;
 
   constructor(
     public auth: AuthService,

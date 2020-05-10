@@ -94,13 +94,15 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     this.currRecipe.id = 0;
+    this.currRecipe.imageId = 0;
     if (this.currRecipe.image?.id){
-      this.currRecipe.image.id = null;
+      this.currRecipe.image.id = 0;
     }
     this.currRecipe.ingredients?.forEach(x => x.id = 0);
     this.currRecipe.steps?.forEach(x => x.id = 0);
     this.currRecipe.tags?.forEach(x => x.id = 0);
     this.currRecipe.steps?.forEach(x => {
+      x.imageId = 0;
       if (x?.image){
         x.image.id = 0;
       }

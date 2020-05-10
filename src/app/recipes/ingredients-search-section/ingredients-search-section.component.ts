@@ -6,11 +6,8 @@ import { MatRadioChange } from '@angular/material/radio';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { SelectionModel } from '@angular/cdk/collections';
 import { filter } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'app-ingredients-search-section',
@@ -66,7 +63,7 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   }
 
   searchByName(name: string) {
-    this.productsSource.filter = name.toLocaleLowerCase();
+    this.productsSource.filter = name?.toLocaleLowerCase();
   }
 
   searchAllByName(name: string) {
@@ -79,12 +76,22 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleByExactProducts(value: boolean) {
+    if (value !== this.byExactProducts) {
+      this.filterService.currFilter.onlyProducts = value;
+    }
+  }
+
   log(event, object) {
     console.log(event, object);
   }
 
   get byAvailable(): boolean {
     return this.filterService.currFilter.byAvailableProducts;
+  }
+
+  get byExactProducts(): boolean {
+    return this.filterService.currFilter.onlyProducts;
   }
 
   isNotRequired(product: IFilterProduct): boolean {

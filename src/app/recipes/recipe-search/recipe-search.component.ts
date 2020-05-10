@@ -25,6 +25,10 @@ export class RecipeSearchComponent implements OnInit {
   ngOnInit(): void {
     this.filterService.updateProducts();
 
+    this.displayAllRecipes();
+  }
+
+  displayAllRecipes() {
     this.sortRecipesByName(this.serverService.getRecipes()).subscribe(
       recipes => this.currRecipes = this.resultRecipes = recipes || [],
       _ => alert('Error during getting recipes')
@@ -47,11 +51,13 @@ export class RecipeSearchComponent implements OnInit {
       );
   }
 
+  resetFilter() {
+    this.filterService.resetCurrentFilter();
+  }
+
   searchByRecipeName(name: string) {
-    if (name) {
-      const check = new RegExp(name, 'i');
-      this.currRecipes = this.resultRecipes.filter(r => check.test(r.title));
-    }
+    const check = new RegExp(name, 'i');
+    this.currRecipes = this.resultRecipes.filter(r => check.test(r.title));
   }
 
   private sortRecipesByName(recipes$: Observable<IRecipeGeneralModel[]>): Observable<IRecipeGeneralModel[]> {

@@ -245,6 +245,20 @@ export class FiltersService {
     );
   }
 
+  removeFilter(filterId: number) {
+    if (this.currFilter.id === filterId) {
+      this.currFilter.filterTitle = '';
+      this.currFilter.id = 0;
+    }
+
+    this.filters.delete(filterId);
+    this.onChangeFilters();
+    this.server.deleteFilter(filterId).subscribe(
+      _ => console.log('Successfully remove filter'),
+      error => alert('Error during removing filter ' + filterId)
+    );
+  }
+
   resetCurrentFilter() {
     this.initCurrFilter();
     this.updateProductsNecessity([], false);
