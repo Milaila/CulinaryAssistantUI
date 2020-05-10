@@ -21,7 +21,7 @@
         <div class="recipe-card-footer">
           <mat-divider></mat-divider>
           <div class="actions">
-            <button mat-stroked-button color="primary">Деталі</button>
+            <button mat-stroked-button color="primary" (click)="viewRecipeDetails(recipe.id)">Деталі</button>
             <button mat-stroked-button *ngIf="auth.isAuthorized">Редагувати</button>
           </div>
         </div>
@@ -36,8 +36,14 @@
     </mat-paginator>
   </ng-container>
   <ng-template #noRecipes>
-    <div *ngIf="!recipesCount" class="RecipeList-noRecipes">
-      <h3 class="thin">Нема рецептів, що відповідають заданому пошуку</h3>
+    <div class="RecipeList-noRecipes">
+      <h3 *ngIf="recipesCount == 0" class="thin">Нема рецептів, що відповідають заданому пошуку</h3>
+      <div class="spinner-container" *ngIf="!recipes">
+        <div class="spinner-container">
+          <mat-spinner></mat-spinner>
+          <span>Завантаження даних...</span>
+        </div>
+      </div>
     </div>
   </ng-template>
 </div>

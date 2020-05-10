@@ -13,8 +13,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./recipe-search.component.scss']
 })
 export class RecipeSearchComponent implements OnInit {
-  currRecipes: IRecipeGeneralModel[] = [];
-  resultRecipes: IRecipeGeneralModel[] = [];
+  currRecipes: IRecipeGeneralModel[] = null;
+  resultRecipes: IRecipeGeneralModel[] = null;
 
   constructor(
     private authService: AuthService,
@@ -29,21 +29,24 @@ export class RecipeSearchComponent implements OnInit {
   }
 
   displayAllRecipes() {
+    this.currRecipes = this.resultRecipes = null;
     this.sortRecipesByName(this.serverService.getRecipes()).subscribe(
-      recipes => this.currRecipes = this.resultRecipes = recipes || [],
+      recipes => this.currRecipes = this.resultRecipes = recipes,
       _ => alert('Error during getting recipes')
     );
   }
 
   onSearch() {
+    this.currRecipes = this.resultRecipes = null;
     this.sortRecipesByName(this.filterService.getRecipesByCurrentFilter())
       .subscribe (
-        recipes => this.currRecipes = this.resultRecipes = recipes || [],
+        recipes => this.currRecipes = this.resultRecipes = recipes,
         _ => alert('Error during filtering recipes')
       );
   }
 
   onSearchByFilter(filterId: number) {
+    this.currRecipes = this.resultRecipes = null;
     this.sortRecipesByName(this.filterService.getRecipesByFilter(+filterId))
       .subscribe(
         recipes => this.currRecipes = this.resultRecipes = recipes || [],

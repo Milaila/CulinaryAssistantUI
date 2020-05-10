@@ -1,1 +1,16 @@
-<p>recipe-details works!</p>
+<mat-toolbar color="primary"><h1>Перегляд рецепту</h1></mat-toolbar>
+<div class="RecipeDetails-container">
+  <div class="RecipeDetails-content">
+    <ng-container *ngIf="recipe; else spinner">
+      <h1>title: {{ recipe.title }}</h1>
+    </ng-container>
+    <ng-template #spinner>
+      <div class="spinner-container">
+        <div class="spinner-container">
+          <mat-spinner></mat-spinner>
+          <span>Завантаження даних...</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

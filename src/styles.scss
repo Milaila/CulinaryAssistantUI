@@ -84,7 +84,18 @@ mat-chip {
   word-break: break-word;
 }
 
-
+.spinner-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 32px;
+  span {
+    margin-top: 16px;
+  }
+}
 
 
 

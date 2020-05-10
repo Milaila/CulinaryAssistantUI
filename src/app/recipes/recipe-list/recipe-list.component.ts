@@ -6,6 +6,7 @@ import { IImageModel } from 'src/app/models/server/image-model';
 import { map, filter, tap, share } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-list',
@@ -15,7 +16,7 @@ import { PageEvent, MatPaginator } from '@angular/material/paginator';
 export class RecipeListComponent implements OnInit {
   @Input()
   set recipes(value: IRecipeGeneralModel[]) {
-    this.allRecipes = value || [];
+    this.allRecipes = value;
     this.currentPage = 0;
     this.displayRecipesInRange();
   }
@@ -33,6 +34,7 @@ export class RecipeListComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
+    private router: Router,
     private imageStore: ImagesService
   ) { }
 
@@ -44,7 +46,6 @@ export class RecipeListComponent implements OnInit {
   }
 
   getImageSrc(id: number): Observable<string> {
-    const res = this.images.get(id);
     return this.imageStore.getImage(id);
   }
 
@@ -60,6 +61,10 @@ export class RecipeListComponent implements OnInit {
     return event;
   }
 
+  viewRecipeDetails(id: number) {
+    this.router.navigate(['/recipes', id, 'details']);
+  }
+
   private displayRecipesInRange() {
     const start = this.currentPage * this.itemsPerPage;
     let end = start + this.itemsPerPage;
@@ -71,8 +76,8 @@ export class RecipeListComponent implements OnInit {
     if (end > count) {
       end = count;
     }
-    this.currRecipes = this.allRecipes.slice(start, end);
-    this.currRecipes.forEach(recipe => recipe.imageSrc = this.getImageSrc(recipe.imageId));
+    this.currRecipes = this.allRecipes?.slice(start, end);
+    this.currRecipes?.forEach(recipe => recipe.imageSrc = this.getImageSrc(recipe.imageId));
   }
 }
 

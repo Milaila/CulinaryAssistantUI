@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserModule } from '@angular/platform-browser';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -41,6 +41,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatSortModule,
     MatSidenavModule,
     MatLineModule,
+    MatProgressSpinnerModule,
     MatOptionModule,
     MatRadioModule,
     MatCommonModule,
@@ -69,6 +70,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatTableModule,
     MatSortModule,
     MatSidenavModule,
+    MatProgressSpinnerModule,
     MatLineModule,
     MatOptionModule,
     MatRadioModule,

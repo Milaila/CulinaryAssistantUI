@@ -18,19 +18,15 @@ const routes: Routes = [
   {
     path: 'recipes',
     loadChildren: () => RecipesModule
-    // loadChildren: 'recipes/recipes.module#RecipesModule'
   },
   {
     path: 'profiles',
     loadChildren: () => ProfilesModule
-    // loadChildren: './profiles/profiles.module#ProfilesModule'
   },
   {
     path: 'products',
     loadChildren: () => ProductsModule
-    // loadChildren: './products/products.module#ProductsModule'
   },
-  // { path: 'recipes/new', component: NewRecipeComponent },
   { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: 'user/registration', pathMatch: 'full' },
   {
