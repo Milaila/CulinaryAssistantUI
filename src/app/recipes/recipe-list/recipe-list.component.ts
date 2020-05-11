@@ -2,8 +2,6 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { IRecipeGeneralModel } from 'src/app/models/server/recipe-models';
 import { ImagesService } from 'src/app/services/images.service';
 import { Observable } from 'rxjs';
-import { IImageModel } from 'src/app/models/server/image-model';
-import { map, filter, tap, share } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -20,6 +18,8 @@ export class RecipeListComponent implements OnInit {
     this.currentPage = 0;
     this.displayRecipesInRange();
   }
+  @Input() noRecipesLabel: string;
+  @Input() enableEditing = false;
 
   allRecipes: IRecipeWithImage[] = [];
   currRecipes: IRecipeWithImage[] = [];
@@ -39,10 +39,6 @@ export class RecipeListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.imageSrc$ = this.imageStore.getImage(1).pipe(
-    //   filter(data => !!data),
-    //   tap(d => console.log("tap image-", 0))
-    // );
   }
 
   getImageSrc(id: number): Observable<string> {

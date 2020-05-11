@@ -47,11 +47,8 @@ export class ServerHttpService {
     return this.http.get<IRecipeGeneralModel[]>(url).pipe(tap(x => console.log(x)));
   }
 
-  getMyRecipes(id: number): Observable<IRecipeGeneralModel[]> {
-    // if (AuthUtils.isAuthorized) {
-    //   throw error();
-    // }
-    const url = `${serverUrls.recipes}/profiles/my`;
+  getMyRecipes(): Observable<IRecipeGeneralModel[]> {
+    const url = `${serverUrls.recipes}/my`;
     return this.http.get<IRecipeGeneralModel[]>(url).pipe(tap(x => console.log(x)));
   }
 

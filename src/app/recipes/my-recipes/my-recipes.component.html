@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">
+  <h1>Власні рецепти</h1>
+  <!-- <button mat-icon-button routerLink="recipes/new" title="Створити рецепт">
+    <mat-icon>add</mat-icon>
+  </button> -->
+</mat-toolbar>
+<div class="MyRecipes container">
+  <div class="content">
+    <app-recipe-list [recipes]="recipes" enableEditing="true" noRecipesLabel="Нема рецептів"></app-recipe-list>
+  </div>
+</div>

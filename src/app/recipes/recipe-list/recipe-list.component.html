@@ -22,7 +22,10 @@
           <mat-divider></mat-divider>
           <div class="actions">
             <button mat-stroked-button color="primary" (click)="viewRecipeDetails(recipe.id)">Деталі</button>
-            <button mat-stroked-button *ngIf="auth.isAuthorized">Редагувати</button>
+            <ng-container *ngIf="enableEditing && auth.isAuthorized">
+              <button mat-stroked-button>Редагувати</button>
+              <button mat-stroked-button color="warn">Видалити</button>
+            </ng-container>
           </div>
         </div>
       </mat-card>
@@ -37,7 +40,7 @@
   </ng-container>
   <ng-template #noRecipes>
     <div class="RecipeList-noRecipes">
-      <h3 *ngIf="recipesCount == 0" class="thin">Нема рецептів, що відповідають заданому пошуку</h3>
+      <h3 *ngIf="recipesCount == 0" class="thin">{{ noRecipesLabel }}</h3>
       <div class="spinner-container" *ngIf="!recipes">
         <div class="spinner-container">
           <mat-spinner></mat-spinner>
