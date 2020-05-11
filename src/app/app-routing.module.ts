@@ -37,7 +37,7 @@ const routes: Routes = [
     ]
   },
   { path: 'home', component: HomeComponent },
-  { path: '**', redirectTo: '404', pathMatch: 'full'},
+  // { path: '**', redirectTo: '404', pathMatch: 'full'},
 ];
 
 @NgModule({

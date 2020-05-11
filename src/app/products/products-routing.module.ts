@@ -8,6 +8,14 @@ const routes: Routes = [
     path: '',
     component: ProductListComponent
   },
+  {
+    path: 'list',
+    component: ProductListComponent
+  },
+  {
+    path: 'list/:id',
+    component: ProductListComponent
+  },
 ];
 
 @NgModule({

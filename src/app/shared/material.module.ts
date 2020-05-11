@@ -20,6 +20,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
@@ -44,6 +45,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatProgressSpinnerModule,
     MatOptionModule,
     MatRadioModule,
+    MatTooltipModule,
     MatCommonModule,
     MatTreeModule,
     MatDividerModule,
@@ -67,6 +69,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatPaginatorModule,
     MatAutocompleteModule,
     MatIconModule,
+    MatTooltipModule,
     MatTableModule,
     MatSortModule,
     MatSidenavModule,

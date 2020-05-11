@@ -1,0 +1,60 @@
+:host {
+  width: 100%;
+}
+
+mat-toolbar {
+  .first-page-icon {
+    font-size: 32px;
+  }
+  .prev-page-icon {
+    font-size: 26px;
+  }
+  button:last-of-type {
+    margin-right: 8px;
+  }
+}
+
+.ProductsList {
+  &.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .content {
+    width: 1600px;
+
+    .grid {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      mat-card-title {
+        word-break: break-word;
+      }
+    }
+
+    .product-card {
+      margin: 8px;
+      max-width: 200px;
+    }
+
+
+    .imageContainer {
+      flex-shrink: 0;
+      max-height: 200px;
+      overflow: hidden;
+      margin: 0 -16px;
+    }
+
+    .categories {
+      margin-top: 16px;
+      mat-chip {
+        height: auto;
+        word-break: break-word;
+        text-align: center;
+      }
+    }
+  }
+}

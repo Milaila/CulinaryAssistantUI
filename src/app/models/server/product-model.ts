@@ -1,7 +1,15 @@
 import { IModel } from './base-model';
 import { IImageModel } from './image-model';
+import { Observable } from 'rxjs';
 
-export interface IProductModel extends IProductRelations, IProductGeneralModel, IProductDetails {
+export interface IProductManageModel extends IProductGeneralModel, IProductDetails {
+  subcategories?: IProductRelationModel[];
+  categories?: IProductRelationModel[];
+}
+
+export interface IProductModel extends IProductGeneralModel, IProductDetails {
+  subcategories?: number[];
+  categories?: number[];
 }
 
 // export interface IProduct extends IProductGeneralModel {
@@ -10,13 +18,10 @@ export interface IProductModel extends IProductRelations, IProductGeneralModel, 
 // }
 
 export interface IProduct extends IProductModel {
+  // loadDetails?: boolean;
   loadDetails?: boolean;
-  loadRelations?: boolean;
-}
-
-export interface IProductRelations {
-  subcategories?: number[]; //| IProductRelationModel[]; //TO DO: change it!
-  categories?: number[]; //| IProductRelationModel[];
+  subcategoriesModels?: IProductRelationModel[];
+  categoriesModels?: IProductRelationModel[];
 }
 
 export interface IProductGeneralModel extends IModel {
@@ -44,33 +49,12 @@ export interface IProductRelationModel extends IModel {
   productId: number;
 }
 
-// export interface IProductModel extends IModel {
-//   name: string;
-//   description: string;
-//   imageId: number;
-// }
+export interface IProductName {
+  id: number;
+  name: string;
+}
 
-// export interface IProductComposition {
-//   calories: number;
-//   fats: number;
-//   carbohydrates: number;
-//   squirrels: number;
-//   water: number;
-//   ash: number;
-//   sugar: number;
-//   cellulose: number;
-//   starch: number;
-//   transFats: number;
-//   cholesterol: number;
-// }
-
-// export interface IProductDetailsModel extends IProductModel, IProductComposition {
-//   subcategories: number[];
-//   categories: number[];
-// }
-
-// export interface IProductFullDetailsModel extends IProductModel, IProductComposition {
-//   subcategories: IProductRelationModel[];
-//   categories: IProductRelationModel[];
-//   image: IImageModel;
-// }
+export interface IProductView extends IProductModel {
+  imageSrc$?: Observable<string>;
+  categories$?: Observable<IProductName[]>;
+}

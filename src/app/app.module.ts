@@ -37,6 +37,7 @@ import { AuthService } from './services/auth.service';
 import { MatDividerModule } from '@angular/material/divider';
 import { ExpansionPanelComponent } from './components/expansion-panel/expansion-panel.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ImagesService } from './services/images.service';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
   providers: [
     UserService,
     AuthService,
+    ImagesService,
     ServerHttpService,
     BaseService,
     {

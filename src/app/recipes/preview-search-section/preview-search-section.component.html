@@ -17,7 +17,7 @@
       <mat-divider></mat-divider>
       <mat-list #forbidden>
         <mat-list-item *ngFor="let product of forbiddenProducts">
-          <span matLine [title]="product.name">{{ product.name }}</span>
+          <span matLine [matTooltip]="product.name">{{ product.name }}</span>
           <button mat-icon-button (click)="removeProduct(product.id)">
              <mat-icon>clear</mat-icon>
           </button>
@@ -29,7 +29,7 @@
       <mat-divider></mat-divider>
       <mat-list #available>
         <mat-list-item *ngFor="let product of availableProducts">
-          <span matLine [title]="product.name">{{ product.name }}</span>
+          <span matLine [matTooltip]="product.name">{{ product.name }}</span>
           <button mat-icon-button (click)="removeProduct(product.id)">
              <mat-icon>clear</mat-icon>
           </button>
@@ -47,7 +47,7 @@
       <mat-divider></mat-divider>
       <mat-selection-list #required>
         <mat-list-item *ngFor="let product of requiredProducts">
-          <span matLine [title]="product.name">{{ product.name }}</span>
+          <span matLine [matTooltip]="product.name">{{ product.name }}</span>
           <button mat-icon-button (click)="removeProduct(product.id)">
              <mat-icon>clear</mat-icon>
           </button>

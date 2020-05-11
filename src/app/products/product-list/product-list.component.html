@@ -1,1 +1,47 @@
-<p>product-list works!</p>
+<mat-toolbar color="primary">
+  <button mat-icon-button
+    (click)="navigateToProduct(null)"
+    matTooltip="перехід до основних категорій продуктів"
+    *ngIf="currProduct">
+    <mat-icon class="first-page-icon">first_page</mat-icon>
+  </button>
+  <button mat-icon-button
+    (click)="returnBack()"
+    matTooltip="перехід до попереднього продукту"
+    *ngIf="breadCrumbs?.length">
+    <mat-icon class="prev-page-icon">arrow_back</mat-icon>
+  </button>
+  <h1>{{ currProduct?.name || 'Список основних продуктів'}}</h1>
+</mat-toolbar>
+<div class="ProductsList container">
+  <div class="content">
+    <div class="grid">
+      <ng-container *ngIf="currProducts; else loading">
+        <mat-card class="product-card" *ngFor="let product of currProducts">
+          <mat-card-header>
+            <mat-card-title (click)="navigateToProduct(product.id)">{{ product.name }}</mat-card-title>
+          </mat-card-header>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <div class="imageContainer" *ngIf="(product.imageSrc$ | async) as image">
+              <img mat-card-image [src]="image">
+            </div>
+            <div class="categories">
+              <mat-chip-list *ngIf="product.categories$ | async as categories">
+                <mat-chip color="accent" selected (click)="navigateToProduct(category.id)"*ngFor="let category of categories">
+                  {{ category.name }}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </ng-container>
+      <ng-template #loading>
+        <div class="spinner-container">
+          <mat-spinner></mat-spinner>
+          <span>Завантаження даних...</span>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

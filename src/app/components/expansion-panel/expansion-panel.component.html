@@ -11,7 +11,7 @@
     <ng-container *ngFor="let action of actions">
       <button mat-button
         *ngIf="action && (!action.visible || action.visible())"
-        [title]="action.hint || ''"
+        [matTooltip]="action.hint || ''"
         [disabled]="action.disabled || false"
         (click)="action.click ? action.click() : null"
       >{{ action.label }}</button>

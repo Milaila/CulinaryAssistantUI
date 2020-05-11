@@ -13,7 +13,7 @@ import { ISignInResponse } from '../models/server/sign-up-model copy';
 import { map, tap } from 'rxjs/operators';
 import { IProfileGeneralModel, IProfileModel } from '../models/server/profile-models';
 import { IImageModel } from '../models/server/image-model';
-import { IProductModel, IProductGeneralModel } from '../models/server/product-model';
+import { IProductModel, IProductGeneralModel, IProductManageModel } from '../models/server/product-model';
 
 @Injectable({
   providedIn: 'root'
@@ -190,9 +190,9 @@ export class ServerHttpService {
     return this.http.get<IProductGeneralModel[]>(serverUrls.products).pipe(tap(x => console.log(x)));
   }
 
-  getProductWithDetails(id: number): Observable<IProductModel> {
+  getProductWithFullDetails(id: number): Observable<IProductManageModel> {
     const url = `${serverUrls.products}/${id}/details`;
-    return this.http.get<IProductModel>(url).pipe(tap(x => console.log(x)));
+    return this.http.get<IProductManageModel>(url).pipe(tap(x => console.log(x)));
   }
 
   getProductsWithRelations(): Observable<IProductModel[]> {
@@ -210,12 +210,12 @@ export class ServerHttpService {
     return this.http.get<IProductGeneralModel[]>(url).pipe(tap(x => console.log(x)));
   }
 
-  createProduct(product: IProductModel): Observable<number> {
+  createProduct(product: IProductManageModel): Observable<number> {
     const url = serverUrls.products + '/create';
     return this.http.post<number>(url, product).pipe(tap(x => console.log(x)));
   }
 
-  editProduct(product: IProductModel): Observable<any> {
+  editProduct(product: IProductManageModel): Observable<any> {
     const url = serverUrls.products + '/edit';
     return this.http.put(url, product).pipe(tap(x => console.log(x)));
   }

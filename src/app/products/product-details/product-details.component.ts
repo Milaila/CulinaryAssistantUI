@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IProductView } from 'src/app/models/server/product-model';
 
 @Component({
   selector: 'app-product-details',

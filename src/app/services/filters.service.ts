@@ -12,15 +12,14 @@ import { IRecipeModel, IRecipeGeneralModel, IRecipeTagModel } from '../models/se
 })
 export class FiltersService {
   private filters: Map<number, IFilterModel> = new Map();
-  products: Map<number, IFilterProduct> = new Map();
-  // private currRootProductFull: IProductModel;
   private currRootProductId: number;
   private breadCrumbs: number[] = [];
+  private currProducts: number[] = [];
+  readonly products: Map<number, IFilterProduct> = new Map();
 
   readonly filtersChanged$: BehaviorSubject<IFilterGeneralModel[]> = new BehaviorSubject<IFilterGeneralModel[]>(null);
   // productsChanged: BehaviorSubject<IFilterGeneralProduct[]> = new BehaviorSubject<IFilterGeneralProduct[]>(null);
   // filtersChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
-  private currProducts: number[] = [];
   readonly currProductsChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
   readonly onProductsUpdated$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   readonly currRootProductChanged$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
@@ -46,7 +45,7 @@ export class FiltersService {
       take(1),
     ).subscribe(
       products => {
-        this.products = new Map();
+        this.products.clear();
         const necessity = ProductNecessity.Undefined;
         products.forEach(product => this.products.set(product.id, {...product, necessity}));
         this.setRootProduct(0, false);
@@ -54,6 +53,11 @@ export class FiltersService {
       },
       _ => alert('Error while getting products!')
     );
+  }
+
+  clearProducts() {
+    this.products.clear();
+    this.onProductsUpdated$.next(null);
   }
 
   private setCurrProductsByRoot(rootProduct?: number) {
@@ -300,10 +304,6 @@ export class FiltersService {
     this.onProductsUpdated$.next(true);
   }
 
-  // setByAvailableProducts(byAvailableProducts: boolean) {
-  //   this.currFilter.byAvailableProducts = byAvailableProducts;
-  //   this.clearProductsNecessity();
-  // }
 
   getProductsByNecessity(necessity: ProductNecessity): IFilterProduct[] {
     return [...this.products.values()].filter(x => x.necessity === necessity);

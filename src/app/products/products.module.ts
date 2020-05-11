@@ -22,7 +22,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { MaterialModule } from '../shared/material.module';
 
 @NgModule({
   declarations: [
@@ -35,23 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ProductsRoutingModule,
     // BrowserModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatCardModule,
-    FormsModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatLineModule,
-    MatOptionModule,
-    MatCommonModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatButtonModule,
-    HttpClientModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatFormFieldModule,
+    MaterialModule,
     // BrowserAnimationsModule,
   ]
 })

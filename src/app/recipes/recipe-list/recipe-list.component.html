@@ -10,7 +10,7 @@
     <div class="RecipeList-recipes">
       <mat-card class="recipe-card" *ngFor="let recipe of currRecipes">
         <div class="recipe-card-content">
-          <div class="imageContainer" *ngIf="recipe.imageSrc | async as image">
+          <div class="imageContainer" *ngIf="recipe.imageSrc$ | async as image">
             <img mat-card-image [src]="image">
           </div>
           <mat-card-title>{{ recipe.title }}</mat-card-title>
@@ -42,10 +42,8 @@
     <div class="RecipeList-noRecipes">
       <h3 *ngIf="recipesCount == 0" class="thin">{{ noRecipesLabel }}</h3>
       <div class="spinner-container" *ngIf="!recipes">
-        <div class="spinner-container">
-          <mat-spinner></mat-spinner>
-          <span>Завантаження даних...</span>
-        </div>
+        <mat-spinner></mat-spinner>
+        <span>Завантаження даних...</span>
       </div>
     </div>
   </ng-template>

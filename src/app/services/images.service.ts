@@ -3,7 +3,7 @@ import { ServerHttpService } from './server-http.sevice';
 import { AuthService } from './auth.service';
 import { IImageModel } from '../models/server/image-model';
 import { Observable, of, Subject, BehaviorSubject, iif, from } from 'rxjs';
-import { take, filter, switchMap, switchMapTo, map } from 'rxjs/operators';
+import { take, filter, switchMap, switchMapTo, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -29,25 +29,21 @@ export class ImagesService {
     }
   }
 
-  // getImage2(id: number): string {
-  //   const image = this.images.get(id);
-  //   if (!image) {
-  //     this.server.getImage(id).pipe(take(1), filter(x => !!x)).subscribe(
-  //       newImage => this.images.set(newImage.id, newImage),
-  //       _ => alert('Error during getting image')
-  //     );
-  //   }
-  //   return image.data;
-  // }
-
   getImage(id: number): Observable<string> {
     if (!id) {
       return of(null);
     }
-    if (!this.images.get(id)) {
-      this.updateImageFromServer(id, null);
+    let imageSubj = this.images.get(id);
+    if (!imageSubj) {
+      imageSubj = new BehaviorSubject<string>(null);
+      this.images.set(id, imageSubj);
+      return this.server.getImage(id).pipe(
+        filter(image => !!image?.data),
+        map(image => 'data:image/jpeg;base64,' + image.data),
+        tap(newImage => imageSubj.next(newImage))
+      );
     }
-    return this.images.get(id);
+    return imageSubj;
   }
 
   updateImage(id: number) {
@@ -85,5 +81,4 @@ export class ImagesService {
   clearImages() {
     this.images.clear();
   }
-
 }

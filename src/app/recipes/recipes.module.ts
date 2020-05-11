@@ -21,6 +21,7 @@ import { ExpansionPanelComponent } from '../components/expansion-panel/expansion
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MaterialModule } from '../shared/material.module';
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
+import { FiltersService } from '../services/filters.service';
 
 
 @NgModule({
@@ -47,6 +48,9 @@ import { MyRecipesComponent } from './my-recipes/my-recipes.component';
     MaterialModule,
     HttpClientModule,
     // BrowserAnimationsModule,
+  ],
+  providers: [
+    FiltersService
   ],
   // providers: [
   //   ServerHttpService,

@@ -6,7 +6,7 @@
   </mat-slide-toggle>
   <mat-slide-toggle
     [checked]="byExactProducts"
-    title="пошук за продуктами, не враховуючи категорії"
+    matTooltip="пошук за продуктами, не враховуючи категорії"
     (change)="toggleByExactProducts($event.checked)">
     Шукати за точною назвою продуктів
   </mat-slide-toggle>
@@ -92,7 +92,7 @@
         <th mat-header-cell *matHeaderCellDef>
           <mat-checkbox (change)="onGroupRequiredChecked($event)"
                         [checked]="isAllRequired"
-                        title="обов'язкові продукти"
+                        matTooltip="обов'язкові продукти"
                         color="primary"
                         [indeterminate]="areAnyRequired">
           </mat-checkbox>
@@ -110,7 +110,7 @@
         <th mat-header-cell *matHeaderCellDef>
           <mat-checkbox (change)="onGroupNotRequiredChecked($event)"
                         color="warn"
-                        [title]="notRequiredHint"
+                        [matTooltip]="notRequiredHint"
                         [checked]="isAllNotRequired"
                         [indeterminate]="areAnyNotRequired">
           </mat-checkbox>

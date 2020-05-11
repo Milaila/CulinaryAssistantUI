@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { IRecipeGeneralModel } from 'src/app/models/server/recipe-models';
 import { ImagesService } from 'src/app/services/images.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -27,7 +27,7 @@ export class RecipeListComponent implements OnInit {
   itemsOptions = [12, 24, 36, 48, 64];
   currentPage = 0;
   pageEvent: PageEvent;
-  readonly images: Map<number, Observable<string>> = new Map();
+  // readonly images: Map<number, Observable<string>> = new Map();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) paginatorFooter: MatPaginator;
@@ -42,6 +42,9 @@ export class RecipeListComponent implements OnInit {
   }
 
   getImageSrc(id: number): Observable<string> {
+    if (!id) {
+      return of(null);
+    }
     return this.imageStore.getImage(id);
   }
 
@@ -73,10 +76,10 @@ export class RecipeListComponent implements OnInit {
       end = count;
     }
     this.currRecipes = this.allRecipes?.slice(start, end);
-    this.currRecipes?.forEach(recipe => recipe.imageSrc = this.getImageSrc(recipe.imageId));
+    this.currRecipes?.forEach(recipe => recipe.imageSrc$ = this.getImageSrc(recipe.imageId));
   }
 }
 
 export interface IRecipeWithImage extends IRecipeGeneralModel {
-  imageSrc?: Observable<string>;
+  imageSrc$?: Observable<string>;
 }
