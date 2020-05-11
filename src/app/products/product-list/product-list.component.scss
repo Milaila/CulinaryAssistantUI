@@ -12,6 +12,12 @@ mat-toolbar {
   button:last-of-type {
     margin-right: 8px;
   }
+  min-height: 64px;
+  height: fit-content;
+  h1 {
+    word-break: break-word;
+    white-space: normal;
+  }
 }
 
 .ProductsList {
@@ -35,11 +41,24 @@ mat-toolbar {
       }
     }
 
-    .product-card {
-      margin: 8px;
-      max-width: 200px;
+    @media screen and (max-width: 532px) {
+      .grid .product-card {
+        width: 100%;
+        mat-card-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .imageContainer {
+          max-width: 232px;
+        }
+      }
     }
 
+    .product-card {
+      margin: 8px;
+      width: 200px;
+    }
 
     .imageContainer {
       flex-shrink: 0;
