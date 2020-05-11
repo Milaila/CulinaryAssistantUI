@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IRecipeModel, IRecipeDetails } from 'src/app/models/server/recipe-models';
+import { IRecipeModel, IRecipeDetails, IIngredientModel } from 'src/app/models/server/recipe-models';
 import { ServerHttpService } from 'src/app/services/server-http.sevice';
 import { Observable, Subscription } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
@@ -30,9 +30,11 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.recipeId = +this.route.snapshot.params.id;
     this.subscriptions.add(this.server.getRecipeWithDetails(this.recipeId).subscribe(
-      recipe => this.recipe = recipe,
+      recipe => this.recipe = {
+        ...recipe,
+        steps: recipe.steps?.sort((x, y) => x.orderNumber > y.orderNumber ? 1 : -1)
+      },
       error => this.router.navigate(['/404'])
     ));
   }
-
 }

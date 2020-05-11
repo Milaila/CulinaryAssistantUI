@@ -1,9 +1,63 @@
 <mat-toolbar color="primary"><h1>Перегляд рецепту</h1></mat-toolbar>
 <div class="RecipeDetails-container">
   <div class="RecipeDetails-content">
-    <ng-container *ngIf="recipe; else spinner">
-      <h1>title: {{ recipe.title }}</h1>
-    </ng-container>
+    <mat-card *ngIf="recipe; else spinner">
+      <mat-card-header color="primary">
+        <mat-card-title color="primary">{{ recipe.title }}</mat-card-title>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <section class="general outer-container indent">
+          <div class="image-container" *ngIf="recipe.image?.data as image">
+            <img [src]="'data:image/jpeg;base64,' + image" alt="">
+          </div>
+          <div class="description container">
+            <p><strong>Тривалість приготуваня:</strong>&nbsp;{{ recipe.duration || '?' }} хв</p>
+            <p><strong>Калорійність на 100 гр:</strong>&nbsp;{{ recipe.calories || '?' }} кКал</p>
+            <p><strong>Кількість порцій:</strong>&nbsp;{{ recipe.portions || '?' }}</p>
+            <p>{{ recipe.description }}</p>
+          </div>
+        </section>
+        <section class="tags indent" *ngIf="recipe.tags as tags">
+          <mat-chip-list>
+            <mat-chip *ngFor="let tag of tags">{{ tag.tag }}</mat-chip>
+          </mat-chip-list>
+        </section>
+        <mat-list class="ingredients container indent">
+          <h2 mat-subheader>Інгредієнти</h2>
+          <mat-list-item *ngFor="let ingredient of recipe.ingredients || []">
+            <button mat-icon-button color="primary">
+              <mat-icon matListIcon>info</mat-icon>
+            </button>
+            <span matLine>
+              <strong>{{ ingredient.product?.name }}</strong>
+              <span *ngIf="!ingredient.necessity" class="grey">&nbsp;(опціональний)</span>
+              &nbsp;- {{ ingredient.weight }} гр
+            </span>
+            <p class="note" matLine *ngIf="ingredient.note">{{ ingredient.note }}</p>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item class="ingredients-description" *ngIf="recipe.ingredientsDescription as description">
+            {{ description }}
+          </mat-list-item>
+        </mat-list>
+          <mat-divider></mat-divider>
+        <section class="steps" *ngIf="recipe.steps?.length">
+          <div class="container indent" *ngFor="let step of recipe.steps">
+            <div class="outer-container">
+              <div class="image-container" *ngIf="step.image?.data as image">
+                <img [src]="'data:image/jpeg;base64,' + image" alt="">
+              </div>
+              <div class="description container">
+                <mat-card-subtitle>{{ step.title || ('Крок ' + step.orderNumber) }}</mat-card-subtitle>
+                {{ recipe.description }}
+              </div>
+            </div>
+          </div>
+        </section>
+      </mat-card-content>
+    </mat-card>
+
     <ng-template #spinner>
       <div class="spinner-container">
         <div class="spinner-container">

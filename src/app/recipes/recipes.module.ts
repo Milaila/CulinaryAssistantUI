@@ -20,6 +20,7 @@ import { PreviewSearchSectionComponent } from './preview-search-section/preview-
 import { ExpansionPanelComponent } from '../components/expansion-panel/expansion-panel.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MaterialModule } from '../shared/material.module';
+import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { MaterialModule } from '../shared/material.module';
     TagsSearchSectionComponent,
     LimitsSearchSectionComponent,
     PreviewSearchSectionComponent,
+    MyRecipesComponent,
   ],
   imports: [
     RecipesRoutingModule,
