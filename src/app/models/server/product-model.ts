@@ -12,11 +12,6 @@ export interface IProductModel extends IProductGeneralModel, IProductDetails {
   categories?: number[];
 }
 
-// export interface IProduct extends IProductGeneralModel {
-//   details?: IProductDetails;
-//   relations?: IProductRelations;
-// }
-
 export interface IProduct extends IProductModel {
   // loadDetails?: boolean;
   loadDetails?: boolean;
@@ -56,5 +51,6 @@ export interface IProductName {
 
 export interface IProductView extends IProductModel {
   imageSrc$?: Observable<string>;
-  categories$?: Observable<IProductName[]>;
+  categoryNames?: IProductName[];
+  subcategoryNames?: IProductName[];
 }

@@ -80,8 +80,17 @@ mat-toolbar {
   width: 100%;
 }
 
-mat-chip {
+mat-chip-list mat-chip.mat-standard-chip {
   word-break: break-word;
+  height: fit-content;
+}
+
+mat-list {
+  .mat-list-item .mat-list-text .mat-line {
+    flex-wrap: wrap;
+    word-break: break-word;
+    white-space: normal;
+  }
 }
 
 .spinner-container {
@@ -105,7 +114,9 @@ mat-chip {
   float: right;
 }
 
-
+p {
+  word-break: break-word;
+}
 
 
 

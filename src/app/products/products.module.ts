@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProductsRoutingModule } from './products-routing.module';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductEditorComponent } from './product-editor/product-editor.component';
-import { ProductDetailsComponent } from './product-details/product-details.component';
+import { ProductDetailsDialogComponent } from './product-details/product-details.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -23,12 +23,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../shared/material.module';
+import { ProductsService } from '../services/products.service';
 
 @NgModule({
   declarations: [
     ProductListComponent,
     ProductEditorComponent,
-    ProductDetailsComponent
+    ProductDetailsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +38,12 @@ import { MaterialModule } from '../shared/material.module';
     ReactiveFormsModule,
     MaterialModule,
     // BrowserAnimationsModule,
-  ]
+  ],
+  entryComponents: [
+    ProductDetailsDialogComponent
+  ],
+  providers: [
+    ProductsService
+  ],
 })
 export class ProductsModule { }

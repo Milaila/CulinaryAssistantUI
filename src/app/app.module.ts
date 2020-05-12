@@ -38,6 +38,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ExpansionPanelComponent } from './components/expansion-panel/expansion-panel.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ImagesService } from './services/images.service';
+import { ImageDialogComponent } from './components/image-dialog/image-dialog.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { ImagesService } from './services/images.service';
     HomeComponent,
     HeaderComponent,
     NotFoundComponent,
+    ImageDialogComponent,
+    ConfirmDialogComponent,
     // ExpansionPanelComponent
   ],
   imports: [

@@ -6,6 +6,8 @@ import { ServerHttpService } from './server-http.sevice';
 import { Subscription, BehaviorSubject, Subject, Observable } from 'rxjs';
 import { take, catchError, map, filter } from 'rxjs/operators';
 import { IRecipeModel, IRecipeGeneralModel, IRecipeTagModel } from '../models/server/recipe-models';
+import { ImagesService } from './images.service';
+import { IProductView } from '../models/server/product-model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +38,7 @@ export class FiltersService {
   constructor(
     private auth: AuthService,
     private server: ServerHttpService,
+    private imageStore: ImagesService
   ) {
     this.initCurrFilter();
   }
@@ -63,13 +66,28 @@ export class FiltersService {
   private setCurrProductsByRoot(rootProduct?: number) {
     let products = [...this.products.values()];
     if (rootProduct) {
-      products = products.filter(x => x?.categories?.includes(rootProduct))
+      products = products.filter(x => x?.categories?.includes(rootProduct));
     }
     else if (rootProduct === 0) {
       products = products.filter(x => !x.categories?.length);
     }
     this.currProducts = this.sortProductsByNameAndType(products);
     this.currProductsChanged$.next(this.currProducts);
+  }
+
+  getProductViewDetails(productId: number): IProductView {
+    const product = this.products.get(productId);
+    if (!product) {
+      return null;
+    }
+    return {
+      ...product,
+      categories: null,
+      subcategories: null,
+      imageSrc$: this.imageStore.getImage(product.imageId),
+      categoryNames: product.categories?.map(x => this.products.get(x)),
+      subcategoryNames: product.subcategories?.map(x => this.products.get(x)),
+    };
   }
 
   setCurrProductsByName(namePart: string) {

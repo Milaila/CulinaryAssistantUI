@@ -14,6 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -44,6 +45,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatLineModule,
     MatProgressSpinnerModule,
     MatOptionModule,
+    MatDialogModule,
     MatRadioModule,
     MatTooltipModule,
     MatCommonModule,
@@ -70,6 +72,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatAutocompleteModule,
     MatIconModule,
     MatTooltipModule,
+    MatDialogModule,
     MatTableModule,
     MatSortModule,
     MatSidenavModule,

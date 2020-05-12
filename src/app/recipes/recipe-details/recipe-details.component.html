@@ -12,7 +12,7 @@
             <img [src]="'data:image/jpeg;base64,' + image" alt="">
           </div>
           <div class="description container">
-            <p><strong>Тривалість приготуваня:</strong>&nbsp;{{ recipe.duration || '?' }} хв</p>
+            <p><strong>Тривалість приготування:</strong>&nbsp;{{ recipe.duration || '?' }} хв</p>
             <p><strong>Калорійність на 100 гр:</strong>&nbsp;{{ recipe.calories || '?' }} кКал</p>
             <p><strong>Кількість порцій:</strong>&nbsp;{{ recipe.portions || '?' }}</p>
             <p>{{ recipe.description }}</p>
@@ -20,13 +20,13 @@
         </section>
         <section class="tags indent" *ngIf="recipe.tags as tags">
           <mat-chip-list>
-            <mat-chip *ngFor="let tag of tags">{{ tag.tag }}</mat-chip>
+            <mat-chip color="accent" selected *ngFor="let tag of tags">{{ tag.tag }}</mat-chip>
           </mat-chip-list>
         </section>
         <mat-list class="ingredients container indent">
           <h2 mat-subheader>Інгредієнти</h2>
           <mat-list-item *ngFor="let ingredient of recipe.ingredients || []">
-            <button mat-icon-button color="primary">
+            <button mat-icon-button color="primary" (click)="openProduct(ingredient?.product?.id)">
               <mat-icon matListIcon>info</mat-icon>
             </button>
             <span matLine>

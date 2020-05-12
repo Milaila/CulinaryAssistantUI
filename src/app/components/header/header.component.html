@@ -10,8 +10,8 @@
         routerLinkActive="link-active">Вхід</button>
       <button mat-menu-item *ngIf="!isAuthorized" routerLink="/user/registration"
         routerLinkActive="link-active">Реєстрація</button>
-      <button mat-menu-item *ngIf="isAuthorized" routerLink=""
-        routerLinkActive="link-active">Мій профіль</button>
+      <!-- <button mat-menu-item *ngIf="isAuthorized" routerLink=""
+        routerLinkActive="link-active">Мій профіль</button> -->
       <button mat-menu-item *ngIf="isAuthorized" routerLink=""
         routerLinkActive="link-active">Вихід</button>
     </mat-menu>
@@ -28,13 +28,16 @@
     <mat-menu #recipesMenu="matMenu">
       <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
         routerLinkActive="link-active">Мої рецепти</button>
-      <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/filters"
-        routerLinkActive="link-active">Мої фільтри</button>
+      <!-- <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/filters"
+        routerLinkActive="link-active">Мої фільтри</button> -->
       <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/new"
         routerLinkActive="link-active">Створення рецепту</button>
       <button mat-menu-item routerLink="/recipes/search"
         routerLinkActive="link-active">Пошук рецептів</button>
     </mat-menu>
+    <span class="spacer"></span>
+    <button mat-icon-button *ngIf="!isAuthorized"><mat-icon>login</mat-icon></button>
+    <button mat-icon-button *ngIf="isAuthorized"><mat-icon>logout</mat-icon></button>
   </mat-toolbar>
 </div>
 

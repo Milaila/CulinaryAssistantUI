@@ -60,7 +60,7 @@
       </ng-container>
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Назва </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <td mat-cell *matCellDef="let element" (click)="openProductDialog(element.id)"> {{element.name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="calories">

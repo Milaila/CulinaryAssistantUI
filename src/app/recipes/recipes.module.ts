@@ -22,6 +22,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MaterialModule } from '../shared/material.module';
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 import { FiltersService } from '../services/filters.service';
+import { ProductDetailsDialogComponent } from '../products/product-details/product-details.component';
 
 
 @NgModule({
@@ -52,14 +53,8 @@ import { FiltersService } from '../services/filters.service';
   providers: [
     FiltersService
   ],
-  // providers: [
-  //   ServerHttpService,
-  //   AuthService,
-  //   {
-  //     provide: HTTP_INTERCEPTORS,
-  //     useClass: AuthInterceptor,
-  //     multi: true
-  //   }
-  // ],
+  entryComponents: [
+    ProductDetailsDialogComponent
+  ]
 })
 export class RecipesModule { }

@@ -1,6 +1,6 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="header" color="primary">
   <button mat-icon-button
-    (click)="navigateToProduct(null)"
+    (click)="navigateToProduct(0, true)"
     matTooltip="перехід до основних категорій продуктів"
     *ngIf="currProduct">
     <mat-icon class="first-page-icon">first_page</mat-icon>
@@ -15,20 +15,84 @@
 </mat-toolbar>
 <div class="ProductsList container">
   <div class="content">
+    <div *ngIf="currProduct" class="details" color="basic">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Деталі</mat-panel-title>
+          <mat-panel-description>Зображення, склад, опис, категорії</mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <ng-template matExpansionPanelContent>
+          <div class="main">
+            <div class="image-сontainer" *ngIf="(currProduct.imageSrc$ | async) as image">
+              <img [src]="image" alt="">
+            </div>
+            <div class="composition-container">
+              <span class="label">Приблизний хімічний склад та харчова цінність (на 100 гр):</span>
+              <div class="composition-data">
+                <div class="col">
+                  <p><strong>Калорійність: </strong>
+                    {{ currProduct.calories || 'н/д' }}<span>&nbsp;&nbsp;(кКал)</span></p>
+                  <p><strong>Жири: </strong>
+                    {{ currProduct.fats || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                  <p><strong>Білки: </strong>
+                    {{ currProduct.squirrels || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                  <p><strong>Вуглеводи: </strong>
+                    {{ currProduct.carbohydrates || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                  <p><strong>Вода: </strong>
+                    {{ currProduct.water || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                  <p><strong>Зола: </strong>
+                    {{ currProduct.ash || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                </div>
+                <div class="col">
+                  <p><strong>Цукор: </strong>
+                    {{ currProduct.sugar || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                  <p><strong>Крохмал: </strong>
+                    {{ currProduct.starch || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                  <p><strong>Холестерин: </strong>
+                    {{ currProduct.cholesterol || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                  <p><strong>Клітковина: </strong>
+                    {{ currProduct.cellulose || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                  <p><strong>Трансжири: </strong>
+                    {{ currProduct.transFats || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
+                </div>
+              </div>
+              <!-- <p><strong>: </strong>{{ currProduct. + ' кКал' || 'н/д' }} г</p>
+              <p><strong>: </strong>{{ currProduct. }} г</p> -->
+            </div>
+          </div>
+          <div class="description">
+            <p>{{ currProduct.description }}</p>
+            <div class="categories">
+              <mat-chip-list *ngIf="currProduct.categoryNames as categories">
+                <mat-chip color="accent" selected (click)="navigateToProduct(category?.id, true)"
+                  *ngFor="let category of categories">
+                  {{ category.name }}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </div>
+        </ng-template>
+      </mat-expansion-panel>
+    </div>
+    <mat-divider></mat-divider>
     <div class="grid">
       <ng-container *ngIf="currProducts; else loading">
-        <mat-card class="product-card" *ngFor="let product of currProducts">
+        <mat-card class="product-card"
+          *ngFor="let product of currProducts"
+          (click)="navigateToProduct(product?.id, true)">
           <mat-card-header>
-            <mat-card-title (click)="navigateToProduct(product.id)">{{ product.name }}</mat-card-title>
+            <mat-card-title (click)="navigateToProduct(product?.id, true)">{{ product?.name }}</mat-card-title>
           </mat-card-header>
           <mat-divider></mat-divider>
           <mat-card-content>
-            <div class="imageContainer" *ngIf="(product.imageSrc$ | async) as image">
+            <div class="imageContainer" *ngIf="(product?.imageSrc$ | async) as image">
               <img mat-card-image [src]="image">
             </div>
             <div class="categories">
-              <mat-chip-list *ngIf="product.categories$ | async as categories">
-                <mat-chip color="accent" selected (click)="navigateToProduct(category.id)"*ngFor="let category of categories">
+              <mat-chip-list *ngIf="product?.categoryNames as categories">
+                <mat-chip color="accent" selected (click)="navigateToProduct(category?.id, true)"
+                  *ngFor="let category of categories">
                   {{ category.name }}
                 </mat-chip>
               </mat-chip-list>

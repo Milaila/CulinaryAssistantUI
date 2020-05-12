@@ -8,6 +8,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { filter } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductDetailsDialogComponent } from 'src/app/products/product-details/product-details.component';
 
 @Component({
   selector: 'app-ingredients-search-section',
@@ -29,7 +31,10 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   rootProductId: number;
   subscriptions = new Subscription();
 
-  constructor(private filterService: FiltersService) { }
+  constructor(
+    private filterService: FiltersService,
+    private dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
     this.subscriptions.add(this.filterService.currRootProductChanged$
@@ -171,18 +176,12 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
     }
   }
 
-  // getProductColor(necessity: number): string {
-  //   // const necessity = this.getProduct(productId).necessity;
-  //   switch (+necessity) {
-  //     // case ProductNecessity.Available: color = '#ffff88'; break;
-  //     // case ProductNecessity.BecomeAvailable: color = '#fafae8'; break;
-  //     // case ProductNecessity.BecomeForbidden: color = '#ffcccc'; break;
-  //     // case ProductNecessity.BecomeRequired: color = '#d4f8cd'; break;
-  //     case ProductNecessity.NotRequired: return this.byAvailable ? '#ffff88' : '#f58585';
-  //     case ProductNecessity.Required: return '#acfa9d';
-  //     default: return '#ffffff';
-  //   }
-  // }
+  openProductDialog(productId: number): void {
+    this.dialog.open(ProductDetailsDialogComponent, {
+      width: '500px',
+      data: { product: this.filterService.getProductViewDetails(productId) }
+    }).afterClosed().subscribe();
+  }
 }
 
 export interface ExpandedProduct extends IFilterProduct {

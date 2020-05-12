@@ -5,6 +5,8 @@ import { IRecipeModel, IRecipeDetails, IIngredientModel } from 'src/app/models/s
 import { ServerHttpService } from 'src/app/services/server-http.sevice';
 import { Observable, Subscription } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductDetailsDialogComponent } from 'src/app/products/product-details/product-details.component';
 
 @Component({
   selector: 'app-recipe-details',
@@ -20,6 +22,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private dialog: MatDialog,
     private server: ServerHttpService
   ) { }
 
@@ -36,5 +39,14 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
       },
       error => this.router.navigate(['/404'])
     ));
+  }
+
+  openProduct(productId: number): void {
+    const dialogRef = this.dialog.open(ProductDetailsDialogComponent, {
+      width: '600px',
+      data: { productId }
+    });
+
+    this.subscriptions.add(dialogRef.afterClosed().subscribe());
   }
 }

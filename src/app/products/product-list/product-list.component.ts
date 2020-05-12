@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ServerHttpService } from 'src/app/services/server-http.sevice';
-import { IProduct, IProductModel, IProductDetails, IProductGeneralModel } from 'src/app/models/server/product-model';
-import { take, map, tap } from 'rxjs/operators';
+import { IProduct, IProductModel, IProductDetails, IProductGeneralModel, IProductName, IProductView } from 'src/app/models/server/product-model';
+import { take, map, tap, filter } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 import { ImagesService } from 'src/app/services/images.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductDetailsDialogComponent } from '../product-details/product-details.component';
 
 @Component({
   selector: 'app-product-list',
@@ -23,6 +25,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private server: ServerHttpService,
+    public dialog: MatDialog,
     private imageStore: ImagesService,
   ) {
   }
@@ -34,7 +37,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const id = +this.route.snapshot.params.id;
     this.subscriptions.add(this.route.params.subscribe(x => {
-      console.log(x, x.id, this.products?.size);
       if (this.products?.size) {
         this.setRootProduct(+x.id);
       }
@@ -43,25 +45,26 @@ export class ProductListComponent implements OnInit, OnDestroy {
       take(1),
     ).subscribe(
       products => {
+        this.breadCrumbs = [ ];
         products.forEach(product => this.products.set(product.id, product));
-        this.setRootProduct(id || 0, false);
+        this.setRootProduct(id || 0);
       },
       _ => alert('Error while getting products!')
     );
   }
 
-  navigateToProduct(productId: number) {
+  navigateToProduct(productId: number, saveBreadCrumb: boolean) {
     if (productId !== this.currProduct?.id) {
+      if (saveBreadCrumb) {
+        this.breadCrumbs.push(this.currProduct?.id);
+      }
       this.router.navigate(['products/list', productId || 0]);
     }
   }
 
-  private setRootProduct(rootProduct?: number, saveBreadCrumb = true) {
+  private setRootProduct(rootProduct?: number) {
     if (rootProduct === this.currProduct?.id) {
       return;
-    }
-    if (saveBreadCrumb) {
-      this.breadCrumbs.push(this.currProduct?.id);
     }
     if (!rootProduct) {
       this.breadCrumbs = [];
@@ -71,6 +74,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.currProduct = this.products.get(rootProduct);
 
     if (this.currProduct) {
+      this.currProduct.imageSrc$ = this.imageStore.getImage(this.currProduct.imageId);
+      this.currProduct.categoryNames = this.getCategoriesNames(this.currProduct);
       products = this.currProduct?.subcategories.map(id => this.products.get(id));
     }
     else {
@@ -79,7 +84,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.currProducts = this.sortProductsByNameAndType(products).map(product => ({
       ...product,
       imageSrc$: this.imageStore.getImage(product.imageId),
-      categories$: this.getCategoriesNames(product)
+      categoryNames: this.getCategoriesNames(product)
     }));
   }
 
@@ -96,31 +101,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   returnBack() {
-    this.navigateToProduct(this.breadCrumbs.pop());
+    this.navigateToProduct(this.breadCrumbs.pop(), false);
   }
 
-  getProductDetails(id: number): Observable<IProductDetails> {
-    return this.server.getProductWithFullDetails(id);
+  private getCategoriesNames(product: IProductModel): IProductName[] {
+    return product?.categories?.map(id => ({id, name: this.products.get(id)?.name}));
   }
 
-  private getCategoriesNames(product: IProductModel): Observable<IProductName[]> {
-    return of(product?.categories).pipe(
-      map(products => products?.map(id => ({id, name: this.products.get(id)?.name}))),
-    );
-  }
-}
+  // openDialog(productId: number): void {
+  //   const dialogRef = this.dialog.open(ProductDetailsDialogComponent, {
+  //     width: '600px',
+  //     data: { productId }
+  //   });
 
-// export interface IProductView extends IProductGeneralModel, IProductDetails {
-//   categories: IProductGeneralModel[];
-//   subcategories: IProductGeneralModel[];
-// }
-
-export interface IProductName {
-  id: number;
-  name: string;
-}
-
-export interface IProductView extends IProductModel {
-  imageSrc$?: Observable<string>;
-  categories$?: Observable<IProductName[]>;
+  //   dialogRef.afterClosed().subscribe();
+  // }
 }
