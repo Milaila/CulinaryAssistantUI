@@ -22,12 +22,15 @@ import { MaterialModule } from '../shared/material.module';
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 import { FiltersService } from '../services/filters.service';
 import { ProductDetailsDialogComponent } from '../products/product-details/product-details.component';
+import { SharedModule } from '../shared/shared.module';
+// import { ImageDialogComponent } from '../components/image-dialog/image-dialog.component';
 
 
 @NgModule({
   declarations: [
     RecipeDetailsComponent,
     RecipeSearchComponent,
+    // ImageDialogComponent,
     RecipeListComponent,
     ExpansionPanelComponent,
     RecipeEditorComponent,
@@ -40,6 +43,7 @@ import { ProductDetailsDialogComponent } from '../products/product-details/produ
   ],
   imports: [
     RecipesRoutingModule,
+    SharedModule,
     // BrowserModule,
     CommonModule,
     ReactiveFormsModule,

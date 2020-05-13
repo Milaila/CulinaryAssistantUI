@@ -13,14 +13,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSelectModule } from '@angular/material/select';
-// tslint:disable-next-line: max-line-length
+import { SimpleNotificationsModule } from 'angular2-notifications';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { CommonModule } from '@angular/common';
 import { UserComponent } from './components/user/user.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
@@ -39,12 +38,13 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ImagesService } from './services/images.service';
 import { ImageDialogComponent } from './components/image-dialog/image-dialog.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { SharedModule } from './shared/shared.module';
+import { MaterialModule } from './shared/material.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    OwnTestComponent,
-    ImageUploadComponent,
+    // OwnTestComponent,
     UserComponent,
     RegistrationComponent,
     LoginComponent,
@@ -53,56 +53,40 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     NotFoundComponent,
     ImageDialogComponent,
     ConfirmDialogComponent,
+    // UserComponent,
+    // RegistrationComponent,
+    // LoginComponent,
+    // HomeComponent
+    // OwnTestComponent,
+    // UserComponent,
+    // RegistrationComponent,
+    // LoginComponent,
+    // HomeComponent,
+    // HeaderComponent,
+    // NotFoundComponent,
+    // ImageDialogComponent,
+    // ConfirmDialogComponent,
     // ExpansionPanelComponent
   ],
   imports: [
+    MaterialModule,
     BrowserModule,
+    SharedModule,
     CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatCardModule,
     FormsModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatLineModule,
-    MatOptionModule,
-    MatCommonModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatButtonModule,
     HttpClientModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatDividerModule,
-    MatFormFieldModule,
     BrowserAnimationsModule,
+    SimpleNotificationsModule.forRoot()
   ],
   exports: [
     BrowserModule,
     CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatCardModule,
     FormsModule,
-    MatDividerModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatLineModule,
-    MatOptionModule,
-    MatCommonModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatButtonModule,
     HttpClientModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatFormFieldModule,
     BrowserAnimationsModule,
   ],
   providers: [

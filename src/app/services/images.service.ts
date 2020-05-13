@@ -11,6 +11,12 @@ import { take, filter, switchMap, switchMapTo, map, tap } from 'rxjs/operators';
 export class ImagesService {
   // private readonly images: Map<number, IImageModel> = new Map();
   private readonly images: Map<number, BehaviorSubject<string>> = new Map();
+  imageLimitKb = 1024;
+  allowedExtensions: string[] = ['png', 'jpeg', 'jpg'];
+  defaultInvalidExtensionContent = this.allowedExtensionsString;
+  defaultInvalidExtensionTitle = 'Некоректний формат зображення';
+  defaultInvalidSizeTitle = 'Зображення надто велике';
+  defaultInvalidSizeContent = 'Зображення має не перевищувати 1 МБ';
 
   constructor(
     private server: ServerHttpService,
@@ -20,11 +26,7 @@ export class ImagesService {
   deleteImage(id: number) {
     if (this.auth.isAuthorized) {
       this.server.deleteImage(id).pipe(take(1)).subscribe(
-        res => {
-          this.images.get(id)?.next(null);
-          console.log('Image deleted successfully');
-        },
-        error => alert('Error during deleting image')
+        res => this.images.get(id)?.next(null)
       );
     }
   }
@@ -58,18 +60,49 @@ export class ImagesService {
     this.updateImageFromServer(id, this.images.get(id));
   }
 
-  // getImages(ids: number[]): Observable<string[]> {
-  //   const im = from(ids.map(id => this.getImage(id)))
-  // }
+  transformFileToImage(imageFile: File): Observable<IImageModel> {
+    const sbj = new Subject<IImageModel>();
+    if (!imageFile) {
+      return sbj;
+    }
+    const reader = new FileReader();
 
-  // setImages(images: number[]) {
-  //   images.
-  // }
+    reader.onload = (e: any) => {
+      const src = e.target.result;
+      const image = {
+        id: 0,
+        data: src.slice(src.indexOf(',') + 1),
+        title: imageFile.name
+      };
+      sbj.next(image);
+    };
+    reader.readAsDataURL(imageFile);
+    return sbj;
+  }
 
-  // updateImages(images: number[]) {
-  //   images.forEach(id => images.)
-  //   this.updateImageFromServer(id, this.images.get(id));
-  // }
+  validateImageSize(file: File, sizeLimit: number = this.imageLimitKb): boolean {
+    return !sizeLimit || file.size <= sizeLimit * 1024;
+  }
+
+  validateFileExtension(file: File) {
+    if (this.allowedExtensions?.length > 0) {
+      return this.allowedExtensions.some(ext => file.name.toLocaleLowerCase().endsWith(
+        (ext.startsWith('.') ? '' : '.') + ext.toLowerCase())
+      );
+    }
+    return true;
+  }
+
+  get allowedExtensionsString(): string {
+    let allowedExtensionsListText;
+    if (this.allowedExtensions?.length > 0){
+      allowedExtensionsListText = `.${this.allowedExtensions[0]}`;
+      for (let i = 1; i < this.allowedExtensions.length; i++) {
+        allowedExtensionsListText += `, .${this.allowedExtensions[i]}`;
+      }
+    }
+    return 'Дозволені формати зображень: ' + allowedExtensionsListText;
+  }
 
   private updateImageFromServer(id: number, imageSubj: BehaviorSubject<string>) {
     if (!imageSubj) {

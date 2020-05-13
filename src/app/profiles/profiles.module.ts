@@ -23,12 +23,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
   declarations: [ProfileDetailsComponent, SignUpComponent, SignInComponent, ProfileEditorComponent],
   imports: [
     CommonModule,
+    SharedModule,
     ProfilesRoutingModule,
     // BrowserModule,
     ReactiveFormsModule,

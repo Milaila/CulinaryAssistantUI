@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDetailsDialogComponent } from 'src/app/products/product-details/product-details.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-recipe-editor',
@@ -37,6 +38,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   constructor(
     private server: ServerHttpService,
     private imageService: ImagesService,
+    private notifications: NotificationsService,
     private route: ActivatedRoute,
     private auth: AuthService,
     private router: Router,
@@ -46,7 +48,8 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // const id = +this.route.snapshot.params.id;
     if (!this.auth.isAuthorized) {
-      this.router.navigate(['404']);
+      this.createNotification('Нема права доступу', NotificationType.Error, 'Необхідна авторизація');
+      this.router.navigate(['users/signup']);
     }
     // this.initRecipe(id);
     this.subscription.add(this.route.params.subscribe(x => this.initRecipe(+x.id)));
@@ -81,7 +84,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   addTag(event: MatChipInputEvent): void {
     const input = event.input;
-    const tag = event.value?.trim().toLocaleLowerCase();
+    const tag = event.value?.trim();
 
     if (tag) {
       this.currRecipe.tags.push({ id: 0, tag });
@@ -189,9 +192,13 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       tags: this.currRecipe.tags?.map(x => ({ ...x, id })),
     };
     this.subscription.add(this.server.createRecipe(recipe)
-      .subscribe(newId => {
-        this.router.navigate(['recipes', newId, 'edit']);
-      }));
+      .subscribe(
+        newId => {
+          this.createNotification('Рецепт створен');
+          this.router.navigate(['recipes', newId, 'edit']);
+        },
+        error => this.createNotification('Рецепт не створен', NotificationType.Error, 'Помилка при створенні рецепту')
+      ));
   }
 
   onSave(form: NgForm): void {
@@ -199,51 +206,50 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       return;
     }
     this.subscription.add(this.server.editRecipe(this.currRecipe)
-      .subscribe(x => {
-        // this.removedImages.forEach(id => this.imageService.deleteImage(id));
-        // this.removedImages = [];
-      }));
+      .subscribe(
+        x => this.createNotification('Рецепт оновлен'),
+        _ => this.createNotification('Рецепт не оновлен', NotificationType.Error, 'Помилка при оновленні рецепту')
+      ));
   }
 
   uploadStepImage(stepIndex: number, event: any) {
-    const image = event?.target?.files[0];
-    const reader = new FileReader();
-    if (!image) {
-      return;
+    const file = event?.target?.files[0];
+    if (this.validateImage(file)) {
+      this.subscription.add(this.imageService.transformFileToImage(file)
+        .subscribe(image => this.currRecipe.steps[stepIndex].image = image));
     }
-
-    reader.onload = (e: any) => {
-      const src = e.target.result;
-      this.currRecipe.steps[stepIndex].image = {
-        id: 0,
-        data: src.slice(src.indexOf(',') + 1),
-        title: image.name
-      };
-    };
-    reader.readAsDataURL(image);
   }
 
   uploadRecipeImage(event: any) {
-    const image = event?.target?.files[0];
-    const reader = new FileReader();
-    if (!image) {
-      return;
+    const file = event?.target?.files[0];
+    if (this.validateImage(file)) {
+      this.subscription.add(this.imageService.transformFileToImage(file)
+        .subscribe(image => this.currRecipe.image = image));
     }
+  }
 
-    reader.onload = (e: any) => {
-      const src = e.target.result;
-      this.currRecipe.image = {
-        id: 0,
-        data: src.slice(src.indexOf(',') + 1),
-        title: image.name
-      };
-    };
-    reader.readAsDataURL(image);
+  private validateImage(file: File): boolean {
+    if (!this.imageService.validateFileExtension(file)) {
+      this.createNotification(
+        this.imageService.defaultInvalidExtensionTitle,
+        NotificationType.Error,
+        this.imageService.defaultInvalidExtensionContent
+      );
+      return false;
+    }
+    if (!this.imageService.validateImageSize(file)) {
+      this.createNotification(
+        this.imageService.defaultInvalidSizeTitle,
+        NotificationType.Error,
+        this.imageService.defaultInvalidSizeContent
+      );
+      return false;
+    }
+    return true;
   }
 
   setRecipe(id: number) {
     this.subscription.add(this.server.getRecipeWithDetails(id).subscribe(recipe => {
-      console.log('Get recipe success', recipe);
       this.currRecipe = recipe;
     }));
   }
@@ -255,5 +261,14 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     });
 
     this.subscription.add(dialogRef.afterClosed().subscribe());
+  }
+
+  createNotification(title: string, type = NotificationType.Success, content: string = '') {
+    this.notifications.create(title, content, type, {
+      timeOut: 3000,
+      showProgressBar: true,
+      pauseOnHover: true,
+      clickToClose: true
+    });
   }
 }

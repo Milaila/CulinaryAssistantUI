@@ -29,7 +29,6 @@ export class RecipeListComponent implements OnInit {
   itemsOptions = [12, 24, 36, 48, 64];
   currentPage = 0;
   pageEvent: PageEvent;
-  // readonly images: Map<number, Observable<string>> = new Map();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) paginatorFooter: MatPaginator;

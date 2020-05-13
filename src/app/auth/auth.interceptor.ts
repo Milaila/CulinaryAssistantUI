@@ -4,11 +4,13 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
+    private notifications: NotificationsService,
     private authService: AuthService,
   ) {}
 
@@ -22,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
           success => {},
           err => {
             if (err.status === 401) {
-              alert('Token expired!');
+              this.createNotification('Нема прав доступу', 'Необхідна авторизація');
               this.authService.clearToken();
               this.router.navigate(['/user/login']);
             }
@@ -30,6 +32,23 @@ export class AuthInterceptor implements HttpInterceptor {
         )
       );
     }
-    return next.handle(req.clone());
+    return next.handle(req.clone()).pipe(tap(
+      success => {},
+      err => {
+        if (err.status === 401) {
+          this.createNotification('Нема прав доступу', 'Необхідна авторизація');
+          this.router.navigate(['/user/login']);
+        }
+      }
+    ));
+  }
+
+  createNotification(title: string, content: string = '', type = NotificationType.Error) {
+    this.notifications.create(title, content, type, {
+      timeOut: 3000,
+      showProgressBar: true,
+      pauseOnHover: true,
+      clickToClose: true
+    });
   }
 }
