@@ -52,7 +52,6 @@ export class NewRecipeComponent implements OnInit, OnDestroy {
       id: 0,
       // product: null
       // productId: null,
-      weight: 0,
       necessity: true,
       productId: 0,
     });

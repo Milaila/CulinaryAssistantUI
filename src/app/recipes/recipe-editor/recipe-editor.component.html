@@ -1,1 +1,165 @@
-<p>recipe-editor works!</p>
+<mat-toolbar color="primary">
+  <h1>{{ isNew ? 'Створення рецепту' : 'Редагування рецепту' }}</h1>
+</mat-toolbar>
+<div class="RecipeEditor">
+  <mat-card class="RecipeContainer" *ngIf="this.currRecipe; else loading">
+    <form #recipeForm="ngForm">
+      <mat-form-field appearance="outline" class="">
+        <mat-label>Назва рецепту</mat-label>
+        <input matInput name="recipeTitle" maxlength="256" required
+          [(ngModel)]="currRecipe.title" #email>
+        <mat-error *ngIf="email.invalid">Назва маэ бути</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="">
+        <mat-label>Опис рецепту</mat-label>
+        <textarea matInput name="recipeDescription" maxlength="1024"
+          [(ngModel)]="currRecipe.description"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="">
+        <mat-label>Калорійність (на 100 гр в кКал)</mat-label>
+        <input matInput name="calories" #cals type="text" pattern="[0-9.]*"
+          [ngModel]="currRecipe.calories" (input)="currRecipe.calories = convertToNumber(cals)">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="">
+        <mat-label>Кількість порцій</mat-label>
+        <input matInput type="text" #portions name="portions" pattern="[0-9]*"
+          [ngModel]="currRecipe.portions" (input)="currRecipe.portions = convertToNumber(portions)">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="">
+        <mat-label>Час приготування (в хвилинах)</mat-label>
+        <input matInput type="text" #duration name="duration" pattern="[0-9]*"
+          [ngModel]="currRecipe.duration" (input)="currRecipe.duration = convertToNumber(duration)">
+      </mat-form-field>
+
+      <section class="main-image">
+        <input type="file" class="hide" (change)="uploadRecipeImage($event)" #recipeImage>
+        <button (click)="recipeImage.click()" class="indent" mat-stroked-button color="primary">
+          Завантажити зображення</button>
+        <mat-card class="imagePreview" *ngIf="currRecipe.image?.data as data">
+          <mat-card-subtitle>Прев'ю зображення</mat-card-subtitle>
+          <img [src]="'data:image/jpeg;base64,' + data" />
+          <button mat-stroked-button color="warn" (click)="removeRecipeImage()">Видалити зображення</button>
+        </mat-card>
+      </section>
+
+      <mat-form-field class="tags">
+        <mat-chip-list #tagsList>
+          <mat-chip class="mat-chip-selected" color="accent" (removed)="removeTag(index)"
+            *ngFor="let tag of currRecipe.tags; let index = index">
+            {{ tag?.tag }}<mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="Додати тег"
+            #tagInput matInput
+            maxLength="128"
+            [formControl]="tagsCtrl"
+            [matAutocomplete]="autoRequired"
+            [matChipInputFor]="tagsList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="addTag($event)">
+        </mat-chip-list>
+        <mat-autocomplete #autoRequired="matAutocomplete" (optionSelected)="selectTag($event)">
+          <mat-option *ngFor="let tag of filteredTags$ | async" [value]="tag">
+            {{ tag?.toLocaleLowerCase() }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <section class="Ingredients">
+        <div class="Ingredients-list">
+          <mat-card *ngFor="let ingredient of currRecipe.ingredients; let index = index">
+            <mat-card-header>
+              <button mat-icon-button color="primary"
+                *ngIf="ingredient?.productId as id"
+                (click)="openProduct(id)">
+                <mat-icon matListIcon>info</mat-icon>
+              </button>
+              <mat-card-subtitle>Інгредієнт</mat-card-subtitle>
+            </mat-card-header>
+            <mat-form-field appearance="outline">
+              <mat-label>Продукт</mat-label>
+              <mat-select name="productSelect-{{index}}" required
+                [(ngModel)]="ingredient.productId"
+                placeholder="Оберіть продукт">
+                <ngx-mat-select-search ngModel name="productFilter" (ngModelChange)="filterMyProducts($event)"
+                  [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продутки не знайдено'">
+                </ngx-mat-select-search>
+                <!-- <ngx-mat-select-search [(ngModel)]="searchCtrl" [placeholderLabel]="'Search...'"
+                      [noEntriesFoundLabel]="'Not found'" name="search"></ngx-mat-select-search> -->
+                <!-- <input placeholder="Оберіть продукт" class="matSearch" matInput> -->
+                <mat-option *ngFor="let product of filteredProducts" [matTooltip]="product.name" [value]="product.id">
+                  {{ product.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="">
+              <mat-label>Примітка</mat-label>
+              <textarea matInput name='ingredientName-{{index}}'
+                [(ngModel)]="ingredient.note"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="">
+              <mat-label>Вага (г)</mat-label>
+              <input matInput #weight name="weight-{{index}}" pattern="[0-9.]*"
+                [ngModel]="ingredient.weight" (input)="ingredient.weight = convertToNumber(weight)">
+            </mat-form-field>
+            <mat-checkbox name="necessity-{{index}}" color="primary" [(ngModel)]="ingredient.necessity">
+              Цей продукт обов'язковий</mat-checkbox>
+            <button (click)="removeIngredient(index)" class="indent" mat-stroked-button color="warn">Видалити</button>
+          </mat-card>
+        </div>
+        <button (click)="addIngredient()" class="ingredient-button" mat-stroked-button color="primary">Додати інгредієнт</button>
+        <mat-form-field appearance="outline">
+          <mat-label>Опис інгредієнтів</mat-label>
+          <textarea matInput name="ingredientDescription" maxlength="512"
+            [(ngModel)]="currRecipe.ingredientsDescription"></textarea>
+        </mat-form-field>
+      </section>
+
+      <mat-card *ngFor="let step of currRecipe.steps; let index = index">
+        <mat-card-subtitle>Крок рецепту</mat-card-subtitle>
+        <mat-form-field appearance="outline">
+          <mat-label>Назва</mat-label>
+          <input matInput name="stepTitle-{{index}}" maxlength="128"
+            [(ngModel)]="step.title">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Опис</mat-label>
+          <textarea matInput name="stepDescription-{{index}}" maxlength="2048"
+            [(ngModel)]="step.description"></textarea>
+        </mat-form-field>
+        <input type="file" class="hide" (change)="uploadStepImage(index, $event)" #stepImage>
+        <button (click)="stepImage.click()" class="indent" mat-stroked-button color="primary">Завантажити зображення</button>
+        <mat-card  class="imagePreview" *ngIf="step.image?.data as stepImage">
+          <mat-card-subtitle>Прев'ю зображення</mat-card-subtitle>
+          <img [src]="'data:image/jpeg;base64,' + stepImage" />
+          <button mat-stroked-button color="warn" (click)="removeStepImage(index)">Видалити зображення</button>
+        </mat-card>
+        <button (click)="removeStep(index)" mat-stroked-button color="warn">Видалити крок</button>
+      </mat-card>
+      <button (click)="addStep()" class="indent" mat-stroked-button color="primary">Додати крок</button>
+      <mat-divider></mat-divider>
+      <div class="actions">
+        <button
+          [disabled]="recipeForm.invalid"
+          mat-raised-button
+          color="primary"
+          class="edit-button"
+          *ngIf="!isNew"
+          (click)="onSave(recipeForm)">
+          Зберегти рецепт</button>
+        <button
+          [disabled]="recipeForm.invalid"
+          mat-raised-button
+          [color]="isNew ? 'primary' : 'basic'"
+          class="save-button"
+          (click)="onCreate(recipeForm)">
+          Створити новий рецепт</button>
+      </div>
+    </form>
+  </mat-card>
+</div>
+<ng-template #loading>
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+    <span>Завантаження рецепту...</span>
+  </div>
+</ng-template>

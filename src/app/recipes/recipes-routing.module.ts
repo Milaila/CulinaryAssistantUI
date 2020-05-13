@@ -20,7 +20,15 @@ const routes: Routes = [
   },
   {
     path: 'new',
-    component: NewRecipeComponent
+    component: RecipeEditorComponent
+  },
+  {
+    path: ':id/edit',
+    component: RecipeEditorComponent
+  },
+  {
+    path: 'new',
+    component: RecipeEditorComponent
   },
   {
     path: ':id/details',

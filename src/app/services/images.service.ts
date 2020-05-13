@@ -29,6 +29,13 @@ export class ImagesService {
     }
   }
 
+  deleteImages(ids: number[]) {
+    if (this.auth.isAuthorized) {
+      ids.forEach(id => this.server.deleteImage(id).pipe(take(1))
+        .subscribe(res => this.images.get(id)?.next(null)));
+    }
+  }
+
   getImage(id: number): Observable<string> {
     if (!id) {
       return of(null);
@@ -37,11 +44,12 @@ export class ImagesService {
     if (!imageSubj) {
       imageSubj = new BehaviorSubject<string>(null);
       this.images.set(id, imageSubj);
-      return this.server.getImage(id).pipe(
+      this.server.getImage(id).pipe(
+        take(1),
         filter(image => !!image?.data),
         map(image => 'data:image/jpeg;base64,' + image.data),
         tap(newImage => imageSubj.next(newImage))
-      );
+      ).subscribe();
     }
     return imageSubj;
   }

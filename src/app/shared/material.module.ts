@@ -11,10 +11,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatLineModule, MatOptionModule, MatCommonModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -54,8 +56,10 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatToolbarModule,
     MatSlideToggleModule,
     MatChipsModule,
+    MatSnackBarModule,
     MatMenuModule,
     MatButtonModule,
+    NgxMatSelectSearchModule,
     MatExpansionModule,
     MatInputModule,
     MatFormFieldModule,
@@ -73,6 +77,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatIconModule,
     MatTooltipModule,
     MatDialogModule,
+    NgxMatSelectSearchModule,
     MatTableModule,
     MatSortModule,
     MatSidenavModule,
@@ -85,6 +90,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatDividerModule,
     MatToolbarModule,
     MatChipsModule,
+    MatSnackBarModule,
     MatMenuModule,
     MatButtonModule,
     MatExpansionModule,

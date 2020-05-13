@@ -1,0 +1,90 @@
+:host {
+  width: 100%;
+}
+
+.RecipeEditor {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .indent {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+.RecipeContainer {
+  // margin-bottom: 16px;
+  width: 1200px;
+
+  mat-checkbox {
+    margin-left: 2px;
+  }
+
+  .Ingredients-list {
+    display: flex;
+    flex-wrap: wrap;
+    mat-card {
+      margin: 8px;
+      margin-left: 0px;
+      width: fit-content;
+      mat-card-header {
+        align-items: center;
+        button {
+          margin-top: -16px;
+        }
+      }
+    }
+  }
+
+  .ingredient-button {
+    margin-top: 0px;
+    margin-bottom: 12px;
+  }
+
+  .imagePreview {
+    width: fit-content;
+    margin: 16px 0px;
+
+    img {
+      max-width: 100%;
+      max-height: 200px;
+    }
+  }
+
+  input, button {
+    display: block;
+  }
+
+  .matSearch {
+    height: 32px;
+    color: grey;
+    padding-left: 16px;
+  }
+
+  mat-form-field {
+    display: block;
+  }
+
+  mat-card {
+    margin: 8px 0px;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .actions {
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+
+    button {
+      font-size: 16px;
+      &.edit-button {
+        margin-right: 16px;
+      }
+    }
+  }
+}
+

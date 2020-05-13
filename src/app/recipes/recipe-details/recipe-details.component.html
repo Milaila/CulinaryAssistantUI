@@ -32,7 +32,7 @@
             <span matLine>
               <strong>{{ ingredient.product?.name }}</strong>
               <span *ngIf="!ingredient.necessity" class="grey">&nbsp;(опціональний)</span>
-              &nbsp;- {{ ingredient.weight }} гр
+              &nbsp;- {{ ingredient.weight || '?' }} гр
             </span>
             <p class="note" matLine *ngIf="ingredient.note">{{ ingredient.note }}</p>
             <mat-divider></mat-divider>
@@ -50,7 +50,7 @@
               </div>
               <div class="description container">
                 <mat-card-subtitle>{{ step.title || ('Крок ' + step.orderNumber) }}</mat-card-subtitle>
-                {{ recipe.description }}
+                {{ step.description }}
               </div>
             </div>
           </div>

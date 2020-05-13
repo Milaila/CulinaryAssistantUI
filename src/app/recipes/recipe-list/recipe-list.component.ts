@@ -5,6 +5,8 @@ import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-recipe-list',
@@ -35,6 +37,8 @@ export class RecipeListComponent implements OnInit {
   constructor(
     public auth: AuthService,
     private router: Router,
+    private server: ServerHttpService,
+    private snackBar: MatSnackBar,
     private imageStore: ImagesService
   ) { }
 
@@ -64,6 +68,18 @@ export class RecipeListComponent implements OnInit {
     this.router.navigate(['/recipes', id, 'details']);
   }
 
+  editRecipe(id: number) {
+    this.router.navigate(['/recipes', id, 'edit']);
+  }
+
+  deleteRecipe(id: number) {
+    const index = this.allRecipes.findIndex(x => x.id === id);
+    this.currentPage = 0;
+    this.allRecipes?.splice(index, 1);
+    this.displayRecipesInRange();
+    this.server.deleteRecipe(id).subscribe(x => this.openSnackBar('Рецепт успішно видален', null));
+  }
+
   private displayRecipesInRange() {
     const start = this.currentPage * this.itemsPerPage;
     let end = start + this.itemsPerPage;
@@ -77,6 +93,12 @@ export class RecipeListComponent implements OnInit {
     }
     this.currRecipes = this.allRecipes?.slice(start, end);
     this.currRecipes?.forEach(recipe => recipe.imageSrc$ = this.getImageSrc(recipe.imageId));
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+    });
   }
 }
 

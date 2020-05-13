@@ -45,6 +45,6 @@ export interface IIngredientModel extends IModel {
   productId: number;
   product?: IProductModel;
   note?: string;
-  weight: number;
+  weight?: number;
   necessity: boolean;
 }

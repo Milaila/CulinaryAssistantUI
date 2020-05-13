@@ -40,7 +40,6 @@ export class TagsSearchSectionComponent implements OnInit {
       })
     );
     this.filteredRequiredTags$ = combineLatest([this.requiredTagsCtrl.valueChanges, this.availableTags$]).pipe(
-      tap(x => console.log('filtere', this.filteredRequiredTags$)),
       map(([tag, tags]) => tag ? this.filterTags(tags, tag) : tags)
     );
     this.filteredForbiddenTags$ = combineLatest([this.forbiddenTagsCtrl.valueChanges, this.availableTags$]).pipe(

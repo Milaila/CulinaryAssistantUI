@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^9.1.2",
     "@angular/router": "^9.1.2",
     "ngx-file-drop": "^9.0.1",
+    "ngx-mat-select-search": "^2.2.0",
     "resize-base64": "^1.0.12",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
