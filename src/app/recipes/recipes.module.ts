@@ -6,7 +6,6 @@ import { RecipeDetailsComponent } from './recipe-details/recipe-details.componen
 import { RecipeSearchComponent } from './recipe-search/recipe-search.component';
 import { RecipeListComponent } from './recipe-list/recipe-list.component';
 import { RecipeEditorComponent } from './recipe-editor/recipe-editor.component';
-import { NewRecipeComponent } from './new-recipe/new-recipe.component';
 import { ServerHttpService } from '../services/server-http.sevice';
 import { AuthService } from '../services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -30,7 +29,6 @@ import { ProductDetailsDialogComponent } from '../products/product-details/produ
     RecipeDetailsComponent,
     RecipeSearchComponent,
     RecipeListComponent,
-    NewRecipeComponent,
     ExpansionPanelComponent,
     RecipeEditorComponent,
     FiltersSearchSectionComponent,

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { OwnTestComponent } from './components/own-test/own-test.component';
 import { AppComponent } from './app.component';
-import { NewRecipeComponent } from './recipes/new-recipe/new-recipe.component';
 import { UserComponent } from './components/user/user.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
 import { LoginComponent } from './components/user/login/login.component';

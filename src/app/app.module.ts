@@ -22,7 +22,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { CommonModule } from '@angular/common';
-import { NewRecipeComponent } from './recipes/new-recipe/new-recipe.component';
 import { UserComponent } from './components/user/user.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
 import { UserService } from './services/user.service';
@@ -46,7 +45,6 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     AppComponent,
     OwnTestComponent,
     ImageUploadComponent,
-    // NewRecipeComponent,
     UserComponent,
     RegistrationComponent,
     LoginComponent,
