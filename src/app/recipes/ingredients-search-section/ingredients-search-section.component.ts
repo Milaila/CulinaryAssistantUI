@@ -179,7 +179,7 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   openProductDialog(productId: number): void {
     this.dialog.open(ProductDetailsDialogComponent, {
       width: '500px',
-      data: { product: this.filterService.getProductViewDetails(productId) }
+      data: this.filterService.getProductViewDetails(productId)
     }).afterClosed().subscribe();
   }
 }

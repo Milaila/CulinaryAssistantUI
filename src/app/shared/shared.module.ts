@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { OwnTestComponent } from '../components/own-test/own-test.component';
 import { UserComponent } from '../components/user/user.component';
 import { RegistrationComponent } from '../components/user/registration/registration.component';
 import { LoginComponent } from '../components/user/login/login.component';
@@ -23,12 +22,9 @@ import { ExpansionPanelComponent } from '../components/expansion-panel/expansion
   //   ConfirmDialogComponent,
   //   ExpansionPanelComponent
   // ],
-  // exports: [
-  //   OwnTestComponent,
-  //   NotFoundComponent,
-  //   ImageDialogComponent,
-  //   ConfirmDialogComponent,
-  //   ExpansionPanelComponent
-  // ],
+  exports: [
+    ReactiveFormsModule,
+    FormsModule,
+  ],
 })
 export class SharedModule { }

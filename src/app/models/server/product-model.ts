@@ -44,6 +44,10 @@ export interface IProductRelationModel extends IModel {
   productId: number;
 }
 
+export interface IProductRelationWithName extends IProductRelationModel {
+  name: string;
+}
+
 export interface IProductName {
   id: number;
   name: string;

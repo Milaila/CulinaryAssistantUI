@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { OwnTestComponent } from './components/own-test/own-test.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -40,6 +39,7 @@ import { ImageDialogComponent } from './components/image-dialog/image-dialog.com
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { SharedModule } from './shared/shared.module';
 import { MaterialModule } from './shared/material.module';
+import { ProductsService } from './services/products.service';
 
 @NgModule({
   declarations: [
@@ -92,6 +92,7 @@ import { MaterialModule } from './shared/material.module';
   providers: [
     UserService,
     AuthService,
+    ProductsService,
     ImagesService,
     ServerHttpService,
     BaseService,

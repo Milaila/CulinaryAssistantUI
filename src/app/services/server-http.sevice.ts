@@ -195,6 +195,11 @@ export class ServerHttpService {
     return this.http.get<IProductManageModel>(url).pipe(tap(x => console.log(x)));
   }
 
+  getProduct(id: number): Observable<IProductModel> {
+    const url = `${serverUrls.products}/${id}`;
+    return this.http.get<IProductModel>(url).pipe(tap(x => console.log(x)));
+  }
+
   getProductsWithRelations(): Observable<IProductModel[]> {
     const url = `${serverUrls.products}/withrelations`;
     return this.http.get<IProductModel[]>(url).pipe(tap(x => console.log(x)));

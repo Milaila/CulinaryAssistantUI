@@ -44,8 +44,5 @@ import { SharedModule } from '../shared/shared.module';
   entryComponents: [
     ProductDetailsDialogComponent
   ],
-  providers: [
-    ProductsService
-  ],
 })
 export class ProductsModule { }

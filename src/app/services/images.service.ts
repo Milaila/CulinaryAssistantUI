@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { IImageModel } from '../models/server/image-model';
 import { Observable, of, Subject, BehaviorSubject, iif, from } from 'rxjs';
 import { take, filter, switchMap, switchMapTo, map, tap } from 'rxjs/operators';
+import { NotificationType, NotificationsService } from 'angular2-notifications';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class ImagesService {
 
   constructor(
     private server: ServerHttpService,
-    private auth: AuthService
+    private auth: AuthService,
+    private notificationService: NotificationsService
   ) { }
 
   deleteImage(id: number) {
@@ -93,6 +95,18 @@ export class ImagesService {
     return true;
   }
 
+  validateImageWithNotifications(file: File): boolean {
+    if (!this.validateFileExtension(file)) {
+      this.createNotification(this.defaultInvalidExtensionTitle, this.defaultInvalidExtensionContent);
+      return false;
+    }
+    if (!this.validateImageSize(file)) {
+      this.createNotification(this.defaultInvalidSizeTitle, NotificationType.Error);
+      return false;
+    }
+    return true;
+  }
+
   get allowedExtensionsString(): string {
     let allowedExtensionsListText;
     if (this.allowedExtensions?.length > 0){
@@ -121,5 +135,14 @@ export class ImagesService {
 
   clearImages() {
     this.images.clear();
+  }
+
+  createNotification(title: string, content: string = '', type = NotificationType.Error) {
+    this.notificationService.create(title, content, type, {
+      timeOut: 3000,
+      showProgressBar: true,
+      pauseOnHover: true,
+      clickToClose: true
+    });
   }
 }

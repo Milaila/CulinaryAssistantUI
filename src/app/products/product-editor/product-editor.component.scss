@@ -1,0 +1,62 @@
+:host {
+  width: 100%;
+}
+
+.ProductEditor {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .indent {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+.ProductContainer {
+  width: 900px;
+
+  .imagePreview {
+    width: fit-content;
+    margin: 16px 0px;
+
+    img {
+      max-width: 100%;
+      max-height: 200px;
+    }
+  }
+
+  input, button {
+    display: block;
+  }
+
+  mat-chip-list {
+    margin-top: 16px 0px;
+  }
+
+  mat-form-field {
+    display: block;
+  }
+
+  mat-card {
+    margin: 8px 0px;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .actions {
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+
+    button {
+      font-size: 16px;
+      &.edit-button {
+        margin-right: 16px;
+      }
+    }
+  }
+}
+

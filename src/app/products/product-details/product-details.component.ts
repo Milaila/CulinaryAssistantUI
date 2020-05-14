@@ -5,6 +5,7 @@ import { ServerHttpService } from 'src/app/services/server-http.sevice';
 import { take } from 'rxjs/operators';
 import { Subscription, combineLatest } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-product-details',
@@ -18,15 +19,16 @@ export class ProductDetailsDialogComponent implements OnInit, OnDestroy {
 
   constructor(
     private server: ServerHttpService,
+    private productService: ProductsService,
     private dialogRef: MatDialogRef<ProductDetailsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) data
+    @Inject(MAT_DIALOG_DATA) data: number | IProductView
   ) {
-    const product = data.product;
-    if (product) {
-      this.currProduct = product;
+
+    if (typeof data === 'number') {
+      this.updateProduct(data);
     }
     else {
-      this.updateProduct(+data.productId);
+      this.currProduct = data;
     }
   }
 
@@ -38,7 +40,11 @@ export class ProductDetailsDialogComponent implements OnInit, OnDestroy {
   }
 
   updateProduct(productId: number) {
-    this.currProduct = null;
+    this.currProduct = this.productService.getProductView(productId);
+    if (this.currProduct) {
+      return;
+    }
+
     const categories$ = this.server.getProductCategories(productId);
     const subcategories$ = this.server.getProductSubcategories(productId);
     const product$ = this.server.getProductWithFullDetails(productId);

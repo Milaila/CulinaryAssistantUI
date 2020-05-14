@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OwnTestComponent } from './components/own-test/own-test.component';
 import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
@@ -13,7 +12,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 const routes: Routes = [
-  // { path: '', component: OwnTestComponent },
   {
     path: 'recipes',
     loadChildren: () => RecipesModule

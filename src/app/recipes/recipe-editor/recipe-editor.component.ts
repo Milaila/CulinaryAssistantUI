@@ -21,7 +21,6 @@ import { NotificationsService, NotificationType } from 'angular2-notifications';
   styleUrls: ['./recipe-editor.component.scss']
 })
 export class RecipeEditorComponent implements OnInit, OnDestroy {
-
   removedImages: number[] = [];
   currRecipe: IRecipeModel;
   products: IProduct[] = [];
@@ -194,7 +193,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.subscription.add(this.server.createRecipe(recipe)
       .subscribe(
         newId => {
-          this.createNotification('Рецепт створен');
+          this.createNotification('Рецепт створено');
           this.router.navigate(['recipes', newId, 'edit']);
         },
         error => this.createNotification('Рецепт не створен', NotificationType.Error, 'Помилка при створенні рецепту')
@@ -214,7 +213,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   uploadStepImage(stepIndex: number, event: any) {
     const file = event?.target?.files[0];
-    if (this.validateImage(file)) {
+    if (this.imageService.validateImageWithNotifications(file)) {
       this.subscription.add(this.imageService.transformFileToImage(file)
         .subscribe(image => this.currRecipe.steps[stepIndex].image = image));
     }
@@ -222,31 +221,31 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   uploadRecipeImage(event: any) {
     const file = event?.target?.files[0];
-    if (this.validateImage(file)) {
+    if (this.imageService.validateImageWithNotifications(file)) {
       this.subscription.add(this.imageService.transformFileToImage(file)
         .subscribe(image => this.currRecipe.image = image));
     }
   }
 
-  private validateImage(file: File): boolean {
-    if (!this.imageService.validateFileExtension(file)) {
-      this.createNotification(
-        this.imageService.defaultInvalidExtensionTitle,
-        NotificationType.Error,
-        this.imageService.defaultInvalidExtensionContent
-      );
-      return false;
-    }
-    if (!this.imageService.validateImageSize(file)) {
-      this.createNotification(
-        this.imageService.defaultInvalidSizeTitle,
-        NotificationType.Error,
-        this.imageService.defaultInvalidSizeContent
-      );
-      return false;
-    }
-    return true;
-  }
+  // private validateImage(file: File): boolean {
+  //   if (!this.imageService.validateFileExtension(file)) {
+  //     this.createNotification(
+  //       this.imageService.defaultInvalidExtensionTitle,
+  //       NotificationType.Error,
+  //       this.imageService.defaultInvalidExtensionContent
+  //     );
+  //     return false;
+  //   }
+  //   if (!this.imageService.validateImageSize(file)) {
+  //     this.createNotification(
+  //       this.imageService.defaultInvalidSizeTitle,
+  //       NotificationType.Error,
+  //       this.imageService.defaultInvalidSizeContent
+  //     );
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   setRecipe(id: number) {
     this.subscription.add(this.server.getRecipeWithDetails(id).subscribe(recipe => {
@@ -257,7 +256,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   openProduct(productId: number): void {
     const dialogRef = this.dialog.open(ProductDetailsDialogComponent, {
       width: '600px',
-      data: { productId }
+      data: productId
     });
 
     this.subscription.add(dialogRef.afterClosed().subscribe());

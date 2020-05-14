@@ -1,1 +1,136 @@
-<p>product-editor works!</p>
+<mat-toolbar color="primary">
+  <h1>{{ isNew ? 'Створення продукту' : 'Редагування продукту' }}</h1>
+</mat-toolbar>
+<div class="ProductEditor">
+  <mat-card class="ProductContainer" *ngIf="currProduct; else loading">
+    <form #productForm="ngForm">
+      <mat-form-field appearance="outline" class="">
+        <mat-label>Назва продукту</mat-label>
+        <input matInput name="productTitle" maxlength="256" required
+          pattern=".*\S+.*" [(ngModel)]="currProduct.name">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="">
+        <mat-label>Опис продукту</mat-label>
+        <textarea matInput name="productDescription" maxlength="2048"
+          [(ngModel)]="currProduct.description"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="">
+        <mat-label>Калорійність (на 100 г в кКал)</mat-label>
+        <input matInput name="calories" #cals [pattern]="decimalPattern"
+          [ngModel]="currProduct.calories" (input)="currProduct.calories = convertToNumber(cals)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Жири (на 100 г в г)</mat-label>
+        <input matInput name="fats" #fats [pattern]="decimalPattern"
+          [ngModel]="currProduct.fats" (input)="currProduct.fats = convertToNumber(cals)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Білки (на 100 г в г)</mat-label>
+        <input matInput name="squirrels" #squirrels [pattern]="decimalPattern"
+          [ngModel]="currProduct.squirrels" (input)="currProduct.squirrels = convertToNumber(squirrels)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Вуглеводи (на 100г в г)</mat-label>
+        <input matInput name="carbohydrates" #carbohydrates [pattern]="decimalPattern"
+          [ngModel]="currProduct.carbohydrates" (input)="currProduct.carbohydrates = convertToNumber(carbohydrates)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Вода (на 100 г в г)</mat-label>
+        <input matInput name="water" #water [pattern]="decimalPattern"
+          [ngModel]="currProduct.water" (input)="currProduct.water = convertToNumber(water)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Зола (на 100 г в г)</mat-label>
+        <input matInput name="ash" #ash [pattern]="decimalPattern"
+          [ngModel]="currProduct.ash" (input)="currProduct.ash = convertToNumber(cals)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Цукор (на 100 г в г)</mat-label>
+        <input matInput name="sugar" #sugar [pattern]="decimalPattern"
+          [ngModel]="currProduct.sugar" (input)="currProduct.sugar = convertToNumber(sugar)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Крохмаль (на 100 г в г)</mat-label>
+        <input matInput #starch [pattern]="decimalPattern" [ngModel]="currProduct.starch"
+        name="starch" (input)="currProduct.starch = convertToNumber(starch)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Холестерин (на 100 г в г)</mat-label>
+        <input matInput #cholesterol [pattern]="decimalPattern" [ngModel]="currProduct.cholesterol"
+          name="cholesterol" (input)="currProduct.cholesterol = convertToNumber(cholesterol)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Клітковина (на 100 г в г)</mat-label>
+        <input matInput #cellulose [pattern]="decimalPattern" [ngModel]="currProduct.cellulose"
+          name="cellulose" (input)="currProduct.cellulose = convertToNumber(cellulose)">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Трансжири (на 100 г в г)</mat-label>
+        <input matInput [pattern]="decimalPattern" [ngModel]="currProduct.transFats" #transFats
+          name="transFats" (input)="currProduct.transFats = convertToNumber(transFats)">
+      </mat-form-field>
+
+      <section class="main-image">
+        <input type="file" class="hide" (change)="uploadImage($event)" #productImage>
+        <button (click)="productImage.click()" class="indent" mat-stroked-button color="primary">
+          Завантажити зображення</button>
+        <mat-card class="imagePreview" *ngIf="currProduct.image?.data as data">
+          <mat-card-subtitle>Прев'ю зображення</mat-card-subtitle>
+          <img [src]="'data:image/jpeg;base64,' + data" />
+          <button mat-stroked-button color="warn" (click)="removeImage()">Видалити зображення</button>
+        </mat-card>
+      </section>
+
+      <!-- Категорії продукта: -->
+      <mat-chip-list #children2>
+        <mat-chip class="mat-chip-selected" color="accent" (removed)="removeCategory(index)"
+          *ngFor="let category of currProduct.categories; let index = index">
+          {{ getProductName(category.productId) }}<mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+      <mat-form-field>
+        <mat-label>Категорії продукта</mat-label>
+        <mat-select [formControl]="categoryCtrl" multiple>
+          <ngx-mat-select-search ngModel name="productFilter" (ngModelChange)="filterMyProducts($event)"
+            [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукти не знайдено'">
+          </ngx-mat-select-search>
+          <mat-option *ngFor="let product of filteredProducts" [value]="product.id">{{ product.name }}</mat-option>
+        </mat-select>
+        <!-- <input
+        placeholder="Додати категорію"
+        #categoryInput matInput
+        [formControl]="categoryCtrl"
+        > -->
+        <!-- <mat-autocomplete #autoRequired="matAutocomplete" (optionSelected)="selectTag($event)">
+          <mat-option *ngFor="let tag of filteredTags$ | async" [value]="tag">
+            {{ tag?.toLocaleLowerCase() }}
+          </mat-option>
+        </mat-autocomplete> -->
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <div class="actions">
+        <button
+          [disabled]="productForm.invalid"
+          mat-raised-button
+          color="primary"
+          class="edit-button"
+          *ngIf="!isNew"
+          (click)="onSave(productForm)">
+          Оновити продукт</button>
+        <button
+          [disabled]="productForm.invalid"
+          mat-raised-button
+          [color]="isNew ? 'primary' : 'basic'"
+          class="save-button"
+          (click)="onCreate(productForm)">
+          Створити новий продукт</button>
+      </div>
+    </form>
+  </mat-card>
+</div>
+<ng-template #loading>
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+    <span>Завантаження продукту...</span>
+  </div>
+</ng-template>

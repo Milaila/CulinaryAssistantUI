@@ -44,7 +44,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
   openProduct(productId: number): void {
     const dialogRef = this.dialog.open(ProductDetailsDialogComponent, {
       width: '600px',
-      data: { productId }
+      data: productId
     });
 
     this.subscriptions.add(dialogRef.afterClosed().subscribe());

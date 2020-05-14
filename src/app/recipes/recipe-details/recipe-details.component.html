@@ -13,7 +13,7 @@
           </div>
           <div class="description container">
             <p><strong>Тривалість приготування:</strong>&nbsp;{{ recipe.duration || '?' }} хв</p>
-            <p><strong>Калорійність на 100 гр:</strong>&nbsp;{{ recipe.calories || '?' }} кКал</p>
+            <p><strong>Калорійність на 100 г:</strong>&nbsp;{{ recipe.calories || '?' }} кКал</p>
             <p><strong>Кількість порцій:</strong>&nbsp;{{ recipe.portions || '?' }}</p>
             <p>{{ recipe.description }}</p>
           </div>
@@ -24,7 +24,7 @@
           </mat-chip-list>
         </section>
         <mat-list class="ingredients container indent">
-          <h2 mat-subheader>Інгредієнти</h2>
+          <h2 mat-subheader>Інгедієнти</h2>
           <mat-list-item *ngFor="let ingredient of recipe.ingredients || []">
             <button mat-icon-button color="primary" (click)="openProduct(ingredient?.product?.id)">
               <mat-icon matListIcon>info</mat-icon>
@@ -32,7 +32,7 @@
             <span matLine>
               <strong>{{ ingredient.product?.name }}</strong>
               <span *ngIf="!ingredient.necessity" class="grey">&nbsp;(опціональний)</span>
-              &nbsp;- {{ ingredient.weight || '?' }} гр
+              &nbsp;- {{ ingredient.weight || '?' }} г
             </span>
             <p class="note" matLine *ngIf="ingredient.note">{{ ingredient.note }}</p>
             <mat-divider></mat-divider>

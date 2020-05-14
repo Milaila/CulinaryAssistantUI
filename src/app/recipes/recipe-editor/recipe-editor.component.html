@@ -7,8 +7,7 @@
       <mat-form-field appearance="outline" class="">
         <mat-label>Назва рецепту</mat-label>
         <input matInput name="recipeTitle" maxlength="256" required
-          [(ngModel)]="currRecipe.title" #email>
-        <mat-error *ngIf="email.invalid">Назва маэ бути</mat-error>
+          pattern=".*\\S.*" [(ngModel)]="currRecipe.title">
       </mat-form-field>
       <mat-form-field appearance="outline" class="">
         <mat-label>Опис рецепту</mat-label>
@@ -16,7 +15,7 @@
           [(ngModel)]="currRecipe.description"></textarea>
       </mat-form-field>
       <mat-form-field appearance="outline" class="">
-        <mat-label>Калорійність (на 100 гр в кКал)</mat-label>
+        <mat-label>Калорійність (на 100 г в кКал)</mat-label>
         <input matInput name="calories" #cals type="text" pattern="[0-9.]*"
           [ngModel]="currRecipe.calories" (input)="currRecipe.calories = convertToNumber(cals)">
       </mat-form-field>

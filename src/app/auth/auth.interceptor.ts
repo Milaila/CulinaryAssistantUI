@@ -24,9 +24,12 @@ export class AuthInterceptor implements HttpInterceptor {
           success => {},
           err => {
             if (err.status === 401) {
-              this.createNotification('Нема прав доступу', 'Необхідна авторизація');
+              this.createNotification('Час вичерпан', 'Авторизуйтесь знову');
               this.authService.clearToken();
               this.router.navigate(['/user/login']);
+            } else if (err.status === 403) {
+              this.createNotification('Нема прав доступу');
+              this.router.navigate(['404']);
             }
           }
         )

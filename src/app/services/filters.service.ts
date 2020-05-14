@@ -8,6 +8,7 @@ import { take, catchError, map, filter } from 'rxjs/operators';
 import { IRecipeModel, IRecipeGeneralModel, IRecipeTagModel } from '../models/server/recipe-models';
 import { ImagesService } from './images.service';
 import { IProductView } from '../models/server/product-model';
+import { ProductsService } from './products.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class FiltersService {
   private breadCrumbs: number[] = [];
   private currProducts: number[] = [];
   readonly products: Map<number, IFilterProduct> = new Map();
+  // get products():
 
   readonly filtersChanged$: BehaviorSubject<IFilterGeneralModel[]> = new BehaviorSubject<IFilterGeneralModel[]>(null);
   // productsChanged: BehaviorSubject<IFilterGeneralProduct[]> = new BehaviorSubject<IFilterGeneralProduct[]>(null);
@@ -38,6 +40,7 @@ export class FiltersService {
   constructor(
     private auth: AuthService,
     private server: ServerHttpService,
+    private productStore: ProductsService,
     private imageStore: ImagesService
   ) {
     this.initCurrFilter();
