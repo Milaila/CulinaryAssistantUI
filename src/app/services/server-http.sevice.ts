@@ -6,10 +6,9 @@ import { environment } from 'src/environments/environment';
 import { IRecipeModel, IRecipeGeneralModel } from '../models/server/recipe-models';
 import { serverUrls } from '../shared/server-urls';
 import { IFilterModel, IFilterGeneralModel } from '../models/server/filter-models';
-import { error } from 'protractor';
 import { ISignUpModel } from '../models/server/sign-in-response-model';
 import { ISignInModel } from '../models/server/sign-in-model';
-import { ISignInResponse } from '../models/server/sign-up-model copy';
+import { ISignInResponse } from '../models/server/sign-up-model';
 import { map, tap } from 'rxjs/operators';
 import { IProfileGeneralModel, IProfileModel } from '../models/server/profile-models';
 import { IImageModel } from '../models/server/image-model';
@@ -87,12 +86,18 @@ export class ServerHttpService {
     return this.http.post(`${serverUrls.auth}/signup`, model).pipe(tap(x => console.log(x)));
   }
 
+  loginExists(login: string): Observable<boolean> {
+    const url = `${serverUrls.auth}/${login}/unique`;
+    return this.http.get<boolean>(url).pipe(tap(x => console.log(x)));
+  }
+
   signIn(model: ISignInModel): Observable<ISignInResponse> {
     return this.http.post<ISignInResponse>(`${serverUrls.auth}/signin`, model).pipe(tap(x => console.log(x)));
   }
 
-  getToken(model: ISignInModel): Observable<string> {
-    return this.signIn(model).pipe(map(response => response.token)).pipe(tap(x => console.log(x)));
+  signUpAdmin(model: ISignUpModel): Observable<any> {
+    const url = `${serverUrls.auth}/signup/admin`;
+    return this.http.post<any>(url, model).pipe(tap(x => console.log(x)));
   }
 
   // PROFILES

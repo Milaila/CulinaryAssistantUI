@@ -13,6 +13,9 @@
     min-height: 48px;
     align-items: center;
     word-break: break-word;
+    mat-chip {
+      height: 32px;
+    }
   }
 
   mat-slide-toggle {

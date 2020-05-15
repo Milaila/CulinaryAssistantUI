@@ -1,6 +1,4 @@
-export interface ISignUpModel{
-  login: string;
-  email?: string;
-  fullName?: string;
-  password: string;
+export interface ISignInResponse {
+  token: string;
+  isAdmin: boolean;
 }
