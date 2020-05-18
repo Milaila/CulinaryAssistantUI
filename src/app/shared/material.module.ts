@@ -21,6 +21,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTreeModule } from '@angular/material/tree';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -38,6 +39,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatSelectModule,
     MatCheckboxModule,
     MatCardModule,
+    MatTabsModule,
     MatPaginatorModule,
     MatAutocompleteModule,
     MatIconModule,
@@ -82,6 +84,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatSortModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
+    MatTabsModule,
     MatLineModule,
     MatOptionModule,
     MatRadioModule,

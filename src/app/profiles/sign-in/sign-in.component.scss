@@ -1,0 +1,16 @@
+.SignIn {
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .login {
+    max-width: 75px;
+    margin-top: 8px;
+  }
+
+  h2 {
+    color: grey;
+    font-weight: 300;
+  }
+}

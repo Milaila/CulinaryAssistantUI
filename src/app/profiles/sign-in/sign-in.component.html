@@ -1,1 +1,18 @@
-<p>sign-in works!</p>
+<div class="SignIn">
+  <h2>Вхід в обліковий запис</h2>
+  <form #form='ngForm' autocomplete="off">
+    <mat-form-field>
+      <mat-label>Логін</mat-label>
+      <input matInput name="userName" [(ngModel)]="formModel.login" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Пароль</mat-label>
+      <input type="password" matInput name="password" [(ngModel)]="formModel.password" required>
+    </mat-form-field>
+    <button class="login" mat-raised-button color="primary"
+      [disabled]="form.invalid"
+      (click)="onSubmit()">
+      Вхід
+    </button>
+  </form>
+</div>

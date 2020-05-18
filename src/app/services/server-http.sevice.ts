@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { IModel } from '../models/server/base-model';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { IRecipeModel, IRecipeGeneralModel } from '../models/server/recipe-models';
 import { serverUrls } from '../shared/server-urls';
 import { IFilterModel, IFilterGeneralModel } from '../models/server/filter-models';
-import { ISignUpModel } from '../models/server/sign-in-response-model';
+import { ISignInResponse } from '../models/server/sign-in-response-model';
 import { ISignInModel } from '../models/server/sign-in-model';
-import { ISignInResponse } from '../models/server/sign-up-model';
+import { ISignUpModel } from '../models/server/sign-up-model';
 import { map, tap } from 'rxjs/operators';
 import { IProfileGeneralModel, IProfileModel } from '../models/server/profile-models';
 import { IImageModel } from '../models/server/image-model';
@@ -86,7 +85,7 @@ export class ServerHttpService {
     return this.http.post(`${serverUrls.auth}/signup`, model).pipe(tap(x => console.log(x)));
   }
 
-  loginExists(login: string): Observable<boolean> {
+  isLoginUnique(login: string): Observable<boolean> {
     const url = `${serverUrls.auth}/${login}/unique`;
     return this.http.get<boolean>(url).pipe(tap(x => console.log(x)));
   }

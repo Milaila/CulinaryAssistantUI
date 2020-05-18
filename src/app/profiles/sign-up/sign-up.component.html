@@ -1,1 +1,35 @@
-<p>sign-up works!</p>
+<div class="SignUp">
+  <h2>Реєстрація</h2>
+  <form [formGroup]="formModel" autocomplete="off">
+    <mat-form-field>
+      <mat-label>Логін</mat-label>
+      <input matInput formControlName="login" required (blur)="checkLogin()">
+      <mat-error *ngIf="loginCtrl.hasError('unique')">Користувач з таким логіном вже існує</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Електронна пошта</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Повне ім'я</mat-label>
+      <input matInput formControlName="fullName">
+    </mat-form-field>
+    <div formGroupName="passwords" class="passwords">
+      <mat-form-field>
+        <mat-label>Пароль</mat-label>
+        <input type="password" matInput formControlName="password" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Підтвердження паролю</mat-label>
+        <input type="password" matInput formControlName="confirmPassword" required>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button
+      class="submit"
+      color="primary"
+      [disabled]="!formModel.valid"
+      (click)="onSubmit()">
+      Реєстрація
+    </button>
+  </form>
+</div>

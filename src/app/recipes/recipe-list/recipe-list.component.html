@@ -22,15 +22,17 @@
           <mat-divider></mat-divider>
           <div class="actions">
             <button mat-stroked-button color="primary" (click)="viewRecipeDetails(recipe.id)">Деталі</button>
-            <ng-container *ngIf="enableEditing && auth.isAuthorized">
-              <button mat-stroked-button (click)="editRecipe(recipe.id)">Редагувати</button>
-              <button mat-stroked-button (click)="deleteRecipe(recipe.id)" color="warn">Видалити</button>
+            <ng-container *ngIf="auth.isAuthorized">
+              <button *ngIf="enableEditing" mat-stroked-button (click)="editRecipe(recipe.id)">Редагувати</button>
+              <button *ngIf="enableEditing || auth.isAdmin" mat-stroked-button (click)="deleteRecipe(recipe.id)" color="warn">
+                Видалити</button>
             </ng-container>
           </div>
         </div>
       </mat-card>
     </div>
-    <mat-paginator [length]="recipesCount"
+    <mat-paginator *ngIf="recipesCount"
+      [length]="recipesCount"
       #paginatorFooter
       [pageSize]="itemsPerPage"
       [pageIndex]="currentPage"

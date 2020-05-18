@@ -44,6 +44,7 @@ export interface IRecipeTagModel extends IModel {
 export interface IIngredientModel extends IModel {
   productId: number;
   product?: IProductModel;
+  title?: string;
   note?: string;
   weight?: number;
   necessity: boolean;

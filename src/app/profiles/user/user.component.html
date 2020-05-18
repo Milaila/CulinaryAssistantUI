@@ -1,0 +1,15 @@
+<div class="Auth">
+  <mat-card>
+    <nav mat-tab-nav-bar mat-align-tabs="center">
+      <a  mat-tab-link routerLink="signup"
+          routerLinkActive #signup="routerLinkActive"
+          [active]="signup.isActive">Реєстрація</a>
+      <a  mat-tab-link routerLink="signin"
+          routerLinkActive #signin="routerLinkActive"
+          [active]="signin.isActive">Вхід</a>
+    </nav>
+    <div class="innerContainer">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-card>
+</div>

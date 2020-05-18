@@ -13,7 +13,11 @@ export class AuthService {
   }
 
   get isAdmin(): boolean {
-    return !!localStorage.getItem('admin');
+    return !!localStorage.getItem('admin') && this.isAuthorized;
+  }
+
+  get name(): string {
+    return localStorage.getItem('name');
   }
 
   getToken(): string {
@@ -23,6 +27,11 @@ export class AuthService {
   setToken(token: string): void {
     localStorage.setItem('token', token);
     this.tokenChanged$.next(token);
+  }
+
+  setName(name: string): void {
+    localStorage.setItem('name', name);
+    this.tokenChanged$.next(name);
   }
 
   setIsAdmin(isAdmin: boolean): void {
@@ -42,10 +51,12 @@ export class AuthService {
   signIn(model: ISignInResponse) {
     this.setIsAdmin(model?.isAdmin);
     this.setToken(model?.token);
+    this.setName(model?.displayName);
   }
 
   logout(): void {
     this.clearToken();
     localStorage.removeItem('admin');
+    localStorage.removeItem('name');
   }
 }

@@ -3,24 +3,23 @@
     <button mat-icon-button>
       <mat-icon>menu</mat-icon>
     </button>
-    <button mat-button class="menuItem" routerLink="/user" routerLinkActive="link-active"
-      [matMenuTriggerFor]="profileMenu">Профіль</button>
+    <button mat-button class="menuItem" routerLink="/profiles" routerLinkActive="link-active"
+      [matMenuTriggerFor]="profileMenu">Обліковий запис</button>
     <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item *ngIf="!isAuthorized" routerLink="/user/login"
+      <button mat-menu-item *ngIf="!isAuthorized" routerLink="/profiles/user/signin"
         routerLinkActive="link-active">Вхід</button>
-      <button mat-menu-item *ngIf="!isAuthorized" routerLink="/user/registration"
+      <button mat-menu-item routerLink="/profiles/user/signup"
         routerLinkActive="link-active">Реєстрація</button>
       <!-- <button mat-menu-item *ngIf="isAuthorized" routerLink=""
         routerLinkActive="link-active">Мій профіль</button> -->
-      <button mat-menu-item *ngIf="isAuthorized" routerLink=""
-        routerLinkActive="link-active">Вихід</button>
+      <button mat-menu-item *ngIf="isAuthorized" (click)="logout()">Вихід</button>
     </mat-menu>
     <button mat-button class="menuItem" routerLink="/products" routerLinkActive="link-active"
       [matMenuTriggerFor]="productsMenu">Продукти</button>
     <mat-menu #productsMenu="matMenu">
       <button mat-menu-item routerLink="/products/list"
         routerLinkActive="link-active">Cписок</button>
-      <button mat-menu-item *ngIf="isAuthorized" routerLink="/products/new"
+      <button mat-menu-item *ngIf="isAdmin" routerLink="/products/new"
         routerLinkActive="link-active">Створення продукту</button>
     </mat-menu>
     <button mat-button class="menuItem" routerLink="/recipes" routerLinkActive="link-active"
@@ -37,7 +36,7 @@
     </mat-menu>
     <span class="spacer"></span>
     <button mat-icon-button *ngIf="!isAuthorized"><mat-icon>login</mat-icon></button>
-    <button mat-icon-button *ngIf="isAuthorized"><mat-icon>logout</mat-icon></button>
+    <button mat-icon-button *ngIf="isAuthorized" (click)="logout()"><mat-icon>logout</mat-icon></button>
   </mat-toolbar>
 </div>
 

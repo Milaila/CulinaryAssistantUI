@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IMenuItem } from 'src/app/models/else/menu-item';
+import { IMenuItem } from '../../models/else/menu-item';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
-import { IMenuItemsGroup } from 'src/app/models/else/menu-items-group';
-import { AuthService } from 'src/app/services/auth.service';
-import { IProfile, IProfileModel } from 'src/app/models/server/profile-models';
-import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { IMenuItemsGroup } from '../../models/else/menu-items-group';
+import { AuthService } from '../../services/auth.service';
+import { IProfile, IProfileModel } from '../../models/server/profile-models';
+import { ServerHttpService } from '../../services/server-http.sevice';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -57,6 +57,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   get isAdmin(): boolean {
     return this.authService.isAdmin;
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
   // private createMenuItems(): IMenuItemsGroup[] {

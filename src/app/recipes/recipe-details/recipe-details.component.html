@@ -24,17 +24,18 @@
           </mat-chip-list>
         </section>
         <mat-list class="ingredients container indent">
-          <h2 mat-subheader>Інгедієнти</h2>
+          <h2 mat-subheader>Інгредієнти</h2>
           <mat-list-item *ngFor="let ingredient of recipe.ingredients || []">
             <button mat-icon-button color="primary" (click)="openProduct(ingredient?.product?.id)">
               <mat-icon matListIcon>info</mat-icon>
             </button>
-            <span matLine>
+            <span matLine [matTooltip]="ingredient.title">
               <strong>{{ ingredient.product?.name }}</strong>
               <span *ngIf="!ingredient.necessity" class="grey">&nbsp;(опціональний)</span>
               &nbsp;- {{ ingredient.weight || '?' }} г
             </span>
-            <p class="note" matLine *ngIf="ingredient.note">{{ ingredient.note }}</p>
+            <p class="note" matLine *ngIf="ingredient.note" [matTooltip]="ingredient.title">
+              {{ ingredient.note }}</p>
             <mat-divider></mat-divider>
           </mat-list-item>
           <mat-list-item class="ingredients-description" *ngIf="recipe.ingredientsDescription as description">

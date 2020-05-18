@@ -60,13 +60,13 @@ export class RecipeSearchComponent implements OnInit {
 
   searchByRecipeName(name: string) {
     const check = new RegExp(name, 'i');
-    this.currRecipes = this.resultRecipes.filter(r => check.test(r.title));
+    this.currRecipes = this.resultRecipes?.filter(r => check.test(r.title));
   }
 
   private sortRecipesByName(recipes$: Observable<IRecipeGeneralModel[]>): Observable<IRecipeGeneralModel[]> {
     return recipes$.pipe(
       take(1),
-      map(recipes => recipes.sort((x, y) => {
+      map(recipes => recipes?.sort((x, y) => {
         if (!x.title) {
           return 1;
         }

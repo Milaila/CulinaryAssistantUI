@@ -101,7 +101,7 @@ export class ImagesService {
       return false;
     }
     if (!this.validateImageSize(file)) {
-      this.createNotification(this.defaultInvalidSizeTitle, NotificationType.Error);
+      this.createNotification(this.defaultInvalidSizeTitle, this.defaultInvalidSizeContent, NotificationType.Error);
       return false;
     }
     return true;

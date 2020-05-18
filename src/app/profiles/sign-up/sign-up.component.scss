@@ -1,0 +1,16 @@
+.SignUp {
+  form, .passwords {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .submit {
+    max-width: 100px;
+    margin-top: 8px;
+  }
+
+  h2 {
+    color: grey;
+    font-weight: 300;
+  }
+}

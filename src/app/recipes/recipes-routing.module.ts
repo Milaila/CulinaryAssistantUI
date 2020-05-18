@@ -5,6 +5,7 @@ import { RecipeSearchComponent } from './recipe-search/recipe-search.component';
 import { RecipeEditorComponent } from './recipe-editor/recipe-editor.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
+import { AuthGuard } from '../auth/auth.guard';
 
 
 const routes: Routes = [
@@ -19,14 +20,12 @@ const routes: Routes = [
   },
   {
     path: 'new',
+    canActivate: [ AuthGuard ],
     component: RecipeEditorComponent
   },
   {
     path: ':id/edit',
-    component: RecipeEditorComponent
-  },
-  {
-    path: 'new',
+    canActivate: [ AuthGuard ],
     component: RecipeEditorComponent
   },
   {
@@ -35,6 +34,7 @@ const routes: Routes = [
   },
   {
     path: 'my',
+    canActivate: [ AuthGuard ],
     component: MyRecipesComponent
   },
   // {

@@ -52,7 +52,7 @@ export class RecipeListComponent implements OnInit {
   }
 
   get recipesCount(): number {
-    return this.allRecipes?.length;
+    return this.allRecipes?.length || -1;
   }
 
   onChangePage(event: PageEvent) {

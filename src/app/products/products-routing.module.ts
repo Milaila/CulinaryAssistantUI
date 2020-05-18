@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductEditorComponent } from './product-editor/product-editor.component';
+import { AuthGuard } from '../auth/auth.guard';
+import { AdminGuard } from '../auth/admin.guard';
 
 
 const routes: Routes = [
@@ -20,10 +22,12 @@ const routes: Routes = [
   },
   {
     path: ':id/edit',
+    canActivate: [ AdminGuard ],
     component: ProductEditorComponent
   },
   {
     path: 'new',
+    canActivate: [ AdminGuard ],
     component: ProductEditorComponent
   },
 ];

@@ -20,11 +20,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { UserComponent } from './components/user/user.component';
-import { RegistrationComponent } from './components/user/registration/registration.component';
+// import { RegistrationComponent } from './components/user/registration/registration.component';
 import { UserService } from './services/user.service';
 import { BaseService } from './services/base.service';
-import { LoginComponent } from './components/user/login/login.component';
+// import { LoginComponent } from './components/user/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { ServerHttpService } from './services/server-http.sevice';
@@ -45,9 +44,6 @@ import { ProductsService } from './services/products.service';
   declarations: [
     AppComponent,
     // OwnTestComponent,
-    UserComponent,
-    RegistrationComponent,
-    LoginComponent,
     HomeComponent,
     HeaderComponent,
     NotFoundComponent,

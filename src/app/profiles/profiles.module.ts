@@ -24,34 +24,29 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../shared/shared.module';
+import { UserComponent } from './user/user.component';
+import { MaterialModule } from '../shared/material.module';
+// import { AuthService } from 'app/services/auth.service';
 
 
 @NgModule({
-  declarations: [ProfileDetailsComponent, SignUpComponent, SignInComponent, ProfileEditorComponent],
+  declarations: [
+    ProfileDetailsComponent,
+    SignUpComponent,
+    SignInComponent,
+    ProfileEditorComponent,
+    UserComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,
+    MaterialModule,
     ProfilesRoutingModule,
-    // BrowserModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatCardModule,
     FormsModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatLineModule,
-    MatOptionModule,
-    MatCommonModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatButtonModule,
-    HttpClientModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatFormFieldModule,
-    // BrowserAnimationsModule,
   ],
+  // providers: [
+  //   AuthService
+  // ]
 })
 export class ProfilesModule { }
