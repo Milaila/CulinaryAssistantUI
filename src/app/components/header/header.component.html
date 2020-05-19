@@ -27,7 +27,7 @@
         <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
           routerLinkActive="link-active">Мої рецепти</button>
         <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/new"
-          routerLinkActive="link-active">Створення рецепту</button>
+          routerLinkActive="link-active">Створення рецепта</button>
         <button mat-menu-item routerLink="/recipes/search"
           routerLinkActive="link-active">Пошук рецептів</button>
       </mat-menu>
@@ -77,7 +77,7 @@
 </ng-template>
 <ng-template #fullRecipes>
   <button mat-button class="menuItem" routerLink="/recipes" routerLinkActive="link-active"
-  [matMenuTriggerFor]="recipesMenu">Рецепти</button>
+    [matMenuTriggerFor]="recipesMenu">Рецепти</button>
   <mat-menu #recipesMenu="matMenu">
     <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
       routerLinkActive="link-active">Мої рецепти</button>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, combineLatest, Subject } from 'rxjs';
 import { ServerHttpService } from './server-http.sevice';
 import { AuthService } from './auth.service';
-import { take, filter, map } from 'rxjs/operators';
+import { take, filter, map, catchError, tap } from 'rxjs/operators';
 import { IProductModel, IProduct, IProductView, IProductName } from '../models/server/product-model';
 import { ImagesService } from './images.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
@@ -23,14 +23,19 @@ export class ProductsService {
   ) {
   }
 
-  deleteProduct(id: number) {
+  deleteProduct(id: number): Observable<any> {
     if (this.auth.isAdmin) {
-      this.server.deleteProduct(id).pipe(take(1)).subscribe(
-        res => {
+      return this.server.deleteProduct(id).pipe(
+        take(1),
+        tap(_ => {
+          this.isUpdated = false;
           this.store.delete(id);
           this.createNotification('Продукт видалено');
-        },
-        _ => this.createNotification('Продукт не видалено', NotificationType.Error, 'Помилка під час видалення продукту')
+        }),
+        catchError(_ => {
+          this.createNotification('Продукт не видалено', NotificationType.Error, 'Помилка під час видалення продукту');
+          throw Error();
+        })
       );
     }
   }
@@ -65,11 +70,13 @@ export class ProductsService {
   }
 
   updateProduct(id: number) {
+    this.isUpdated = false;
     this.server.getProduct(id).pipe(take(1)).subscribe(product =>
       this.store.set(id, product));
   }
 
   updateProducts(): Observable<IProductModel[]> {
+    this.isUpdated = false;
     const updated$ = new Subject<IProductModel[]>();
     this.server.getProductsWithRelations().pipe(take(1)).subscribe(products => {
       this.store.clear();
@@ -108,7 +115,7 @@ export class ProductsService {
     }
     return {
       ...product,
-      imageSrc$: this.imageStore.getImage(product.imageId),
+      imageSrc$: this.imageStore.getImage(product?.imageId),
       categoryNames: this.getCategoriesNames(product),
       subcategoryNames: this.getSubcategoriesNames(product)
     };

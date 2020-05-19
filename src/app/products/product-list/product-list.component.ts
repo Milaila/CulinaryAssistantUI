@@ -45,15 +45,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.breadCrumbs = [];
-    this.subscriptions.add(this.route.params.pipe().subscribe(x => {
+    this.subscriptions.add(this.route.params?.subscribe(x => {
       if (this.productStore.isUpdated) {
         this.setRootProduct(+x.id);
       } else {
-        this.subscriptions.add(this.productStore.updateProducts().subscribe(products => {
-          if (products) {
-            this.setRootProduct(+x.id);
-          }
-        }));
+        this.updateProducts(+x.id);
+      }
+    }));
+  }
+
+  private updateProducts(productId: number) {
+    this.subscriptions.add(this.productStore.updateProducts().subscribe(products => {
+      if (products) {
+        this.setRootProduct(productId, true);
       }
     }));
   }
@@ -63,8 +67,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   deleteProduct(productId: number) {
-    this.productStore.deleteProduct(productId);
-    this.currProducts.splice(productId, 1); // TO DO: delete only after full deletion?
+    this.currProducts = null;
+    this.productStore.deleteProduct(productId).subscribe(_ => this.updateProducts(this.currProduct?.id));
   }
 
   navigateToProduct(productId: number, saveBreadCrumb: boolean) {
@@ -76,8 +80,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setRootProduct(rootProduct?: number) {
-    if (rootProduct === this.currProduct?.id) {
+  private setRootProduct(rootProduct?: number, force: boolean = false) {
+    if (rootProduct === this.currProduct?.id && !force) {
       return;
     }
     if (!rootProduct) {
@@ -98,7 +102,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.currProducts = this.productStore.sortProductsByNameAndType(products)
       .map(product => ({
         ...product,
-        imageSrc$: this.imageStore.getImage(product.imageId),
+        imageSrc$: this.imageStore.getImage(product?.imageId),
         categoryNames: this.productStore.getCategoriesNames(product)
       }));
   }

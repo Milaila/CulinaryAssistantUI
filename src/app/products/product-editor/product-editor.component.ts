@@ -13,6 +13,7 @@ import { NgForm, FormControl } from '@angular/forms';
 import { ProductDetailsDialogComponent } from '../product-details/product-details.component';
 import { take } from 'rxjs/operators';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { Content } from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'app-product-editor',
@@ -21,15 +22,15 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 })
 export class ProductEditorComponent implements OnInit, OnDestroy {
   currProduct: IProductManageModel;
-  // filteredProducts: IProduct[] = [];
-  products: IProduct[] = [];
   filteredProducts: IProductGeneralModel[];
+  // filteredCategories
   // filteredCategories$: Observable<IProduct>;
   subs = new Subscription();
   isNew = true;
   decimalPattern = '[0-9.]*';
   categories: number[] = [];
   subcategories: number[] = [];
+  allProducts: IProductGeneralModel[] = [];
 
   @ViewChild('productForm') productForm: ElementRef;
   @ViewChild('categoryInput') categoryInput: ElementRef<HTMLInputElement>;
@@ -52,27 +53,26 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (!this.auth.isAuthorized) {
-      this.createNotification('Нема прав доступу', NotificationType.Error, 'Необхідна авторизація');
+      this.createNotification('Нема прав доступу', 'Необхідна авторизація', NotificationType.Error);
       this.router.navigate(['404']);
     }
     this.subs.add(this.route.params.subscribe(x => this.initProduct(+x.id)));
     if (this.productService.isUpdated) {
-      this.filteredProducts = this.products = this.productService.products
+      this.filteredProducts = this.allProducts = this.productService.products
         .sort((x, y) => x.name > y.name ? 1 : -1);
     }
     else {
       this.subs.add(this.productService.updateProducts().subscribe(products => {
-        this.filteredProducts = this.products = (products || [])
+        this.filteredProducts = this.allProducts = (products || [])
           .sort((x, y) => x.name > y.name ? 1 : -1);
-        }
-      ));
+      }));
     }
 
-    this.categoryCtrl.valueChanges.subscribe(values => {
-      console.log(values);
-      values.forEach(id => this.addCategory(id));
-      // this.addCategory(values.pop());
-    });
+    // this.categoryCtrl.valueChanges.subscribe(values => {
+    //   console.log(values);
+    //   values.forEach(id => this.addCategory(id));
+    //   // this.addCategory(values.pop());
+    // });
 
     // this.categoryCtrl.valueChanges.subscribe(x => this.addCategory(x));
   }
@@ -83,7 +83,7 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
 
   filterMyProducts(name: string) {
     const check = new RegExp(name, 'i');
-    this.filteredProducts = this.products.filter(x => check.test(x.name));
+    this.filteredProducts = this.allProducts.filter(x => check.test(x.name));
   }
 
   addCategory(id: number) {
@@ -109,26 +109,46 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
   }
 
   removeCategory(index: number) {
-    // this.categoryCtrl.value
-    this.currProduct.categories?.splice(index, 1);
+    if (index < this.categories.length) {
+      this.categories.splice(index, 1);
+      this.categories = [...this.categories];
+    }
+  }
+
+  addCategories(categories: number[]) {
+    this.categories = categories;
+    this.subcategories = this.subcategories.filter(x => !categories.includes(x));
   }
 
   removeSubcategory(index: number) {
-    this.currProduct.subcategories?.splice(index, 1);
+    if (index < this.subcategories.length) {
+      this.subcategories.splice(index, 1);
+      this.subcategories = [...this.subcategories];
+    }
+  }
+
+  addSubcategories(subcategories: number[]) {
+    this.subcategories = subcategories;
+    this.categories = this.categories.filter(x => !subcategories.includes(x));
   }
 
   private initProduct(id: number) {
     if (id) {
       this.isNew = false;
       this.subs.add(this.server.getProductWithFullDetails(id).subscribe(product => {
+        this.categories = product.categories?.map(x => x.productId) || [];
+        this.subcategories = product.subcategories?.map(x => x.productId) || [];
         this.currProduct = {
           ...product,
-          categories: product.categories || [],
-          subcategories: product.subcategories || [],
+          categories: product.categories,
+          subcategories: product.subcategories,
         };
+        this.filteredProducts = this.allProducts = this.allProducts?.filter(x => x.id !== this.currProduct.id);
       }));
     }
     else {
+      this.categories = [];
+      this.subcategories = [];
       this.currProduct = {
         id: 0,
         name: '',
@@ -177,8 +197,8 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
       transFats: this.currProduct.transFats,
       cholesterol: this.currProduct.cholesterol,
       image: this.currProduct.image ? { ...this.currProduct.image, id } : null,
-      categories: this.currProduct.categories?.map(x => ({ id, productId: x.productId })),
-      subcategories: this.currProduct.subcategories?.map(x => ({ id, productId: x.productId }))
+      categories: this.categories?.map(x => ({ id, productId: x })),
+      subcategories: this.subcategories?.map(x => ({ id, productId: x }))
     };
     this.server.createProduct(product).pipe(take(1))
       .subscribe(
@@ -187,7 +207,8 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
           this.createNotification('Продукт створено');
           this.router.navigate(['products', newId, 'edit']);
         },
-        error => this.createNotification('Продукт не створено', NotificationType.Error, 'Помилка при створенні продукту')
+        _ => this.createNotification('Продукт не створено', 'Помилка під час створення продукту',
+          NotificationType.Error)
       );
   }
 
@@ -196,13 +217,22 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
       return;
     }
     const id = this.currProduct.id;
+    // TO DO: update products with ids
+    this.currProduct.categories = this.categories?.map(x => ({ id: 0, productId: x }));
+    this.currProduct.subcategories = this.subcategories?.map(x => ({ id: 0, productId: x }));
     this.server.editProduct(this.currProduct).pipe(take(1))
       .subscribe(
         success => {
-          this.createNotification('Продукт оновлено');
-          this.productService.updateProduct(id);
+          if (success) {
+            this.createNotification('Продукт оновлено');
+            this.productService.updateProduct(id);
+          }
+          else {
+            this.isNew = true;
+            this.createNotification('Продукт не знайдено', 'Створіть новий продукт');
+          }
         },
-        error => this.createNotification('Продукт не оновлен', NotificationType.Error, 'Помилка при оновленні продукту')
+        error => this.createNotification('Продукт не оновлено', 'Помилка при оновленні продукту', NotificationType.Error)
       );
   }
 
@@ -210,7 +240,7 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  createNotification(title: string, type = NotificationType.Success, content: string = '') {
+  createNotification(title: string, content: string = '', type = NotificationType.Success) {
     this.notifications.create(title, content, type, {
       timeOut: 3000,
       showProgressBar: true,

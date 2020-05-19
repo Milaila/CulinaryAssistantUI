@@ -82,31 +82,40 @@
       </section>
 
       <!-- Категорії продукта: -->
-      <mat-chip-list #children2>
-        <mat-chip class="mat-chip-selected" color="accent" (removed)="removeCategory(index)"
-          *ngFor="let category of currProduct.categories; let index = index">
-          {{ getProductName(category.productId) }}<mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
-      <mat-form-field>
-        <mat-label>Категорії продукта</mat-label>
-        <mat-select [formControl]="categoryCtrl" multiple>
-          <ngx-mat-select-search ngModel name="productFilter" (ngModelChange)="filterMyProducts($event)"
+      <mat-form-field class="relation-search">
+        <mat-label>Категорії продукту</mat-label>
+        <mat-select multiple [ngModel]="categories" (ngModelChange)="addCategories($event)" name="categories">
+          <ngx-mat-select-search ngModel name="productFilter1" (ngModelChange)="filterMyProducts($event)"
             [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукти не знайдено'">
           </ngx-mat-select-search>
           <mat-option *ngFor="let product of filteredProducts" [value]="product.id">{{ product.name }}</mat-option>
         </mat-select>
-        <!-- <input
-        placeholder="Додати категорію"
-        #categoryInput matInput
-        [formControl]="categoryCtrl"
-        > -->
-        <!-- <mat-autocomplete #autoRequired="matAutocomplete" (optionSelected)="selectTag($event)">
-          <mat-option *ngFor="let tag of filteredTags$ | async" [value]="tag">
-            {{ tag?.toLocaleLowerCase() }}
-          </mat-option>
-        </mat-autocomplete> -->
       </mat-form-field>
+      <mat-chip-list *ngIf="categories?.length">
+        <mat-chip class="mat-chip-selected" color="accent"
+          (removed)="removeCategory(index)"
+          (click)="openProduct(category)"
+          *ngFor="let category of categories; let index = index">
+          {{ getProductName(category) }}<mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+      <mat-form-field class="relation-search">
+        <mat-label>Підкатегорії продукту</mat-label>
+        <mat-select multiple [ngModel]="subcategories" (ngModelChange)="addSubcategories($event)" name="subcategories">
+          <ngx-mat-select-search ngModel name="productFilter2" (ngModelChange)="filterMyProducts($event)"
+            [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукти не знайдено'">
+          </ngx-mat-select-search>
+          <mat-option *ngFor="let product of filteredProducts" [value]="product.id">{{ product.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-chip-list *ngIf="subcategories?.length">
+        <mat-chip class="mat-chip-selected" color="accent"
+          (removed)="removeSubcategory(index)"
+          (click)="openProduct(subcategory)"
+          *ngFor="let subcategory of subcategories; let index = index">
+          {{ getProductName(subcategory) }}<mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
       <mat-divider></mat-divider>
       <div class="actions">
         <button
