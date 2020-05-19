@@ -34,7 +34,9 @@
     </div>
     <div class="actions">
       <span *ngIf="userName" class="user-name">{{ userName }}</span>
-      <button mat-icon-button *ngIf="isAuthorized" matTooltip="користувач увійшов у систему"><mat-icon>person</mat-icon></button>
+      <button mat-icon-button *ngIf="isAuthorized" matTooltip="користувач авторизован">
+        <mat-icon>person</mat-icon>
+      </button>
       <ng-container *ngIf="!isAuthorized">
         <button mat-icon-button routerLink="/profiles/user/signup" matTooltip="реєстрація" matTooltip="реєстрація">
           <mat-icon>person_add</mat-icon>
@@ -49,7 +51,7 @@
       <!-- <button mat-icon-button class="menuItem" [matMenuTriggerFor]="colors">
         <mat-icon>format_color_fill</mat-icon>
       </button> -->
-      <button mat-icon-button class="menuItem" matTooltip="зміна теми" [matMenuTriggerFor]="colors">
+      <button mat-icon-button class="menuItem" matTooltip="теми" [matMenuTriggerFor]="colors">
         <mat-icon>color_lens</mat-icon>
       </button>
       <mat-menu #colors="matMenu">

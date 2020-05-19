@@ -78,26 +78,32 @@
     <mat-divider></mat-divider>
     <div class="grid">
       <ng-container *ngIf="currProducts; else loading">
-        <mat-card class="product-card"
-          *ngFor="let product of currProducts"
-          (click)="navigateToProduct(product?.id, true)">
-          <mat-card-header>
-            <mat-card-title (click)="navigateToProduct(product?.id, true)">{{ product?.name }}</mat-card-title>
-          </mat-card-header>
-          <mat-divider></mat-divider>
-          <mat-card-content>
-            <div class="imageContainer" *ngIf="(product?.imageSrc$ | async) as image">
-              <img mat-card-image [src]="image">
-            </div>
-            <div class="categories">
-              <mat-chip-list *ngIf="product?.categoryNames as categories">
-                <mat-chip color="accent" selected (click)="navigateToProduct(category?.id, true)"
-                  *ngFor="let category of categories">
-                  {{ category.name }}
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-          </mat-card-content>
+        <mat-card class="product-card" *ngFor="let product of currProducts">
+          <div class="card-header">
+            <mat-card-header (click)="navigateToProduct(product?.id, true)">
+              <mat-card-title>{{ product?.name }}</mat-card-title>
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <div class="imageContainer" (click)="navigateToProduct(product?.id, true)" *ngIf="(product?.imageSrc$ | async) as image">
+                <img mat-card-image [src]="image">
+              </div>
+              <div class="categories" *ngIf="product?.categoryNames?.length > 0" >
+                <mat-chip-list>
+                  <mat-chip color="accent" selected (click)="navigateToProduct(category?.id, true)"
+                    *ngFor="let category of product.categoryNames">
+                    {{ category.name }}
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+            </mat-card-content>
+          </div>
+          <div class="card-footer">
+            <mat-card-actions *ngIf="auth.isAdmin">
+              <button mat-stroked-button (click)="editProduct(product?.id)">Редагувати</button>
+              <button mat-stroked-button color="warn" (click)="deleteProduct(product?.id)">Видалити</button>
+            </mat-card-actions>
+          </div>
         </mat-card>
       </ng-container>
       <ng-template #loading>

@@ -107,8 +107,34 @@ mat-toolbar {
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-evenly;
-      mat-card-title {
-        word-break: break-word;
+
+      img {
+        width: 100%;
+        margin: 0px;
+      }
+
+      mat-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        mat-card-title {
+          word-break: break-word;
+        }
+
+        mat-card-content {
+          margin-bottom: 0px;
+        }
+
+        mat-card-actions {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 0;
+          padding-bottom: 0;
+          button {
+            margin: 0px;
+          }
+        }
       }
     }
 

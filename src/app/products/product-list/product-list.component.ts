@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDetailsDialogComponent } from '../product-details/product-details.component';
 import { ProductsService } from 'src/app/services/products.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-product-list',
@@ -30,6 +31,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    public auth: AuthService,
     private server: ServerHttpService,
     public dialog: MatDialog,
     private imageStore: ImagesService,
@@ -54,6 +56,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
         }));
       }
     }));
+  }
+
+  editProduct(productId: number) {
+    this.router.navigate(['products', productId, 'edit']);
+  }
+
+  deleteProduct(productId: number) {
+    this.productStore.deleteProduct(productId);
+    this.currProducts.splice(productId, 1); // TO DO: delete only after full deletion?
   }
 
   navigateToProduct(productId: number, saveBreadCrumb: boolean) {

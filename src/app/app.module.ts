@@ -40,6 +40,7 @@ import { SharedModule } from './shared/shared.module';
 import { MaterialModule } from './shared/material.module';
 import { ProductsService } from './services/products.service';
 import { AuthGuard } from './auth/auth.guard';
+import { AdminGuard } from './auth/admin.guard';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { AuthGuard } from './auth/auth.guard';
     UserService,
     AuthService,
     AuthGuard,
+    AdminGuard,
     ProductsService,
     ImagesService,
     ServerHttpService,

@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { take, filter, map } from 'rxjs/operators';
 import { IProductModel, IProduct, IProductView, IProductName } from '../models/server/product-model';
 import { ImagesService } from './images.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Injectable({
   providedIn: 'root'
@@ -17,18 +18,19 @@ export class ProductsService {
   constructor(
     private server: ServerHttpService,
     private imageStore: ImagesService,
+    private notifications: NotificationsService,
     private auth: AuthService
   ) {
   }
 
   deleteProduct(id: number) {
-    if (this.auth.isAuthorized) {
+    if (this.auth.isAdmin) {
       this.server.deleteProduct(id).pipe(take(1)).subscribe(
         res => {
           this.store.delete(id);
-          // console.log('Product deleted successfully');
+          this.createNotification('Продукт видалено');
         },
-        // error => alert('Error during deleting product')
+        _ => this.createNotification('Продукт не видалено', NotificationType.Error, 'Помилка під час видалення продукту')
       );
     }
   }
@@ -110,6 +112,15 @@ export class ProductsService {
       categoryNames: this.getCategoriesNames(product),
       subcategoryNames: this.getSubcategoriesNames(product)
     };
+  }
+
+  createNotification(title: string, type = NotificationType.Success, content: string = '') {
+    this.notifications.create(title, content, type, {
+      timeOut: 3000,
+      showProgressBar: true,
+      pauseOnHover: true,
+      clickToClose: true
+    });
   }
 
   // getProductDetailsView(productId: number): Observable<IProductView> {

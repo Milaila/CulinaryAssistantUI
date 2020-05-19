@@ -39,7 +39,7 @@ export class AuthService {
       localStorage.setItem('name', name);
     }
     else {
-      localStorage.removeItem('token');
+      localStorage.removeItem('name');
     }
     this.tokenChanged$.next(name);
   }
