@@ -14,22 +14,23 @@
         <textarea matInput name="recipeDescription" maxlength="1024"
           [(ngModel)]="currRecipe.description"></textarea>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="">
-        <mat-label>Калорійність (на 100 г в кКал)</mat-label>
-        <input matInput name="calories" #cals type="text" pattern="[0-9.]*"
-          [ngModel]="currRecipe.calories" (input)="currRecipe.calories = convertToNumber(cals)">
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="">
-        <mat-label>Кількість порцій</mat-label>
-        <input matInput type="text" #portions name="portions" pattern="[0-9]*"
-          [ngModel]="currRecipe.portions" (input)="currRecipe.portions = convertToNumber(portions)">
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="">
-        <mat-label>Час приготування (в хвилинах)</mat-label>
-        <input matInput type="text" #duration name="duration" pattern="[0-9]*"
-          [ngModel]="currRecipe.duration" (input)="currRecipe.duration = convertToNumber(duration)">
-      </mat-form-field>
-
+      <div class="numbers">
+        <mat-form-field appearance="outline" class="">
+          <mat-label>Калорійність (на 100 г в кКал)</mat-label>
+          <input matInput name="calories" #cals type="text" pattern="[0-9.]*"
+            [ngModel]="currRecipe.calories" (input)="currRecipe.calories = convertToNumber(cals)">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="">
+          <mat-label>Кількість порцій</mat-label>
+          <input matInput type="text" #portions name="portions" pattern="[0-9]*"
+            [ngModel]="currRecipe.portions" (input)="currRecipe.portions = convertToNumber(portions)">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="">
+          <mat-label>Час приготування (в хвилинах)</mat-label>
+          <input matInput type="text" #duration name="duration" pattern="[0-9]*"
+            [ngModel]="currRecipe.duration" (input)="currRecipe.duration = convertToNumber(duration)">
+        </mat-form-field>
+      </div>
       <section class="main-image">
         <input type="file" class="hide" (change)="uploadRecipeImage($event)" #recipeImage>
         <button (click)="recipeImage.click()" class="indent" mat-stroked-button color="primary">

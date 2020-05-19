@@ -16,7 +16,7 @@ import { startWith, map, withLatestFrom, catchError, share, tap } from 'rxjs/ope
 export class TagsSearchSectionComponent implements OnInit {
 
   availableTags$: Observable<string[]>;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  separatorKeysCodes: number[] = [ENTER];
 
   requiredTagsCtrl = new FormControl();
   forbiddenTagsCtrl = new FormControl();

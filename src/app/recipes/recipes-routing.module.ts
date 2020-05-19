@@ -20,8 +20,8 @@ const routes: Routes = [
   },
   {
     path: 'new',
-    canActivate: [ AuthGuard ],
-    component: RecipeEditorComponent
+    component: RecipeEditorComponent,
+    canActivate: [ AuthGuard ]
   },
   {
     path: ':id/edit',

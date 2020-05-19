@@ -1,42 +1,87 @@
 <div class="Header">
   <mat-toolbar color="primary">
-    <button mat-icon-button>
-      <mat-icon>menu</mat-icon>
-    </button>
-    <button mat-button class="menuItem" routerLink="/profiles" routerLinkActive="link-active"
-      [matMenuTriggerFor]="profileMenu">Обліковий запис</button>
-    <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item *ngIf="!isAuthorized" routerLink="/profiles/user/signin"
-        routerLinkActive="link-active">Вхід</button>
-      <button mat-menu-item routerLink="/profiles/user/signup"
-        routerLinkActive="link-active">Реєстрація</button>
-      <!-- <button mat-menu-item *ngIf="isAuthorized" routerLink=""
-        routerLinkActive="link-active">Мій профіль</button> -->
-      <button mat-menu-item *ngIf="isAuthorized" (click)="logout()">Вихід</button>
-    </mat-menu>
-    <button mat-button class="menuItem" routerLink="/products" routerLinkActive="link-active"
-      [matMenuTriggerFor]="productsMenu">Продукти</button>
-    <mat-menu #productsMenu="matMenu">
-      <button mat-menu-item routerLink="/products/list"
-        routerLinkActive="link-active">Cписок</button>
-      <button mat-menu-item *ngIf="isAdmin" routerLink="/products/new"
-        routerLinkActive="link-active">Створення продукту</button>
-    </mat-menu>
-    <button mat-button class="menuItem" routerLink="/recipes" routerLinkActive="link-active"
-      [matMenuTriggerFor]="recipesMenu">Рецепти</button>
-    <mat-menu #recipesMenu="matMenu">
-      <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
-        routerLinkActive="link-active">Мої рецепти</button>
-      <!-- <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/filters"
-        routerLinkActive="link-active">Мої фільтри</button> -->
-      <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/new"
-        routerLinkActive="link-active">Створення рецепту</button>
-      <button mat-menu-item routerLink="/recipes/search"
-        routerLinkActive="link-active">Пошук рецептів</button>
-    </mat-menu>
-    <span class="spacer"></span>
-    <button mat-icon-button *ngIf="!isAuthorized"><mat-icon>login</mat-icon></button>
-    <button mat-icon-button *ngIf="isAuthorized" (click)="logout()"><mat-icon>logout</mat-icon></button>
+    <div class="menu">
+      <button mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <button mat-button class="menuItem" routerLink="/profiles" routerLinkActive="link-active"
+        [matMenuTriggerFor]="profileMenu">Обліковий запис</button>
+      <mat-menu #profileMenu="matMenu">
+        <button mat-menu-item *ngIf="!isAuthorized" routerLink="/profiles/user/signin"
+          routerLinkActive="link-active">Вхід</button>
+        <button mat-menu-item routerLink="/profiles/user/signup"
+          routerLinkActive="link-active">Реєстрація</button>
+        <!-- <button mat-menu-item *ngIf="isAuthorized" routerLink=""
+          routerLinkActive="link-active">Мій профіль</button> -->
+        <button mat-menu-item *ngIf="isAuthorized" (click)="logout()">Вихід</button>
+      </mat-menu>
+      <button *ngIf="!isAdmin; else fullProducts"
+        mat-button class="menuItem" routerLink="/products"
+        routerLinkActive="link-active">
+        Продукти</button>
+      <button mat-button *ngIf="!isAuthorized; else fullRecipes"
+        class="menuItem" routerLink="/recipes"
+        routerLinkActive="link-active">
+        Рецепти</button>
+      <mat-menu #recipesMenu="matMenu">
+        <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
+          routerLinkActive="link-active">Мої рецепти</button>
+        <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/new"
+          routerLinkActive="link-active">Створення рецепту</button>
+        <button mat-menu-item routerLink="/recipes/search"
+          routerLinkActive="link-active">Пошук рецептів</button>
+      </mat-menu>
+    </div>
+    <div class="actions">
+      <span *ngIf="userName" class="user-name">{{ userName }}</span>
+      <button mat-icon-button *ngIf="isAuthorized" matTooltip="користувач увійшов у систему"><mat-icon>person</mat-icon></button>
+      <ng-container *ngIf="!isAuthorized">
+        <button mat-icon-button routerLink="/profiles/user/signup" matTooltip="реєстрація" matTooltip="реєстрація">
+          <mat-icon>person_add</mat-icon>
+        </button>
+        <button mat-icon-button routerLink="/profiles/user/signin" matTooltip="вхід">
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
+      </ng-container>
+      <button mat-icon-button *ngIf="isAuthorized" matTooltip="вихід" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+      <!-- <button mat-icon-button class="menuItem" [matMenuTriggerFor]="colors">
+        <mat-icon>format_color_fill</mat-icon>
+      </button> -->
+      <button mat-icon-button class="menuItem" matTooltip="зміна теми" [matMenuTriggerFor]="colors">
+        <mat-icon>color_lens</mat-icon>
+      </button>
+      <mat-menu #colors="matMenu">
+        <button
+          mat-menu-item
+          *ngFor="let theme of themes"
+          (click)="changeTheme(theme?.code)"
+        >{{ theme?.label }}</button>
+      </mat-menu>
+    </div>
   </mat-toolbar>
 </div>
 
+<ng-template #fullProducts>
+  <button mat-button class="menuItem" routerLink="/products" routerLinkActive="link-active"
+  [matMenuTriggerFor]="productsMenu">Продукти</button>
+  <mat-menu #productsMenu="matMenu">
+    <button mat-menu-item routerLink="/products/list"
+      routerLinkActive="link-active">Cписок</button>
+    <button mat-menu-item *ngIf="isAdmin" routerLink="/products/new"
+      routerLinkActive="link-active">Створення продукту</button>
+  </mat-menu>
+</ng-template>
+<ng-template #fullRecipes>
+  <button mat-button class="menuItem" routerLink="/recipes" routerLinkActive="link-active"
+  [matMenuTriggerFor]="recipesMenu">Рецепти</button>
+  <mat-menu #recipesMenu="matMenu">
+    <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
+      routerLinkActive="link-active">Мої рецепти</button>
+    <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/new"
+      routerLinkActive="link-active">Створення рецепту</button>
+    <button mat-menu-item routerLink="/recipes/search"
+      routerLinkActive="link-active">Пошук рецептів</button>
+  </mat-menu>
+</ng-template>

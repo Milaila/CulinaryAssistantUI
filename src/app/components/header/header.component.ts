@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { IProfile, IProfileModel } from '../../models/server/profile-models';
 import { ServerHttpService } from '../../services/server-http.sevice';
 import { switchMap } from 'rxjs/operators';
+import { ThemeService, ITheme } from 'src/app/services/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -18,11 +19,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription();
   menuItems: IMenuItemsGroup[];
   currProfile: IProfileModel;
+  themes: ITheme[];
 
   constructor(
     private router: Router,
     public authService: AuthService,
     public server: ServerHttpService,
+    public theme: ThemeService,
     private route: ActivatedRoute
   ) { }
 
@@ -31,15 +34,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.authService.tokenChanged$.pipe(
-      switchMap(token => {
-        if (token) {
-          return this.server.getCurrentProfile();
-        }
-        return of(null);
-      }),
-    ).subscribe(profile => this.currProfile = profile));
+    this.themes = this.theme.themes;
+    // this.subscriptions.add(this.authService.tokenChanged$.pipe(
+    //   switchMap(token => {
+    //     if (token) {
+    //       return this.server.getCurrentProfile();
+    //     }
+    //     return of(null);
+    //   }),
+    // ).subscribe(profile => this.currProfile = profile));
     // this.menuItems = this.createMenuItems();
+  }
+
+  get userName(): string {
+    return this.authService.name;
+  }
+
+  changeTheme(code: string) {
+    this.theme.changeTheme(code);
   }
 
   // onClickItem(item: IMenuItem) {

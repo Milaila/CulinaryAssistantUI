@@ -5,6 +5,7 @@ import { ServerHttpService } from 'src/app/services/server-http.sevice';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-my-recipes',
@@ -17,18 +18,35 @@ export class MyRecipesComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private notifications: NotificationsService,
     private serverService: ServerHttpService,
   ) { }
 
   ngOnInit(): void {
-    if (!this.authService.isAuthorized) {
-      this.router.navigate(['/404']);
-    }
+    // if (!this.authService.isAuthorized) {
+    //   this.router.navigate(['/404']);
+    // }
 
-    this.serverService.getMyRecipes().pipe(take(1)).subscribe(
-      recipes => this.recipes = recipes,
-      _ => alert('Error during getting current recipes')
-    );
+    if (this.authService.isAdmin) {
+      this.serverService.getDefaultRecipes().pipe(take(1)).subscribe(
+        recipes => this.recipes = recipes,
+        _ => this.createNotification('Помилка під час завантаження рецептів')
+      );
+    }
+    else {
+      this.serverService.getMyRecipes().pipe(take(1)).subscribe(
+        recipes => this.recipes = recipes,
+        _ => this.createNotification('Помилка під час завантаження рецептів')
+      );
+    }
   }
 
+  createNotification(title: string, content: string = '', type = NotificationType.Error) {
+    this.notifications.create(title, content, type, {
+      timeOut: 3000,
+      showProgressBar: true,
+      pauseOnHover: true,
+      clickToClose: true
+    });
+  }
 }

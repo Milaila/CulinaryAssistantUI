@@ -33,7 +33,7 @@ export class SignInComponent implements OnInit {
     this.serverService.signIn(this.formModel).subscribe(
       res => {
         this.authService.signIn(res);
-        this.createNotification('Успішний вхід', '', NotificationType.Success);
+        this.createNotification('Виконано вхід в систему', '', NotificationType.Success);
         this.router.navigateByUrl('/recipes');
       },
       err => {

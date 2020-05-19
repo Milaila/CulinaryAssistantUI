@@ -52,7 +52,7 @@ export class RecipeListComponent implements OnInit {
   }
 
   get recipesCount(): number {
-    return this.allRecipes?.length || -1;
+    return this.allRecipes ? this.allRecipes.length : -1;
   }
 
   onChangePage(event: PageEvent) {
@@ -72,11 +72,13 @@ export class RecipeListComponent implements OnInit {
   }
 
   deleteRecipe(id: number) {
-    const index = this.allRecipes.findIndex(x => x.id === id);
-    this.currentPage = 0;
-    this.allRecipes?.splice(index, 1);
-    this.displayRecipesInRange();
-    this.server.deleteRecipe(id).subscribe(x => this.openSnackBar('Рецепт успішно видален', null));
+    this.server.deleteRecipe(id).subscribe(_ => {
+      this.openSnackBar('Рецепт успішно видален', null);
+      const index = this.allRecipes.findIndex(x => x.id === id);
+      this.currentPage = 0;
+      this.allRecipes?.splice(index, 1);
+      this.displayRecipesInRange();
+    });
   }
 
   private displayRecipesInRange() {

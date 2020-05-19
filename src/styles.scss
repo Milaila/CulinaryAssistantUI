@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import '~@angular/material/prebuilt-themes/deeppurple-amber';
+@import 'src/app/styles/theme.scss';
 
 html, body {
   // background-color: #acc8e7;
@@ -57,23 +58,23 @@ body {
 
 
 
-@import '~@angular/material/theming';
-@include mat-core();
+// @import '~@angular/material/theming';
+// @include mat-core();
 
-$primary: mat-palette($mat-cyan,800);
-  $accent: mat-palette($mat-orange,400);
+// $primary: mat-palette($mat-cyan,800);
+//   $accent: mat-palette($mat-orange,400);
 
-  $theme: mat-light-theme($primary, $accent);
+//   $theme: mat-light-theme($primary, $accent);
 
-@include angular-material-theme($theme);
-// $dark-primary: mat-palette($mat-blue,800);
-// $dark-accent: mat-palette($mat-orange,800);
+// @include angular-material-theme($theme);
+// // $dark-primary: mat-palette($mat-blue,800);
+// // $dark-accent: mat-palette($mat-orange,800);
 
-// $dark-theme: mat-dark-theme($primary, $accent);
+// // $dark-theme: mat-dark-theme($primary, $accent);
 
-// .material-dark-theme {
-//   @include angular-material-theme($dark-theme);
-// }
+// // .material-dark-theme {
+// //   @include angular-material-theme($dark-theme);
+// // }
 
 
 mat-toolbar {

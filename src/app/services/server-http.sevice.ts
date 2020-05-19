@@ -50,6 +50,11 @@ export class ServerHttpService {
     return this.http.get<IRecipeGeneralModel[]>(url).pipe(tap(x => console.log(x)));
   }
 
+  getDefaultRecipes(): Observable<IRecipeGeneralModel[]> {
+    const url = `${serverUrls.recipes}/default`;
+    return this.http.get<IRecipeGeneralModel[]>(url).pipe(tap(x => console.log(x)));
+  }
+
   getRecipesByFilterId(id: number): Observable<IRecipeGeneralModel[]> {
     const url = `${serverUrls.recipes}/filters/${id}`;
     return this.http.get<IRecipeGeneralModel[]>(url).pipe(tap(x => console.log(x)));

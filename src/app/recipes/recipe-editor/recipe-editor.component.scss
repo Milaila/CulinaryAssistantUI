@@ -15,7 +15,7 @@
 
 .RecipeContainer {
   // margin-bottom: 16px;
-  width: 1200px;
+  width: 900px;
 
   mat-checkbox {
     margin-left: 2px;
@@ -33,6 +33,17 @@
         button {
           margin-top: -16px;
         }
+      }
+    }
+  }
+
+  .numbers {
+    display: flex;
+    flex-wrap: wrap;
+    mat-form-field {
+      width: 292px;
+      &:not(:last-of-type) {
+        margin-right: 12px;
       }
     }
   }

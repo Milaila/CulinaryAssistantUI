@@ -25,12 +25,22 @@ export class AuthService {
   }
 
   setToken(token: string): void {
-    localStorage.setItem('token', token);
+    if (token) {
+      localStorage.setItem('token', token);
+    }
+    else {
+      localStorage.removeItem('token');
+    }
     this.tokenChanged$.next(token);
   }
 
   setName(name: string): void {
-    localStorage.setItem('name', name);
+    if (name) {
+      localStorage.setItem('name', name);
+    }
+    else {
+      localStorage.removeItem('token');
+    }
     this.tokenChanged$.next(name);
   }
 

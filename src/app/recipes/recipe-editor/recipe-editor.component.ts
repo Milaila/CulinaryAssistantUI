@@ -31,7 +31,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   @ViewChild('recipeForm') recipeForm: ElementRef;
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
   tagsCtrl = new FormControl();
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  separatorKeysCodes: number[] = [ENTER];
   filteredTags$: Observable<string[]>;
 
   constructor(

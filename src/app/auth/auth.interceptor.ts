@@ -24,26 +24,27 @@ export class AuthInterceptor implements HttpInterceptor {
           success => {},
           err => {
             if (err.status === 401) {
-              this.createNotification('Час вичерпан', 'Авторизуйтесь знову');
+              this.createNotification('Помилка доступу', 'Необхідно знов увійти у систему');
               this.authService.logout();
               this.router.navigate(['/user/login']);
             } else if (err.status === 403) {
-              this.createNotification('Сторінки не існує або нема прав доступу');
-              this.router.navigate(['404']);
+              this.createNotification('Нема прав доступу');
+              // this.router.navigate(['404']);
             }
           }
         )
       );
     }
-    return next.handle(req.clone()).pipe(tap(
-      success => {},
-      err => {
-        if (err.status === 401) {
-          this.createNotification('Нема прав доступу', 'Необхідна авторизація');
-          this.router.navigate(['/user/login']);
-        }
-      }
-    ));
+    return next.handle(req.clone());
+    // .pipe(tap(
+    //   success => {},
+    //   err => {
+    //     if (err.status === 401) {
+    //       this.createNotification('Нема прав доступу', 'Необхідна авторизація');
+    //       this.router.navigate(['/user/login']);
+    //     }
+    //   }
+    // ));
   }
 
   createNotification(title: string, content: string = '', type = NotificationType.Error) {

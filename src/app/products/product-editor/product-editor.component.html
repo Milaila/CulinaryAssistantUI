@@ -15,7 +15,7 @@
           [(ngModel)]="currProduct.description"></textarea>
       </mat-form-field>
       <mat-form-field appearance="outline" class="">
-        <mat-label>Калорійність (на 100 г в кКал)</mat-label>
+        <mat-label>Калорійність (на 100 г в ккал)</mat-label>
         <input matInput name="calories" #cals [pattern]="decimalPattern"
           [ngModel]="currProduct.calories" (input)="currProduct.calories = convertToNumber(cals)">
       </mat-form-field>

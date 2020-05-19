@@ -31,7 +31,7 @@
         </div>
       </mat-card>
     </div>
-    <mat-paginator *ngIf="recipesCount"
+    <mat-paginator *ngIf="recipesCount > 0"
       [length]="recipesCount"
       #paginatorFooter
       [pageSize]="itemsPerPage"
@@ -43,7 +43,7 @@
   <ng-template #noRecipes>
     <div class="RecipeList-noRecipes">
       <h3 *ngIf="recipesCount === 0" class="thin">{{ noRecipesLabel }}</h3>
-      <div class="spinner-container" *ngIf="!recipes">
+      <div class="spinner-container" *ngIf="recipes === null">
         <mat-spinner></mat-spinner>
         <span>Завантаження даних...</span>
       </div>

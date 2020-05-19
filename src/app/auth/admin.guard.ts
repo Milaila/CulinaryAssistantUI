@@ -16,7 +16,7 @@ export class AdminGuard implements CanActivate {
       return true;
     }
     else {
-      this.createNotification('Нема прав доступу', 'Необхідна авторизація');
+      this.createNotification('Нема прав доступу', 'Необхідна увійти в обліковий запис');
       this.router.navigate(['/user/login']);
       return false;
     }

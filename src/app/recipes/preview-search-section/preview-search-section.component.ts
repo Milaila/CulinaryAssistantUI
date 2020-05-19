@@ -76,6 +76,6 @@ export class PreviewSearchSectionComponent implements OnInit, OnDestroy {
 
   get caloriesLabel(): string {
     const filter = this.filterService.currFilter;
-    return `від  ${filter.minCalories || '__'}  до  ${filter.maxCalories || '__'} (кКал)`;
+    return `від  ${filter.minCalories || '__'}  до  ${filter.maxCalories || '__'} (ккал)`;
   }
 }

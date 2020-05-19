@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/co
 import { ProductsService } from 'src/app/services/products.service';
 import { Server } from 'http';
 import { ServerHttpService } from 'src/app/services/server-http.sevice';
-import { IProductManageModel, IProduct, IProductModel, IProductView, IProductRelationModel, IProductRelationWithName, IProductGeneralModel } from 'src/app/models/server/product-model';
+import { IProductManageModel, IProduct, IProductView, IProductRelationModel, IProductRelationWithName, IProductGeneralModel } from 'src/app/models/server/product-model';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,7 +36,7 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
   @ViewChild('subcategoryInput') subcategoryInput: ElementRef<HTMLInputElement>;
   categoryCtrl = new FormControl();
   subcategoryCtrl = new FormControl();
-  separatorKeysCodes: number[] = [ENTER, COMMA];
+  separatorKeysCodes: number[] = [ENTER];
   // filteredTags$: Observable<string[]>;
 
   constructor(

@@ -39,6 +39,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { SharedModule } from './shared/shared.module';
 import { MaterialModule } from './shared/material.module';
 import { ProductsService } from './services/products.service';
+import { AuthGuard } from './auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { ProductsService } from './services/products.service';
   providers: [
     UserService,
     AuthService,
+    AuthGuard,
     ProductsService,
     ImagesService,
     ServerHttpService,
