@@ -11,7 +11,8 @@
     Шукати за точною назвою продуктів
   </mat-slide-toggle>
   <mat-divider></mat-divider>
-  <div class="filter-header">  <mat-form-field class="search">
+  <div class="filter-header">
+    <mat-form-field class="search">
       <mat-label>Фільтрація за назвою продукту</mat-label>
       <input matInput name="product-search"
         #searchProducts (input)="searchByName(searchProducts.value)" placeholder="Назва продукту...">
@@ -51,7 +52,7 @@
   <div class="table-container">
     <table mat-table [dataSource]="productsSource" matSort>
       <ng-container matColumnDef="subcategories">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Продукти</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
         <td mat-cell *matCellDef="let row">
           <button *ngIf="row.subcategories?.length" mat-icon-button (click)="changeRootProduct(row.id)">
             <mat-icon >expand_more</mat-icon>

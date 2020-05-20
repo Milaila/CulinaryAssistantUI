@@ -1,40 +1,45 @@
+        <!-- <button mat-menu-item *ngIf="isAuthorized" routerLink=""
+          routerLinkActive="link-active">Мій профіль</button> -->
+                <!-- <button mat-icon-button class="menuItem" [matMenuTriggerFor]="colors">
+        <mat-icon>format_color_fill</mat-icon>
+      </button> -->
 <div class="Header">
   <mat-toolbar color="primary">
     <div class="menu">
-      <button mat-icon-button>
+      <button mat-icon-button (click)="toggleDrawer.emit(null)">
         <mat-icon>menu</mat-icon>
       </button>
-      <button mat-button class="menuItem" routerLink="/profiles" routerLinkActive="link-active"
+      <div class="up-menu">
+        <button mat-button class="menuItem" routerLink="/profiles" routerLinkActive="link-active"
         [matMenuTriggerFor]="profileMenu">Обліковий запис</button>
-      <mat-menu #profileMenu="matMenu">
-        <button mat-menu-item *ngIf="!isAuthorized" routerLink="/profiles/user/signin"
-          routerLinkActive="link-active">Вхід</button>
-        <button mat-menu-item routerLink="/profiles/user/signup"
-          routerLinkActive="link-active">Реєстрація</button>
-        <!-- <button mat-menu-item *ngIf="isAuthorized" routerLink=""
-          routerLinkActive="link-active">Мій профіль</button> -->
-        <button mat-menu-item *ngIf="isAuthorized" (click)="logout()">Вихід</button>
+        <mat-menu #profileMenu="matMenu">
+          <button mat-menu-item *ngIf="!isAuthorized" routerLink="/profiles/user/signin"
+            routerLinkActive="link-active">Вхід</button>
+          <button mat-menu-item routerLink="/profiles/user/signup"
+            routerLinkActive="link-active">Реєстрація</button>
+          <button mat-menu-item *ngIf="isAuthorized" (click)="logout()">Вихід</button>
+        </mat-menu>
+        <button *ngIf="!isAdmin; else fullProducts"
+          mat-button class="menuItem" routerLink="/products"
+          routerLinkActive="link-active">
+          Продукти</button>
+        <button mat-button *ngIf="!isAuthorized; else fullRecipes"
+          class="menuItem" routerLink="/recipes"
+          routerLinkActive="link-active">
+          Рецепти</button>
+        <mat-menu #recipesMenu="matMenu">
+          <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
+            routerLinkActive="link-active">Мої рецепти</button>
+          <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/new"
+            routerLinkActive="link-active">Створення рецепта</button>
+          <button mat-menu-item routerLink="/recipes/search"
+            routerLinkActive="link-active">Пошук рецептів</button>
       </mat-menu>
-      <button *ngIf="!isAdmin; else fullProducts"
-        mat-button class="menuItem" routerLink="/products"
-        routerLinkActive="link-active">
-        Продукти</button>
-      <button mat-button *ngIf="!isAuthorized; else fullRecipes"
-        class="menuItem" routerLink="/recipes"
-        routerLinkActive="link-active">
-        Рецепти</button>
-      <mat-menu #recipesMenu="matMenu">
-        <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
-          routerLinkActive="link-active">Мої рецепти</button>
-        <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/new"
-          routerLinkActive="link-active">Створення рецепта</button>
-        <button mat-menu-item routerLink="/recipes/search"
-          routerLinkActive="link-active">Пошук рецептів</button>
-      </mat-menu>
+      </div>
     </div>
     <div class="actions">
-      <span *ngIf="userName" class="user-name">{{ userName }}</span>
-      <button mat-icon-button *ngIf="isAuthorized" matTooltip="користувач авторизован">
+      <span *ngIf="userName" class="user-name" [matTooltip]="userName">{{ userName }}</span>
+      <button mat-icon-button *ngIf="isAuthorized" matTooltip="користувач увійшов">
         <mat-icon>person</mat-icon>
       </button>
       <ng-container *ngIf="!isAuthorized">
@@ -48,18 +53,21 @@
       <button mat-icon-button *ngIf="isAuthorized" matTooltip="вихід" (click)="logout()">
         <mat-icon>logout</mat-icon>
       </button>
-      <!-- <button mat-icon-button class="menuItem" [matMenuTriggerFor]="colors">
-        <mat-icon>format_color_fill</mat-icon>
-      </button> -->
       <button mat-icon-button class="menuItem" matTooltip="теми" [matMenuTriggerFor]="colors">
         <mat-icon>color_lens</mat-icon>
       </button>
       <mat-menu #colors="matMenu">
         <button
           mat-menu-item
+          [class.list-item-active]="theme?.code === currThemeCode"
           *ngFor="let theme of themes"
           (click)="changeTheme(theme?.code)"
         >{{ theme?.label }}</button>
+        <!-- <mat-radio-button color="primary" *ngFor="let theme of themes"
+          [checked]="theme?.code === currThemeCode"
+          (click)="changeTheme(theme?.code)">
+          {{ theme?.label }}
+        </mat-radio-button> -->
       </mat-menu>
     </div>
   </mat-toolbar>
@@ -87,3 +95,4 @@
       routerLinkActive="link-active">Пошук рецептів</button>
   </mat-menu>
 </ng-template>
+

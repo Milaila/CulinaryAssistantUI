@@ -2,6 +2,7 @@
   position: fixed;
   width: 100%;
   z-index: 1000;
+  top: 0;
 }
 
 .Header {
@@ -13,8 +14,14 @@
     box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
   }
 
-  .menu, .actions {
+  .menu, .actions, .up-menu {
     display: flex;
+  }
+
+  @media screen and (max-width: 760px) {
+    .up-menu {
+      display: none;
+    }
   }
 
   .menuItem {
@@ -24,6 +31,9 @@
   .user-name {
     line-height: 40px;
     margin-right: 4px;
+    overflow: hidden;
+    max-width: 128px;
+    text-overflow: ellipsis;
   }
 
   .link-active {

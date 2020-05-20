@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { IMenuItem } from '../../models/else/menu-item';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
@@ -15,11 +15,12 @@ import { ThemeService, ITheme } from 'src/app/services/theme.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
   subscriptions = new Subscription();
   menuItems: IMenuItemsGroup[];
   currProfile: IProfileModel;
   themes: ITheme[];
+  @Output()
+  toggleDrawer = new EventEmitter();
 
   constructor(
     private router: Router,
@@ -54,6 +55,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.theme.changeTheme(code);
   }
 
+  get currThemeCode(): string {
+    return this.theme.themeCode;
+  }
   // onClickItem(item: IMenuItem) {
   //   if (item?.click) {
   //     item.click();
@@ -75,82 +79,75 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.logout();
   }
 
-  // private createMenuItems(): IMenuItemsGroup[] {
-  //   return [
-  //     {
-  //       mainItem: {
-  //         label: 'Профіль',
-  //         routerLink: '/user/login',
-  //       },
-  //       subItems: [
-  //         {
-  //           label: 'Вхід',
-  //           visible: () => !this.authService.isAuthorized,
-  //           routerLink: '/user/login',
-  //         },
-  //         {
-  //           label: 'Реєстрація',
-  //           visible: () => !this.authService.isAuthorized,
-  //           routerLink: '/user/registration',
-  //         },
-  //         {
-  //           label: 'Мій профіль',
-  //           visible: () => this.authService.isAuthorized,
-  //           // routerLink: '/profiles/my',
-  //         },
-  //         {
-  //           label: 'Вихід',
-  //           visible: () => this.authService.isAuthorized,
-  //           click: () => this.authService.clearToken(), // TO DO: success alert
-  //           // routerLink: '/user/login',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       mainItem: {
-  //         label: 'Продукти',
-  //         // routerLink: '',
-  //       },
-  //       subItems: [
-  //         {
-  //           label: 'Cписок',
-  //           // routerLink: '',
-  //         },
-  //         {
-  //           label: 'Редагування',
-  //           visible: () => this.authService.isAuthorized,
-  //           // routerLink: '',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       mainItem: {
-  //         label: 'Рецепти',
-  //         routerLink: '',
-  //       },
-  //       subItems: [
-  //         {
-  //           label: 'Мої рецепти',
-  //           visible: () => this.authService.isAuthorized,
-  //           // routerLink: '',
-  //         },
-  //         {
-  //           label: 'Мої фільтри',
-  //           visible: () => this.authService.isAuthorized,
-  //           // routerLink: '',
-  //         },
-  //         {
-  //           label: 'Створення рецепту',
-  //           visible: () => this.authService.isAuthorized,
-  //           routerLink: '/recipes/new',
-  //         },
-  //         {
-  //           label: 'Пошук рецептів',
-  //           // routerLink: '',
-  //         },
-  //       ],
-  //     },
-  //   ];
-  // }
-
+  private createMenuItems(): IMenuItemsGroup[] {
+    return [
+      {
+        mainItem: {
+          label: 'Обліковий запис',
+          routerLink: '/user/login',
+        },
+        subItems: [
+          {
+            label: 'Вхід в обліковий запис',
+            visible: () => this.authService.isAuthorized,
+            routerLink: '/profiles/user/login',
+          },
+          {
+            label: 'Реєстрація',
+            visible: () => this.authService.isAuthorized,
+            routerLink: '/profiles/user/registration',
+          },
+          // {
+          //   label: 'Мій профіль',
+          //   visible: () => this.authService.isAuthorized,
+          //   // routerLink: '/profiles/my',
+          // },
+        ],
+      },
+      {
+        mainItem: {
+          label: 'Продукти',
+          // routerLink: '',
+        },
+        subItems: [
+          {
+            label: 'Cписок',
+            // routerLink: '',
+          },
+          {
+            label: 'Редагування',
+            visible: () => this.authService.isAuthorized,
+            // routerLink: '',
+          },
+        ],
+      },
+      {
+        mainItem: {
+          label: 'Рецепти',
+          routerLink: '',
+        },
+        subItems: [
+          {
+            label: 'Мої рецепти',
+            visible: () => this.authService.isAuthorized,
+            // routerLink: '',
+          },
+          {
+            label: 'Мої фільтри',
+            visible: () => this.authService.isAuthorized,
+            // routerLink: '',
+          },
+          {
+            label: 'Створення рецепту',
+            visible: () => this.authService.isAuthorized,
+            routerLink: '/recipes/new',
+          },
+          {
+            label: 'Пошук рецептів',
+            // routerLink: '',
+          },
+        ],
+      },
+    ];
+  }
 }

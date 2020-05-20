@@ -12,9 +12,14 @@
     <mat-icon class="prev-page-icon">arrow_back</mat-icon>
   </button>
   <h1>{{ currProduct?.name || 'Список основних продуктів'}}</h1>
-  <ng-container *ngIf="currProduct">
-    <button mat-stroked-button (click)="editProduct(currProduct.id)">Редагувати</button>
-    <button mat-stroked-button color="warn" (click)="deleteProduct(currProduct.id)">Видалити</button>
+  <ng-container *ngIf="currProduct && auth.isAdmin">
+    <button mat-icon-button [matMenuTriggerFor]="editMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #editMenu="matMenu">
+      <button mat-menu-item (click)="editProduct(currProduct.id)">Редагувати</button>
+      <button mat-menu-item (click)="deleteProduct(currProduct.id)">Видалити</button>
+    </mat-menu>
   </ng-container>
 </mat-toolbar>
 <div class="ProductsList container">

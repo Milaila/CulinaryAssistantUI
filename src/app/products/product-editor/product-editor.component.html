@@ -14,62 +14,6 @@
         <textarea matInput name="productDescription" maxlength="2048"
           [(ngModel)]="currProduct.description"></textarea>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="">
-        <mat-label>Калорійність (на 100 г в ккал)</mat-label>
-        <input matInput name="calories" #cals [pattern]="decimalPattern"
-          [ngModel]="currProduct.calories" (input)="currProduct.calories = convertToNumber(cals)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Жири (на 100 г в г)</mat-label>
-        <input matInput name="fats" #fats [pattern]="decimalPattern"
-          [ngModel]="currProduct.fats" (input)="currProduct.fats = convertToNumber(cals)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Білки (на 100 г в г)</mat-label>
-        <input matInput name="squirrels" #squirrels [pattern]="decimalPattern"
-          [ngModel]="currProduct.squirrels" (input)="currProduct.squirrels = convertToNumber(squirrels)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Вуглеводи (на 100г в г)</mat-label>
-        <input matInput name="carbohydrates" #carbohydrates [pattern]="decimalPattern"
-          [ngModel]="currProduct.carbohydrates" (input)="currProduct.carbohydrates = convertToNumber(carbohydrates)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Вода (на 100 г в г)</mat-label>
-        <input matInput name="water" #water [pattern]="decimalPattern"
-          [ngModel]="currProduct.water" (input)="currProduct.water = convertToNumber(water)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Зола (на 100 г в г)</mat-label>
-        <input matInput name="ash" #ash [pattern]="decimalPattern"
-          [ngModel]="currProduct.ash" (input)="currProduct.ash = convertToNumber(cals)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Цукор (на 100 г в г)</mat-label>
-        <input matInput name="sugar" #sugar [pattern]="decimalPattern"
-          [ngModel]="currProduct.sugar" (input)="currProduct.sugar = convertToNumber(sugar)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Крохмаль (на 100 г в г)</mat-label>
-        <input matInput #starch [pattern]="decimalPattern" [ngModel]="currProduct.starch"
-        name="starch" (input)="currProduct.starch = convertToNumber(starch)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Холестерин (на 100 г в г)</mat-label>
-        <input matInput #cholesterol [pattern]="decimalPattern" [ngModel]="currProduct.cholesterol"
-          name="cholesterol" (input)="currProduct.cholesterol = convertToNumber(cholesterol)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Клітковина (на 100 г в г)</mat-label>
-        <input matInput #cellulose [pattern]="decimalPattern" [ngModel]="currProduct.cellulose"
-          name="cellulose" (input)="currProduct.cellulose = convertToNumber(cellulose)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Трансжири (на 100 г в г)</mat-label>
-        <input matInput [pattern]="decimalPattern" [ngModel]="currProduct.transFats" #transFats
-          name="transFats" (input)="currProduct.transFats = convertToNumber(transFats)">
-      </mat-form-field>
-
       <section class="main-image">
         <input type="file" class="hide" (change)="uploadImage($event)" #productImage>
         <button (click)="productImage.click()" class="indent" mat-stroked-button color="primary">
@@ -77,11 +21,9 @@
         <mat-card class="imagePreview" *ngIf="currProduct.image?.data as data">
           <mat-card-subtitle>Прев'ю зображення</mat-card-subtitle>
           <img [src]="'data:image/jpeg;base64,' + data" />
-          <button mat-stroked-button color="warn" (click)="removeImage()">Видалити зображення</button>
+          <button class="delete" mat-stroked-button color="warn" (click)="removeImage()">Видалити зображення</button>
         </mat-card>
       </section>
-
-      <!-- Категорії продукта: -->
       <mat-form-field class="relation-search">
         <mat-label>Категорії продукту</mat-label>
         <mat-select multiple [ngModel]="categories" (ngModelChange)="addCategories($event)" name="categories">
@@ -116,6 +58,63 @@
           {{ getProductName(subcategory) }}<mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
       </mat-chip-list>
+      <div class="numbers">
+        <mat-form-field appearance="outline" class="">
+          <mat-label>Калорійність (на 100 г в ккал)</mat-label>
+          <input matInput name="calories" #cals [pattern]="decimalPattern"
+            [ngModel]="currProduct.calories" (input)="currProduct.calories = convertToNumber(cals)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Жири (на 100 г в г)</mat-label>
+          <input matInput name="fats" #fats [pattern]="decimalPattern"
+            [ngModel]="currProduct.fats" (input)="currProduct.fats = convertToNumber(cals)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Білки (на 100 г в г)</mat-label>
+          <input matInput name="squirrels" #squirrels [pattern]="decimalPattern"
+            [ngModel]="currProduct.squirrels" (input)="currProduct.squirrels = convertToNumber(squirrels)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Вуглеводи (на 100г в г)</mat-label>
+          <input matInput name="carbohydrates" #carbohydrates [pattern]="decimalPattern"
+            [ngModel]="currProduct.carbohydrates" (input)="currProduct.carbohydrates = convertToNumber(carbohydrates)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Вода (на 100 г в г)</mat-label>
+          <input matInput name="water" #water [pattern]="decimalPattern"
+            [ngModel]="currProduct.water" (input)="currProduct.water = convertToNumber(water)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Зола (на 100 г в г)</mat-label>
+          <input matInput name="ash" #ash [pattern]="decimalPattern"
+            [ngModel]="currProduct.ash" (input)="currProduct.ash = convertToNumber(cals)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Цукор (на 100 г в г)</mat-label>
+          <input matInput name="sugar" #sugar [pattern]="decimalPattern"
+            [ngModel]="currProduct.sugar" (input)="currProduct.sugar = convertToNumber(sugar)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Крохмаль (на 100 г в г)</mat-label>
+          <input matInput #starch [pattern]="decimalPattern" [ngModel]="currProduct.starch"
+          name="starch" (input)="currProduct.starch = convertToNumber(starch)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Холестерин (на 100 г в г)</mat-label>
+          <input matInput #cholesterol [pattern]="decimalPattern" [ngModel]="currProduct.cholesterol"
+            name="cholesterol" (input)="currProduct.cholesterol = convertToNumber(cholesterol)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Клітковина (на 100 г в г)</mat-label>
+          <input matInput #cellulose [pattern]="decimalPattern" [ngModel]="currProduct.cellulose"
+            name="cellulose" (input)="currProduct.cellulose = convertToNumber(cellulose)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Трансжири (на 100 г в г)</mat-label>
+          <input matInput [pattern]="decimalPattern" [ngModel]="currProduct.transFats" #transFats
+            name="transFats" (input)="currProduct.transFats = convertToNumber(transFats)">
+        </mat-form-field>
+      </div>
       <mat-divider></mat-divider>
       <div class="actions">
         <button

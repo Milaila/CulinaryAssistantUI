@@ -1,6 +1,33 @@
-<app-header class="h-64"></app-header>
-<div class="content pt-64">
-  <simple-notifications></simple-notifications>
-  <router-outlet></router-outlet>
-</div>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="over" [(opened)]="opened">
+    <mat-toolbar class="h-64" color="primary">
+      МЕНЮ
+      <button mat-icon-button (click)="sidenav.close()"><mat-icon>close</mat-icon></button>
+    </mat-toolbar>
+    <mat-nav-list>
+      <ng-container *ngFor="let item of menuItems">
+        <a mat-list-item
+          *ngIf="!item.visible || item.visible()"
+          [routerLink]="[item.routerLink]"
+          routerLinkActive
+          #routerLinkActiveInstance="routerLinkActive"
+          [class.list-item-active]="routerLinkActiveInstance.isActive"
+          (click)="sidenav.close()"
+        >{{ item.label }}</a>
+      </ng-container>
+    </mat-nav-list>
+  </mat-sidenav>
 
+  <mat-sidenav-content>
+    <div class="content pt-64">
+      <app-header class="h-64" (toggleDrawer)="sidenav.toggle()"></app-header>
+      <simple-notifications></simple-notifications>
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<!-- <div class="content pt-64"> -->
+      <!-- <app-header class="h-64" (toggleDrawer)="sidenav.toggle()"></app-header> -->
+  <!-- <simple-notifications></simple-notifications>
+  <router-outlet></router-outlet>
+</div> -->
