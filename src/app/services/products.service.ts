@@ -13,6 +13,7 @@ import { NotificationsService, NotificationType } from 'angular2-notifications';
 export class ProductsService {
   // private readonly products: Map<number, BehaviorSubject<IProduct>> = new Map();
   store: Map<number, IProductModel> = new Map();
+  sortByNameProducts: IProductModel[] = [];
   isUpdated = false;
 
   constructor(
@@ -30,6 +31,7 @@ export class ProductsService {
         tap(_ => {
           this.isUpdated = false;
           this.store.delete(id);
+          this.updateSortByNameProducts();
           this.createNotification('Продукт видалено');
         }),
         catchError(_ => {
@@ -42,6 +44,10 @@ export class ProductsService {
 
   getProduct(id: number) {
     return this.store.get(id);
+  }
+
+  private updateSortByNameProducts() {
+    this.sortByNameProducts = this.products.sort((x, y) => x.name > y.name ? 1 : -1);
   }
 
   get products(): IProductModel[] {
@@ -59,10 +65,12 @@ export class ProductsService {
   clearProducts() {
     this.isUpdated = false;
     this.store.clear();
+    this.updateSortByNameProducts();
   }
 
   setProduct(id: number, product: IProductModel) {
     this.store.set(id, product);
+    this.updateSortByNameProducts();
   }
 
   hasProduct(id: number): boolean {
@@ -71,8 +79,10 @@ export class ProductsService {
 
   updateProduct(id: number) {
     this.isUpdated = false;
-    this.server.getProduct(id).pipe(take(1)).subscribe(product =>
-      this.store.set(id, product));
+    this.server.getProduct(id).pipe(take(1)).subscribe(product => {
+      this.store.set(id, product);
+      this.updateSortByNameProducts();
+    });
   }
 
   updateProducts(): Observable<IProductModel[]> {
@@ -83,6 +93,7 @@ export class ProductsService {
       this.isUpdated = true;
       products?.filter(product => !!product).forEach(product =>
         this.store.set(product?.id, product));
+      this.updateSortByNameProducts();
       updated$.next(products);
     });
     return updated$;
@@ -98,6 +109,12 @@ export class ProductsService {
         }
         return yChildren - xChildren;
       });
+  }
+
+  filterProductsByName(name: string): IProductModel[] {
+    const check = new RegExp(name, 'i');
+    return this.sortByNameProducts
+      .filter(product => check.test(product.name));
   }
 
   getCategoriesNames(product: IProductModel): IProductName[] {

@@ -1,26 +1,59 @@
 <mat-toolbar class="header" color="primary">
-  <button mat-icon-button
-    (click)="navigateToProduct(0, true)"
-    matTooltip="перехід до основних категорій продуктів"
-    *ngIf="currProduct">
-    <mat-icon class="first-page-icon">first_page</mat-icon>
-  </button>
-  <button mat-icon-button
-    (click)="returnBack()"
-    matTooltip="перехід до попереднього продукту"
-    *ngIf="breadCrumbs?.length">
-    <mat-icon class="prev-page-icon">arrow_back</mat-icon>
-  </button>
-  <h1>{{ currProduct?.name || 'Список основних продуктів'}}</h1>
-  <ng-container *ngIf="currProduct && auth.isAdmin">
-    <button mat-icon-button [matMenuTriggerFor]="editMenu">
-      <mat-icon>more_vert</mat-icon>
+  <div class="header-actions">
+    <button mat-icon-button
+      (click)="navigateToProduct(0, true)"
+      matTooltip="перехід до основних категорій продуктів"
+      *ngIf="currProduct">
+      <mat-icon class="first-page-icon">first_page</mat-icon>
     </button>
-    <mat-menu #editMenu="matMenu">
-      <button mat-menu-item (click)="editProduct(currProduct.id)">Редагувати</button>
-      <button mat-menu-item (click)="deleteProduct(currProduct.id)">Видалити</button>
-    </mat-menu>
-  </ng-container>
+    <button mat-icon-button
+      (click)="returnBack()"
+      matTooltip="перехід до попереднього продукту"
+      *ngIf="breadCrumbs?.length">
+      <mat-icon class="prev-page-icon">arrow_back</mat-icon>
+    </button>
+    <h1>{{ currProduct?.name || 'Список основних продуктів'}}</h1>
+    <ng-container *ngIf="currProduct && auth.isAdmin">
+      <button mat-icon-button [matMenuTriggerFor]="editMenu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #editMenu="matMenu">
+        <button mat-menu-item (click)="editProduct(currProduct.id)">Редагувати</button>
+        <button mat-menu-item (click)="deleteProduct(currProduct.id)">Видалити</button>
+      </mat-menu>
+    </ng-container>
+  </div>
+  <mat-form-field class="products-search" appearance="fill">
+    <!-- <mat-select name="productSelect" placeholder="Оберіть продукт">
+      <ngx-mat-select-search ngModel name="productFilter" (ngModelChange)="filterProductsByName($event)"
+        [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукт не знайдено'">
+      </ngx-mat-select-search>
+      <mat-option *ngFor="let product of productsForSearch" [matTooltip]="product.name" [value]="product.id">
+        {{ product.name }}</mat-option>
+    </mat-select> -->
+    <mat-label>Пошук продукту...</mat-label>
+    <input
+      placeholder="Назва продукту"
+      #productInput matInput
+      (input)="filterProductsByName(productInput.value)"
+      [matAutocomplete]="filteredProducts">
+    <button mat-icon-button matSuffix (click)="filterProductsByName(productInput.value)">
+      <mat-icon>search</mat-icon>
+    </button>
+    <mat-autocomplete #filteredProducts="matAutocomplete"
+      (optionSelected)="onSelectProduct($event); productInput.value = ''">
+      <mat-option *ngFor="let product of productsForSearch" [matTooltip]="product?.name" [value]="product?.id">
+        {{ product?.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <!-- <mat-form-field appearance="fill">
+    <mat-label>Пошук серед результатів</mat-label>
+    <input matInput placeholder="Назва рецепту..." #searchRecipes (input)="searchByRecipeName(searchRecipes.value)">
+    <button mat-icon-button matSuffix (click)="searchByRecipeName(searchRecipes.value)">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field> -->
 </mat-toolbar>
 <div class="ProductsList container">
   <div class="content">

@@ -30,7 +30,8 @@
           <ngx-mat-select-search ngModel name="productFilter1" (ngModelChange)="filterMyProducts($event)"
             [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукти не знайдено'">
           </ngx-mat-select-search>
-          <mat-option *ngFor="let product of filteredProducts" [value]="product.id">{{ product.name }}</mat-option>
+          <mat-option *ngFor="let product of filteredProducts" [value]="product.id" [matTooltip]="product.name">
+            {{ product.name }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-chip-list *ngIf="categories?.length">
@@ -47,7 +48,8 @@
           <ngx-mat-select-search ngModel name="productFilter2" (ngModelChange)="filterMyProducts($event)"
             [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукти не знайдено'">
           </ngx-mat-select-search>
-          <mat-option *ngFor="let product of filteredProducts" [value]="product.id">{{ product.name }}</mat-option>
+          <mat-option *ngFor="let product of filteredProducts" [matTooltip]="product.name" [value]="product.id">
+            {{ product.name }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-chip-list *ngIf="subcategories?.length">

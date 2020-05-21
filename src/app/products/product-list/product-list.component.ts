@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProductDetailsDialogComponent } from '../product-details/product-details.component';
 import { ProductsService } from 'src/app/services/products.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-product-list',
@@ -22,7 +23,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   currProduct: IProductView;
   breadCrumbs: number[] = [];
   subscriptions = new Subscription();
-  private firstTime = false;
+  productsForSearch: IProductModel[] = this.productStore.sortByNameProducts;
 
   get products(): Map<number, IProductView> {
     return this.productStore.store;
@@ -48,6 +49,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.route.params?.subscribe(x => {
       if (this.productStore.isUpdated) {
         this.setRootProduct(+x.id);
+        this.productsForSearch = this.productStore.sortByNameProducts;
       } else {
         this.updateProducts(+x.id);
       }
@@ -59,6 +61,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       if (products) {
         this.setRootProduct(productId, true);
       }
+      this.productsForSearch = this.productStore.sortByNameProducts;
     }));
   }
 
@@ -78,6 +81,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
       }
       this.router.navigate(['products/list', productId || 0]);
     }
+  }
+
+  onSelectProduct($event: MatAutocompleteSelectedEvent) {
+    this.navigateToProduct($event?.option?.value, true);
+  }
+
+  filterProductsByName(name: string) {
+    this.productsForSearch = this.productStore.filterProductsByName(name);
   }
 
   private setRootProduct(rootProduct?: number, force: boolean = false) {
