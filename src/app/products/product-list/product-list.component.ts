@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { ServerHttpService } from 'src/app/services/server-http.service';
 import { IProduct, IProductModel, IProductDetails, IProductGeneralModel, IProductName, IProductView } from 'src/app/models/server/product-model';
 import { take, map, tap, filter, skip } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';

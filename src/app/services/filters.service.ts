@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 // tslint:disable-next-line: max-line-length
 import { IFilterModel, IFilter, IFilterIngredientModel, IFilterTagModel, IFilterGeneralModel, IFilterProduct, ProductNecessity, IFilterGeneralProduct } from '../models/server/filter-models';
 import { AuthService } from './auth.service';
-import { ServerHttpService } from './server-http.sevice';
+import { ServerHttpService } from './server-http.service';
 import { Subscription, BehaviorSubject, Subject, Observable } from 'rxjs';
 import { take, catchError, map, filter } from 'rxjs/operators';
 import { IRecipeModel, IRecipeGeneralModel, IRecipeTagModel } from '../models/server/recipe-models';
 import { ImagesService } from './images.service';
-import { IProductView } from '../models/server/product-model';
+import { IProductView, IProductModel } from '../models/server/product-model';
 import { ProductsService } from './products.service';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Injectable({
   providedIn: 'root'
@@ -32,37 +33,51 @@ export class FiltersService {
   readonly onCurrFilterChanged$: BehaviorSubject<IFilterModel> = new BehaviorSubject(null);
 
   currFilter: IFilterModel;
-
-  get hasBreadCrumbs(): boolean {
-    return !!this.breadCrumbs?.length;
-  }
+  private areProductsUpdated = false;
 
   constructor(
     private auth: AuthService,
     private server: ServerHttpService,
+    private notifications: NotificationsService,
     private productStore: ProductsService,
     private imageStore: ImagesService
   ) {
     this.initCurrFilter();
   }
 
+  get hasBreadCrumbs(): boolean {
+    return !!this.breadCrumbs?.length;
+  }
+
+  get needUpdate() {
+    return !(this.areProductsUpdated && this.productStore.isUpdated);
+  }
+
   updateProducts() {
-    this.server.getProductsWithRelations().pipe(
-      take(1),
-    ).subscribe(
-      products => {
-        this.products.clear();
-        const necessity = ProductNecessity.Undefined;
-        products.forEach(product => this.products.set(product.id, {...product, necessity}));
-        this.setRootProduct(0, false);
-        this.onProductsUpdated$.next(null);
-      },
-      _ => alert('Error while getting products!')
-    );
+    this.areProductsUpdated = false;
+    if (this.productStore.isUpdated) {
+      this.updateByProducts(this.productStore.store.values());
+    }
+    else {
+      this.productStore.updateProducts()
+        .subscribe(products => this.updateByProducts(products));
+    }
+  }
+
+  private updateByProducts(newProducts: IterableIterator<IProductModel> | IProductModel[]) {
+    this.products.clear();
+    const necessity = ProductNecessity.Undefined;
+    for (const product of newProducts) {
+      this.products.set(product.id, {...product, necessity});
+    }
+    this.setRootProduct(0, false);
+    this.onProductsUpdated$.next(null);
+    this.areProductsUpdated = true;
   }
 
   clearProducts() {
     this.products.clear();
+    this.areProductsUpdated = false;
     this.onProductsUpdated$.next(null);
   }
 
@@ -217,7 +232,7 @@ export class FiltersService {
         filters.forEach(f => this.filters.set(f.id, f));
         this.onChangeFilters();
       },
-      _ => alert('Error while getting filters!')
+      _ => this.createNotification('Помилка під час завантаження фільтрів')
     );
   }
 
@@ -265,8 +280,9 @@ export class FiltersService {
         this.onCurrFilterChanged$.next(this.currFilter);
         this.updateProductsNecessity(newFilter.ingredients, newFilter.byAvailableProducts);
         this.updateTags(this.currFilter.tags);
+        this.createNotification('Фільтр встановлено', `Фільтр: "${newFilter.filterTitle}"`, NotificationType.Success);
       },
-      _ => alert('Error during getting filter details')
+      _ => this.createNotification('Фільтр не встановлено', 'Помилка під час завантаження фільтру')
     );
   }
 
@@ -279,8 +295,8 @@ export class FiltersService {
     this.filters.delete(filterId);
     this.onChangeFilters();
     this.server.deleteFilter(filterId).subscribe(
-      _ => console.log('Successfully remove filter'),
-      error => alert('Error during removing filter ' + filterId)
+      _ => this.createNotification('Фільтр успішно видалено', '', NotificationType.Success),
+      error => this.createNotification('Фільтр не видалено', 'Помилка під час видалення фільтру')
     );
   }
 
@@ -348,14 +364,19 @@ export class FiltersService {
 
   saveCurrFilter(filterName: string) {
     const filterModel = this.getCurrentFilterModel(filterName);
+    if (this.auth.isAdmin) {
+      filterModel.isDefault = true;
+    }
     return this.server.createFilter(filterModel).pipe(take(1))
       .subscribe(
         id => {
+          filterModel.id = id;
           this.filters.set(id, filterModel);
           this.currFilter.id = 0;
           this.onChangeFilters();
+          this.createNotification(`Фільтр "${filterName}" збережено`, '', NotificationType.Success);
         },
-        _ => alert('Error during saving filter')
+        _ => this.createNotification('Фільтр не збережено', 'Помилка під час збереження фільтру')
       );
   }
 
@@ -363,7 +384,7 @@ export class FiltersService {
     const products = [...this.products.values()];
     const tags: IFilterTagModel[] = [];
     const ingredients: IFilterIngredientModel[] = [];
-    products.filter(p => p.necessity !== ProductNecessity.Undefined)
+    products.filter(p => p.necessity !== ProductNecessity.Undefined && p.necessity)
       .forEach(product => {
         ingredients.push({
           id: 0,
@@ -401,6 +422,15 @@ export class FiltersService {
       byAvailableProducts: false,
     };
     this.onCurrFilterChanged$.next(this.currFilter);
+  }
+
+  createNotification(title: string, content: string = '', type = NotificationType.Error) {
+    this.notifications.create(title, content, type, {
+      timeOut: 3000,
+      showProgressBar: true,
+      pauseOnHover: true,
+      clickToClose: true
+    });
   }
 }
 

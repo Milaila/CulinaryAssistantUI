@@ -49,9 +49,6 @@ export class FiltersSearchSectionComponent implements OnInit, OnDestroy {
     if (title?.trim()) {
       this.filterService.saveCurrFilter(title);
     }
-    else {
-      alert('name must be not empty!');
-    }
   }
 
   removeFilter(filterId: number) {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { AuthInterceptor } from 'src/app/auth/auth.interceptor';
-import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { ServerHttpService } from 'src/app/services/server-http.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({

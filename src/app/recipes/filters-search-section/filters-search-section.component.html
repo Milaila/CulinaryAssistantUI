@@ -21,7 +21,7 @@
             <mat-chip selected="false">стандартний</mat-chip>
           </mat-chip-list>
         </mat-radio-button>
-        <button mat-icon-button *ngIf="!filter.isDefault" (click)="removeFilter(filter.id)">
+        <button mat-icon-button *ngIf="!filter.isDefault || auth.isAdmin" (click)="removeFilter(filter.id)">
           <mat-icon>clear</mat-icon>
         </button>
       </mat-list-item>
@@ -33,7 +33,7 @@
       <input matInput name="filters-search" #filterName>
     </mat-form-field>
     <button mat-stroked-button
-      [disabled]="filterName.value ? null : true"
+      [disabled]="filterName.value?.trim() ? null : true"
       color="primary"
       (click)="saveFilter(filterName.value)">
       Зберегти поточний фільтр</button>

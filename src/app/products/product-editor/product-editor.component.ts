@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { ProductsService } from 'src/app/services/products.service';
 import { Server } from 'http';
-import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { ServerHttpService } from 'src/app/services/server-http.service';
 import { IProductManageModel, IProduct, IProductView, IProductRelationModel, IProductRelationWithName, IProductGeneralModel } from 'src/app/models/server/product-model';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { NotificationsService, NotificationType } from 'angular2-notifications';

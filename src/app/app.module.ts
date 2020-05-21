@@ -26,7 +26,7 @@ import { BaseService } from './services/base.service';
 // import { LoginComponent } from './components/user/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { ServerHttpService } from './services/server-http.sevice';
+import { ServerHttpService } from './services/server-http.service';
 import { MatLineModule, MatOptionModule, MatCommonModule } from '@angular/material/core';
 import { HeaderComponent } from './components/header/header.component';
 import { AuthService } from './services/auth.service';

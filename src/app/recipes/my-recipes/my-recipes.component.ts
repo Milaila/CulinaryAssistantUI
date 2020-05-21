@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IRecipeGeneralModel } from 'src/app/models/server/recipe-models';
 import { AuthService } from 'src/app/services/auth.service';
-import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { ServerHttpService } from 'src/app/services/server-http.service';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';

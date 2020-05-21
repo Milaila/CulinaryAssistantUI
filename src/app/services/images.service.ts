@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServerHttpService } from './server-http.sevice';
+import { ServerHttpService } from './server-http.service';
 import { AuthService } from './auth.service';
 import { IImageModel } from '../models/server/image-model';
 import { Observable, of, Subject, BehaviorSubject, iif, from } from 'rxjs';

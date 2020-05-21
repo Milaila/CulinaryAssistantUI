@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { ServerHttpService } from 'src/app/services/server-http.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -26,7 +26,7 @@ export class RecipeListComponent implements OnInit {
   allRecipes: IRecipeWithImage[] = [];
   currRecipes: IRecipeWithImage[] = [];
   itemsPerPage = 12;
-  itemsOptions = [12, 24, 36, 48, 64];
+  itemsOptions = [4, 12, 24, 36, 48, 64];
   currentPage = 0;
   pageEvent: PageEvent;
 

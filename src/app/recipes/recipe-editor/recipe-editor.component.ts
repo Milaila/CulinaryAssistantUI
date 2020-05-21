@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, FormArray, FormControl, NgForm } from '@angular
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { IRecipeModel } from 'src/app/models/server/recipe-models';
 import { IProduct } from 'src/app/models/server/product-model';
-import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { ServerHttpService } from 'src/app/services/server-http.service';
 import { ImagesService } from 'src/app/services/images.service';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';

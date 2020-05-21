@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IRecipeModel, IRecipeDetails, IIngredientModel } from 'src/app/models/server/recipe-models';
-import { ServerHttpService } from 'src/app/services/server-http.sevice';
+import { ServerHttpService } from 'src/app/services/server-http.service';
 import { Observable, Subscription } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';

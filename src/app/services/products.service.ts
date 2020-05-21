@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, combineLatest, Subject } from 'rxjs';
-import { ServerHttpService } from './server-http.sevice';
+import { ServerHttpService } from './server-http.service';
 import { AuthService } from './auth.service';
 import { take, filter, map, catchError, tap } from 'rxjs/operators';
 import { IProductModel, IProduct, IProductView, IProductName } from '../models/server/product-model';

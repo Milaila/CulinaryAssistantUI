@@ -3,7 +3,7 @@ import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { Router } from '@angular/router';
-import { ServerHttpService } from '../../services/server-http.sevice';
+import { ServerHttpService } from '../../services/server-http.service';
 import { ISignInModel } from '../../models/server/sign-in-model';
 
 @Component({

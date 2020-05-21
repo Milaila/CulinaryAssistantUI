@@ -5,7 +5,7 @@ import { Subscription, of } from 'rxjs';
 import { IMenuItemsGroup } from '../../models/else/menu-items-group';
 import { AuthService } from '../../services/auth.service';
 import { IProfile, IProfileModel } from '../../models/server/profile-models';
-import { ServerHttpService } from '../../services/server-http.sevice';
+import { ServerHttpService } from '../../services/server-http.service';
 import { switchMap } from 'rxjs/operators';
 import { ThemeService, ITheme } from 'src/app/services/theme.service';
 
