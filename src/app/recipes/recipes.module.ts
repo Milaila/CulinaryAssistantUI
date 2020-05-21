@@ -23,6 +23,8 @@ import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 import { FiltersService } from '../services/filters.service';
 import { ProductDetailsDialogComponent } from '../products/product-details/product-details.component';
 import { SharedModule } from '../shared/shared.module';
+import { RecipeDetailsPageComponent } from './recipe-details-page/recipe-details-page.component';
+import { RecipeDetailsDialogComponent } from './recipe-details-dialog/recipe-details-dialog.component';
 // import { ImageDialogComponent } from '../components/image-dialog/image-dialog.component';
 
 
@@ -40,6 +42,8 @@ import { SharedModule } from '../shared/shared.module';
     LimitsSearchSectionComponent,
     PreviewSearchSectionComponent,
     MyRecipesComponent,
+    RecipeDetailsPageComponent,
+    RecipeDetailsDialogComponent,
   ],
   imports: [
     RecipesRoutingModule,

@@ -1,0 +1,36 @@
+:host {
+  width: 100%;
+}
+
+.prev-page-icon {
+  font-size: 26px;
+}
+
+.mat-card-content {
+  margin-top: 16px;
+}
+
+.RecipeDetails {
+  &-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    mat-card {
+      // height: 100%;
+      border-radius: 0;
+    }
+
+    mat-card-title {
+      font-size: 24px;
+    }
+
+    mat-card-subtitle {
+      font-size: 20px;
+    }
+  }
+
+  &-content {
+    width: 900px;
+  }
+}

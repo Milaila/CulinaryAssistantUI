@@ -9,7 +9,7 @@
     </mat-paginator>
     <div class="RecipeList-recipes">
       <mat-card class="recipe-card" *ngFor="let recipe of currRecipes">
-        <div class="recipe-card-content">
+        <div class="recipe-card-content" (click)="openRecipeDialog(recipe.id)">
           <div class="imageContainer" *ngIf="recipe.imageSrc$ | async as image">
             <img mat-card-image [src]="image">
           </div>

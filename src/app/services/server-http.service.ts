@@ -35,6 +35,11 @@ export class ServerHttpService {
     return this.http.get<IRecipeModel>(url).pipe(tap(x => console.log(x)));
   }
 
+  getRecipeDetailsWithoutImages(id: number): Observable<IRecipeModel> {
+    const url = `${serverUrls.recipes}/${id}/details/noimages`;
+    return this.http.get<IRecipeModel>(url).pipe(tap(x => console.log(x)));
+  }
+
   getRecipesByFilter(filter: IFilterModel): Observable<IRecipeGeneralModel[]> {
     const url = `${serverUrls.recipes}/filters`;
     return this.http.post<IRecipeGeneralModel[]>(url, filter).pipe(tap(x => console.log(x)));

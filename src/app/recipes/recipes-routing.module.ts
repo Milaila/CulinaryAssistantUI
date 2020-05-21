@@ -6,6 +6,7 @@ import { RecipeEditorComponent } from './recipe-editor/recipe-editor.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 import { AuthGuard } from '../auth/auth.guard';
+import { RecipeDetailsPageComponent } from './recipe-details-page/recipe-details-page.component';
 
 
 const routes: Routes = [
@@ -30,7 +31,7 @@ const routes: Routes = [
   },
   {
     path: ':id/details',
-    component: RecipeDetailsComponent
+    component: RecipeDetailsPageComponent
   },
   {
     path: 'my',

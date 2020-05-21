@@ -29,16 +29,16 @@ export class RecipeSearchComponent implements OnInit {
       this.filterService.updateProducts();
     }
 
-    this.displayAllRecipes();
-  }
-
-  displayAllRecipes() {
     this.currRecipes = null;
     if (this.recipeStore.isUpdated) {
       this.currRecipes = this.recipeStore.recipes;
-      return;
     }
-    // this.sortRecipesByName(
+    else {
+      this.displayAllRecipes();
+    }
+  }
+
+  displayAllRecipes() {
     this.serverService.getRecipes().pipe(take(1)).subscribe(
       recipes => this.recipeStore.recipes = this.currRecipes = recipes
       // _ => alert('Error during getting recipes')

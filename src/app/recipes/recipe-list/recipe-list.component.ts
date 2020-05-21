@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { ServerHttpService } from 'src/app/services/server-http.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { MatDialog } from '@angular/material/dialog';
+import { RecipeDetailsDialogComponent } from '../recipe-details-dialog/recipe-details-dialog.component';
 
 @Component({
   selector: 'app-recipe-list',
@@ -40,7 +42,8 @@ export class RecipeListComponent implements OnInit {
     private notifications: NotificationsService,
     private server: ServerHttpService,
     private snackBar: MatSnackBar,
-    private imageStore: ImagesService
+    private imageStore: ImagesService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +70,15 @@ export class RecipeListComponent implements OnInit {
 
   get backParam(): string {
     return this.enableEditing ? 'my' : 'search';
+  }
+
+  openRecipeDialog(recipeId: number): void {
+    const dialogRef = this.dialog.open(RecipeDetailsDialogComponent, {
+      width: '700px',
+      data: recipeId
+    });
+
+    // dialogRef.afterClosed().subscribe();
   }
 
   // viewRecipeDetails(id: number) {

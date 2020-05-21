@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button
+    *ngIf="backParam"
+    [routerLink]="backUrl"
+    matTooltip="повернення до списку рецептів">
+    <mat-icon class="prev-page-icon">arrow_back</mat-icon>
+  </button>
+  <h1>Перегляд рецепту</h1>
+</mat-toolbar>
+<div class="RecipeDetails-container">
+  <div class="RecipeDetails-content">
+    <mat-card>
+      <mat-card-header color="primary">
+        <mat-card-title color="primary" *ngIf="recipeTitle">{{ recipeTitle }}</mat-card-title>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <app-recipe-details [recipeId]="recipeId" (loadRecipeTitle)="recipeTitle = $event">
+        </app-recipe-details>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

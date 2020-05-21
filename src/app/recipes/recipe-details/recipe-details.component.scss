@@ -2,35 +2,11 @@
   width: 100%;
 }
 
-.prev-page-icon {
-  font-size: 26px;
-}
-
 .RecipeDetails {
-  &-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
   &-content {
-    width: 900px;
 
     .steps {
       margin-top: 32px;
-    }
-
-    mat-card {
-      height: 100%;
-      border-radius: 0;
-    }
-
-    mat-card-title {
-      font-size: 24px;
-    }
-
-    mat-card-subtitle {
-      font-size: 20px;
     }
 
     .mat-subheader {
@@ -47,6 +23,10 @@
     .indent {
       margin-bottom: 16px;
     }
+
+    .description.container:only-child {
+      border: none;
+    }
   }
 }
 
@@ -57,6 +37,9 @@
     .description.container {
       margin-top: 16px;
       width: 100%;
+      &:only-child {
+        margin-top: 0px;
+      }
     }
     .image-container {
       margin-right: 0px;
@@ -65,10 +48,6 @@
       width: 100%;
     }
   }
-}
-
-.mat-card-content {
-  margin-top: 16px;
 }
 
 .container {

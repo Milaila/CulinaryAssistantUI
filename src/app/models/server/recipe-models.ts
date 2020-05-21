@@ -1,6 +1,7 @@
 import { IModel } from './base-model';
 import { IProductModel } from './product-model';
 import { IImageModel } from './image-model';
+import { Observable } from 'rxjs';
 
 export interface IRecipeModel extends IRecipeGeneralModel, IRecipeDetails {
 }
@@ -21,6 +22,17 @@ export interface IRecipeDetails {
   tags?: IRecipeTagModel[];
 }
 
+export interface IRecipeModelView extends IRecipeGeneralModel {
+  calories?: number;
+  portions?: number;
+  duration?: number;
+  imageSrc$?: Observable<string>;
+  ingredients?: IIngredientModel[];
+  ingredientsDescription?: string;
+  steps?: IRecipeStepModelView[];
+  tags?: IRecipeTagModel[];
+}
+
 export interface IRecipeGeneralModel extends IModel {
   title: string;
   description?: string;
@@ -35,6 +47,14 @@ export interface IRecipeStepModel extends IModel {
   orderNumber?: number;
   imageId?: number;
   image?: IImageModel;
+}
+
+export interface IRecipeStepModelView extends IModel {
+  imageSrc$?: Observable<string>;
+  title?: string;
+  description?: string;
+  orderNumber?: number;
+  imageId?: number;
 }
 
 export interface IRecipeTagModel extends IModel {
