@@ -39,7 +39,7 @@ export class RecipeSearchComponent implements OnInit {
       return;
     }
     // this.sortRecipesByName(
-    this.serverService.getRecipes().subscribe(
+    this.serverService.getRecipes().pipe(take(1)).subscribe(
       recipes => this.recipeStore.recipes = this.currRecipes = recipes
       // _ => alert('Error during getting recipes')
     );

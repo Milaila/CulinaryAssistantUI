@@ -47,7 +47,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // const id = +this.route.snapshot.params.id;
     if (!this.auth.isAuthorized) {
-      this.createNotification('Нема права доступу', NotificationType.Error, 'Необхідна авторизація');
+      this.createNotification('Нема прав доступу', NotificationType.Error, 'Необхідна авторизація');
       this.router.navigate(['users/signup']);
     }
     // this.initRecipe(id);
@@ -206,8 +206,8 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
     this.subscription.add(this.server.editRecipe(this.currRecipe)
       .subscribe(
-        x => this.createNotification('Рецепт оновлен'),
-        _ => this.createNotification('Рецепт не оновлен', NotificationType.Error, 'Помилка при оновленні рецепту')
+        x => this.createNotification('Рецепт оновлено'),
+        _ => this.createNotification('Рецепт не оновлено', NotificationType.Error, 'Помилка при оновленні рецепту')
       ));
   }
 
@@ -248,9 +248,11 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   // }
 
   setRecipe(id: number) {
-    this.subscription.add(this.server.getRecipeWithDetails(id).subscribe(recipe => {
-      this.currRecipe = recipe;
-    }));
+    this.subscription.add(this.server.getRecipeWithDetails(id).subscribe(recipe => this.currRecipe = {
+      ...recipe,
+      steps: recipe.steps?.sort((x, y) => x.orderNumber > y.orderNumber ? 1 : -1)
+    },
+    error => this.router.navigate(['/404'])));
   }
 
   openProduct(productId: number): void {

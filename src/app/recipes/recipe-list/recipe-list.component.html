@@ -1,5 +1,5 @@
 <div class="RecipeList">
-  <ng-container *ngIf="recipesCount; else noRecipes">
+  <ng-container *ngIf="recipesCount > 0; else noRecipes">
     <mat-paginator [length]="recipesCount"
       #paginator
       [pageSize]="itemsPerPage"
@@ -21,9 +21,13 @@
         <div class="recipe-card-footer">
           <mat-divider></mat-divider>
           <div class="actions">
-            <button mat-stroked-button color="primary" (click)="viewRecipeDetails(recipe.id)">Деталі</button>
+            <a mat-stroked-button
+              color="primary"
+              [routerLink]="['/recipes', recipe.id, 'details']"
+              [queryParams]="{ back: backParam }">Деталі</a>
             <ng-container *ngIf="auth.isAuthorized">
-              <button *ngIf="enableEditing" mat-stroked-button (click)="editRecipe(recipe.id)">Редагувати</button>
+              <a *ngIf="enableEditing" mat-stroked-button [routerLink]="['/recipes', recipe.id, 'edit']">
+                Редагувати</a>
               <button *ngIf="enableEditing || auth.isAdmin" mat-stroked-button (click)="deleteRecipe(recipe.id)" color="warn">
                 Видалити</button>
             </ng-container>
@@ -43,7 +47,7 @@
   <ng-template #noRecipes>
     <div class="RecipeList-noRecipes">
       <h3 *ngIf="recipesCount === 0" class="thin">{{ noRecipesLabel }}</h3>
-      <div class="spinner-container" *ngIf="recipes === null">
+      <div class="spinner-container" *ngIf="currRecipes === null || currRecipes === undefined">
         <mat-spinner></mat-spinner>
         <span>Завантаження даних...</span>
       </div>

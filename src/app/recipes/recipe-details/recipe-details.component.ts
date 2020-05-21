@@ -17,6 +17,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
 
   recipeId: number;
   recipe: IRecipeModel;
+  backParam: string;
   readonly subscriptions = new Subscription();
 
   constructor(
@@ -32,6 +33,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.recipeId = +this.route.snapshot.params.id;
+    this.subscriptions.add(this.route.queryParams.subscribe(x => this.backParam = x?.back));
     this.subscriptions.add(this.server.getRecipeWithDetails(this.recipeId).subscribe(
       recipe => this.recipe = {
         ...recipe,
@@ -39,6 +41,10 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
       },
       error => this.router.navigate(['/404'])
     ));
+  }
+
+  get backUrl(): string[] | string {
+    return this.backParam ? ['/recipes', this.backParam ] : null;
   }
 
   openProduct(productId: number): void {
