@@ -14,14 +14,29 @@
     </button>
     <h1>{{ currProduct?.name || 'Список основних продуктів'}}</h1>
     <ng-container *ngIf="currProduct && auth.isAdmin">
-      <button mat-icon-button [matMenuTriggerFor]="editMenu">
+      <a mat-icon-button matTooltip="редагувати продукт"
+        [routerLink]="['/products', currProduct?.id, 'edit']"
+        [queryParams]="{ from: currProduct?.id }">
+        <mat-icon>edit</mat-icon>
+      </a>
+      <a mat-icon-button matTooltip="видалити продукт"
+        (click)="null">
+        <mat-icon>delete_forever</mat-icon>
+      </a>
+      <!-- <button mat-icon-button [matMenuTriggerFor]="editMenu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #editMenu="matMenu">
-        <button mat-menu-item (click)="editProduct(currProduct.id)">Редагувати</button>
+        <a mat-menu-item
+          [routerLink]="['/products', currProduct.id, 'edit']"
+          [queryParams]="{ from: currProduct?.id }">Редагувати</a>
         <button mat-menu-item (click)="deleteProduct(currProduct.id)">Видалити</button>
-      </mat-menu>
+      </mat-menu> -->
     </ng-container>
+    <a *ngIf="auth.isAdmin" mat-icon-button matTooltip="додати продукт"
+      routerLink="/products/new" [queryParams]="{ from: currProduct?.id }">
+      <mat-icon>add</mat-icon>
+    </a>
   </div>
   <mat-form-field class="products-search" appearance="fill">
     <!-- <mat-select name="productSelect" placeholder="Оберіть продукт">
@@ -58,7 +73,7 @@
 <div class="ProductsList container">
   <div class="content">
     <div *ngIf="currProduct" class="details" color="basic">
-      <mat-expansion-panel>
+      <mat-expansion-panel [(expanded)]="openDetails">
         <mat-expansion-panel-header>
           <mat-panel-title>Деталі</mat-panel-title>
           <mat-panel-description>Зображення, склад, опис, категорії</mat-panel-description>
@@ -104,7 +119,7 @@
             </div>
           </div>
           <div class="description">
-            <p>{{ currProduct.description }}</p>
+            <p *ngIf="currProduct.description as description">{{ description }}</p>
             <div class="categories">
               <mat-chip-list *ngIf="currProduct.categoryNames as categories">
                 <mat-chip color="accent" selected (click)="navigateToProduct(category?.id, true)"
@@ -142,7 +157,8 @@
           </div>
           <div class="card-footer">
             <mat-card-actions *ngIf="auth.isAdmin">
-              <button mat-stroked-button (click)="editProduct(product?.id)">Редагувати</button>
+              <a mat-stroked-button color="primary" [routerLink]="['/products', product?.id, 'edit']"
+                [queryParams]="{ from: currProduct?.id }">Редагувати</a>
               <button mat-stroked-button color="warn" (click)="deleteProduct(product?.id)">Видалити</button>
             </mat-card-actions>
           </div>

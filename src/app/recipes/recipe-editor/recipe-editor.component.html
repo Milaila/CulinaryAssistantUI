@@ -1,4 +1,9 @@
 <mat-toolbar color="primary">
+  <button mat-icon-button
+    routerLink="/recipes/my"
+    matTooltip="повернення до списку рецептів">
+    <mat-icon class="prev-page-icon">arrow_back</mat-icon>
+  </button>
   <h1>{{ isNew ? 'Створення рецепту' : 'Редагування рецепту' }}</h1>
 </mat-toolbar>
 <div class="RecipeEditor">
@@ -18,17 +23,17 @@
         <mat-form-field appearance="outline" class="">
           <mat-label>Калорійність (на 100 г в кКал)</mat-label>
           <input matInput name="calories" #cals type="text" pattern="[0-9.]*"
-            [ngModel]="currRecipe.calories" (input)="currRecipe.calories = convertToNumber(cals)">
+            [ngModel]="currRecipe.calories" (change)="currRecipe.calories = convertToNumber(cals)">
         </mat-form-field>
         <mat-form-field appearance="outline" class="">
           <mat-label>Кількість порцій</mat-label>
           <input matInput type="text" #portions name="portions" pattern="[0-9]*"
-            [ngModel]="currRecipe.portions" (input)="currRecipe.portions = convertToNumber(portions)">
+            [ngModel]="currRecipe.portions" (change)="currRecipe.portions = convertToNumber(portions)">
         </mat-form-field>
         <mat-form-field appearance="outline" class="">
           <mat-label>Час приготування (в хвилинах)</mat-label>
           <input matInput type="text" #duration name="duration" pattern="[0-9]*"
-            [ngModel]="currRecipe.duration" (input)="currRecipe.duration = convertToNumber(duration)">
+            [ngModel]="currRecipe.duration" (change)="currRecipe.duration = convertToNumber(duration)">
         </mat-form-field>
       </div>
       <section class="main-image">
@@ -99,7 +104,7 @@
             <mat-form-field appearance="outline" class="">
               <mat-label>Вага (г)</mat-label>
               <input matInput #weight name="weight-{{index}}" pattern="[0-9.]*"
-                [ngModel]="ingredient.weight" (input)="ingredient.weight = convertToNumber(weight)">
+                [ngModel]="ingredient.weight" (change)="ingredient.weight = convertToNumber(weight)">
             </mat-form-field>
             <mat-checkbox name="necessity-{{index}}" color="primary" [(ngModel)]="ingredient.necessity">
               Цей продукт обов'язковий</mat-checkbox>

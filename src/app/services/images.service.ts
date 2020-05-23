@@ -96,6 +96,9 @@ export class ImagesService {
   }
 
   validateImageWithNotifications(file: File): boolean {
+    if (!file) {
+      return false;
+    }
     if (!this.validateFileExtension(file)) {
       this.createNotification(this.defaultInvalidExtensionTitle, this.defaultInvalidExtensionContent);
       return false;

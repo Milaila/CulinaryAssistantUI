@@ -75,7 +75,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
       data: productId
     });
 
-    this.subscriptions.add(dialogRef.afterClosed().subscribe());
+    // this.subscriptions.add(dialogRef.afterClosed().subscribe());
   }
   //   this.recipeId = +this.route.snapshot.params.id;
   //   this.subscriptions.add(this.route.queryParams.subscribe(x => this.backParam = x?.back));

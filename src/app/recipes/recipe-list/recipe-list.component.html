@@ -47,7 +47,7 @@
   <ng-template #noRecipes>
     <div class="RecipeList-noRecipes">
       <h3 *ngIf="recipesCount === 0" class="thin">{{ noRecipesLabel }}</h3>
-      <div class="spinner-container" *ngIf="currRecipes === null || currRecipes === undefined">
+      <div class="spinner-container" *ngIf="allRecipes === null || allRecipes === undefined">
         <mat-spinner></mat-spinner>
         <span>Завантаження даних...</span>
       </div>

@@ -162,7 +162,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     // if (imageId) {
     //   this.removedImages.push(imageId);
     // }
-    step.image = step.image = null;
+    step.image = step.imageId = null;
   }
 
   onCreate(form: NgForm): void {
@@ -213,14 +213,20 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   uploadStepImage(stepIndex: number, event: any) {
     const file = event?.target?.files[0];
+    const step = this.currRecipe.steps[stepIndex];
+    if (step) {
+      return;
+    }
+    step.imageId = 0;
     if (this.imageService.validateImageWithNotifications(file)) {
       this.subscription.add(this.imageService.transformFileToImage(file)
-        .subscribe(image => this.currRecipe.steps[stepIndex].image = image));
+        .subscribe(image => step.image = image));
     }
   }
 
   uploadRecipeImage(event: any) {
     const file = event?.target?.files[0];
+    this.currRecipe.imageId = 0;
     if (this.imageService.validateImageWithNotifications(file)) {
       this.subscription.add(this.imageService.transformFileToImage(file)
         .subscribe(image => this.currRecipe.image = image));

@@ -33,8 +33,8 @@
 
   .theme-start {
     // $primary: mat-palette($mat-cyan,800);
-    $primary: mat-palette($mat-green,800);
-    $accent: mat-palette($mat-yellow,400);
+    $primary: mat-palette($mat-green, 600);
+    $accent: mat-palette($mat-yellow, 400);
 
     $theme: mat-dark-theme($primary, $accent);
     @include angular-material-theme($theme);

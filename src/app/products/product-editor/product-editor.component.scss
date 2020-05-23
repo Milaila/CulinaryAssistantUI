@@ -2,6 +2,10 @@
   width: 100%;
 }
 
+h1 + button {
+  margin-left: 8px;
+}
+
 .ProductEditor {
   width: 100%;
   display: flex;
@@ -40,9 +44,9 @@
     display: block;
   }
 
-  mat-chip-list {
-    margin-top: 16px 0px;
-  }
+  // mat-chip-list {
+    // margin-top: 16px 0px;
+  // }
 
   mat-form-field {
     display: block;
@@ -71,8 +75,8 @@
 
   mat-chip-list {
     margin-top: -16px;
-    margin-bottom: 16px;
     display: block;
+    margin-bottom: 12px;
   }
 
   .delete {

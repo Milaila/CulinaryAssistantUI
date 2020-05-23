@@ -3,7 +3,7 @@ import { ProductsService } from 'src/app/services/products.service';
 import { Server } from 'http';
 import { ServerHttpService } from 'src/app/services/server-http.service';
 import { IProductManageModel, IProduct, IProductView, IProductRelationModel, IProductRelationWithName, IProductGeneralModel } from 'src/app/models/server/product-model';
-import { Subscription, Observable, combineLatest } from 'rxjs';
+import { Subscription, Observable, combineLatest, of } from 'rxjs';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -32,12 +32,13 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
   subcategories: number[] = [];
   allProducts: IProductGeneralModel[] = [];
 
-  @ViewChild('productForm') productForm: ElementRef;
+  @ViewChild('productForm') productForm: NgForm;
   @ViewChild('categoryInput') categoryInput: ElementRef<HTMLInputElement>;
   @ViewChild('subcategoryInput') subcategoryInput: ElementRef<HTMLInputElement>;
   categoryCtrl = new FormControl();
   subcategoryCtrl = new FormControl();
   separatorKeysCodes: number[] = [ENTER];
+  fromProductPageId: string;
   // filteredTags$: Observable<string[]>;
 
   constructor(
@@ -56,15 +57,20 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
       this.createNotification('Нема прав доступу', 'Необхідна авторизація', NotificationType.Error);
       this.router.navigate(['404']);
     }
-    this.subs.add(this.route.params.subscribe(x => this.initProduct(+x.id)));
+    this.subs.add(combineLatest([this.route.params, this.route.queryParams])
+      .subscribe(([params, query]) => {
+        this.fromProductPageId = query?.from;
+        this.initProduct(+(params.id || 0), +(query?.from || 0));
+      })
+    );
     if (this.productService.isUpdated) {
       this.filteredProducts = this.allProducts = this.productService.products
-        .sort((x, y) => x.name > y.name ? 1 : -1);
+        .sort((x, y) => x.name > y.name ? 1 : -1).filter(x => x.id !== this.currProduct?.id);
     }
     else {
       this.subs.add(this.productService.updateProducts().subscribe(products => {
         this.filteredProducts = this.allProducts = (products || [])
-          .sort((x, y) => x.name > y.name ? 1 : -1);
+          .sort((x, y) => x.name > y.name ? 1 : -1).filter(x => x.id !== this.currProduct?.id);
       }));
     }
 
@@ -77,13 +83,18 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
     // this.categoryCtrl.valueChanges.subscribe(x => this.addCategory(x));
   }
 
+  get backUrl(): string[] | string {
+    const id = this.fromProductPageId || this.currProduct?.id || 0;
+    return ['/products/list', id.toString() ];
+  }
+
   getProductName(id: number): string {
     return this.productService.getProduct(id)?.name;
   }
 
   filterMyProducts(name: string) {
     const check = new RegExp(name, 'i');
-    this.filteredProducts = this.allProducts.filter(x => check.test(x.name));
+    this.filteredProducts = this.allProducts.filter(x => check.test(x.name) && x.id !== this.currProduct.id);
   }
 
   addCategory(id: number) {
@@ -132,7 +143,7 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
     this.categories = this.categories.filter(x => !subcategories.includes(x));
   }
 
-  private initProduct(id: number) {
+  private initProduct(id: number, parentId: number) {
     if (id) {
       this.isNew = false;
       this.subs.add(this.server.getProductWithFullDetails(id).subscribe(product => {
@@ -143,17 +154,17 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
           categories: product.categories,
           subcategories: product.subcategories,
         };
-        this.filteredProducts = this.allProducts = this.allProducts?.filter(x => x.id !== this.currProduct.id);
+        this.filteredProducts = this.allProducts?.filter(x => x.id !== this.currProduct.id);
       }));
     }
     else {
-      this.categories = [];
+      this.categories = parentId ? [ parentId ] : [];
       this.subcategories = [];
       this.currProduct = {
         id: 0,
         name: '',
-        categories: [],
-        subcategories: []
+        // categories: [],
+        // subcategories: []
       };
     }
   }
@@ -169,14 +180,16 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
 
   uploadImage(event: any) {
     const file = event?.target?.files[0];
+    this.currProduct.imageId = 0;
     if (this.imageService.validateImageWithNotifications(file)) {
+      console.log('here');
       this.subs.add(this.imageService.transformFileToImage(file)
         .subscribe(image => this.currProduct.image = image));
     }
   }
 
-  onCreate(form: NgForm): void {
-    if (form.invalid) {
+  onCreate(): void {
+    if (this.isInvalid) {
       return;
     }
     const id = 0;
@@ -205,15 +218,16 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
         newId => {
           this.productService.updateProduct(newId);
           this.createNotification('Продукт створено');
-          this.router.navigate(['products', newId, 'edit']);
+          this.router.navigate(['products', newId, 'edit'],
+            { queryParams: { from: this.fromProductPageId } });
         },
         _ => this.createNotification('Продукт не створено', 'Помилка під час створення продукту',
           NotificationType.Error)
       );
   }
 
-  onSave(form: NgForm): void {
-    if (form.invalid) {
+  onSave(): void {
+    if (this.isInvalid) {
       return;
     }
     const id = this.currProduct.id;
@@ -236,6 +250,10 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
       );
   }
 
+  get isInvalid() {
+    return !this.productForm || this.productForm.invalid || null;
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
@@ -255,6 +273,21 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
       data: productId
     });
 
-    this.subs.add(dialogRef.afterClosed().subscribe());
+    // this.subs.add(dialogRef.afterClosed().subscribe());
+  }
+
+  openCurrProductPreview(): void {
+    const imageData = this.currProduct.image?.data;
+    this.dialog.open(ProductDetailsDialogComponent, {
+      width: '600px',
+      data: {
+        ...this.currProduct,
+        imageSrc$: of(imageData ? 'data:image/jpeg;base64,' + imageData : null),
+        categoryNames: this.categories?.map(x => this.productService.getProduct(x)),
+        subcategoryNames: this.subcategories?.map(x => this.productService.getProduct(x)),
+      }
+    });
+
+    // this.subs.add(dialogRef.afterClosed().subscribe());
   }
 }

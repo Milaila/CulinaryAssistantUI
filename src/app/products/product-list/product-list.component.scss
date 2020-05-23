@@ -6,6 +6,10 @@ strong {
   font-weight: 500;
 }
 
+h1 + a {
+  margin-left: 8px;
+}
+
 .header {
   min-height: 64px;
   height: fit-content;
@@ -55,6 +59,10 @@ strong {
 
   .description {
     padding: 0px 16px 8px 16px;
+  }
+
+  mat-expansion-panel {
+    border-radius: 0;
   }
 
   .main {
@@ -147,8 +155,17 @@ strong {
           word-break: break-word;
         }
 
+        mat-card-header {
+          margin-left: -16px;
+          margin-right: -16px;
+        }
+
         mat-card-content {
           margin-bottom: 0px;
+          // display: flex;
+          // flex-direction: column;
+          // justify-content: center;
+          // height: 100%;
         }
 
         mat-card-actions {
@@ -180,11 +197,30 @@ strong {
     .product-card {
       margin: 8px;
       width: 200px;
+      background-color: white;
+
+      mat-card-header {
+        color: black;
+      }
+
+      mat-divider {
+        color: rgba(0, 0, 0, 0.87);
+        border-top-color: rgba(0, 0, 0, 0.12);
+      }
+
+      mat-card-actions {
+        a, button {
+          border-color: rgba(0, 0, 0, 0.12);
+        }
+        // a {
+        //   color: black;
+        // }
+      }
     }
 
     .imageContainer {
       flex-shrink: 0;
-      max-height: 200px;
+      max-height: 232px;
       overflow: hidden;
       margin: 0 -16px;
     }

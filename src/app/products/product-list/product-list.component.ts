@@ -24,6 +24,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   breadCrumbs: number[] = [];
   subscriptions = new Subscription();
   productsForSearch: IProductModel[] = this.productStore.sortByNameProducts;
+  openDetails = false;
 
   get products(): Map<number, IProductView> {
     return this.productStore.store;
@@ -47,6 +48,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.breadCrumbs = [];
     this.subscriptions.add(this.route.params?.subscribe(x => {
+      this.openDetails = false;
       if (this.productStore.isUpdated) {
         this.setRootProduct(+x.id);
         this.productsForSearch = this.productStore.sortByNameProducts;
@@ -65,9 +67,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }));
   }
 
-  editProduct(productId: number) {
-    this.router.navigate(['products', productId, 'edit']);
-  }
+  // editProduct(productId: number) {
+  //   this.router.navigate(['products', productId, 'edit']);
+  // }
 
   deleteProduct(productId: number) {
     this.currProducts = null;
@@ -106,6 +108,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       this.currProduct.imageSrc$ = this.imageStore.getImage(this.currProduct.imageId);
       this.currProduct.categoryNames = this.productStore.getCategoriesNames(this.currProduct);
       products = this.currProduct?.subcategories.map(id => this.products.get(id));
+      this.openDetails = !products?.length;
     }
     else {
       products = products.filter(x => !x.categories?.length);

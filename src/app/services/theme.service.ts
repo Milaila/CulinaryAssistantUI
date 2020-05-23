@@ -19,6 +19,10 @@ export class ThemeService {
       label: 'first',
       code: '1'
     },
+    {
+      label: 'start',
+      code: 'start'
+    },
   ];
 
   changeTheme(themeCode: string) {

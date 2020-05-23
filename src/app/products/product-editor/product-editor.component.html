@@ -1,9 +1,29 @@
 <mat-toolbar color="primary">
+  <button mat-icon-button
+    [routerLink]="backUrl"
+    matTooltip="повернення до списку продуктів">
+    <mat-icon class="prev-page-icon">arrow_back</mat-icon>
+  </button>
   <h1>{{ isNew ? 'Створення продукту' : 'Редагування продукту' }}</h1>
+  <!-- <button mat-icon-button routerLink="/products/new">
+    <mat-icon class="prev-page-icon">add</mat-icon>
+  </button> -->
+  <button mat-icon-button
+    *ngIf="currProduct"
+    matTooltip="перегляд прев'ю продукту"
+    (click)="openCurrProductPreview()">
+    <mat-icon>visibility</mat-icon>
+  </button>
+  <button mat-icon-button
+    matTooltip="збереження продукту"
+    *ngIf="currProduct && !productForm?.invalid"
+    (click)="isNew ? onCreate() : onSave()">
+    <mat-icon>save</mat-icon>
+  </button>
 </mat-toolbar>
 <div class="ProductEditor">
   <mat-card class="ProductContainer" *ngIf="currProduct; else loading">
-    <form #productForm="ngForm">
+    <form #productForm="ngForm" autocomplete="off">
       <mat-form-field appearance="outline" class="">
         <mat-label>Назва продукту</mat-label>
         <input matInput name="productTitle" maxlength="256" required
@@ -64,57 +84,57 @@
         <mat-form-field appearance="outline" class="">
           <mat-label>Калорійність (на 100 г в ккал)</mat-label>
           <input matInput name="calories" #cals [pattern]="decimalPattern"
-            [ngModel]="currProduct.calories" (input)="currProduct.calories = convertToNumber(cals)">
+            [ngModel]="currProduct.calories" (change)="currProduct.calories = convertToNumber(cals)">
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Жири (на 100 г в г)</mat-label>
           <input matInput name="fats" #fats [pattern]="decimalPattern"
-            [ngModel]="currProduct.fats" (input)="currProduct.fats = convertToNumber(cals)">
+            [ngModel]="currProduct.fats" (change)="currProduct.fats = convertToNumber(fats)">
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Білки (на 100 г в г)</mat-label>
           <input matInput name="squirrels" #squirrels [pattern]="decimalPattern"
-            [ngModel]="currProduct.squirrels" (input)="currProduct.squirrels = convertToNumber(squirrels)">
+            [ngModel]="currProduct.squirrels" (change)="currProduct.squirrels = convertToNumber(squirrels)">
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Вуглеводи (на 100г в г)</mat-label>
           <input matInput name="carbohydrates" #carbohydrates [pattern]="decimalPattern"
-            [ngModel]="currProduct.carbohydrates" (input)="currProduct.carbohydrates = convertToNumber(carbohydrates)">
+            [ngModel]="currProduct.carbohydrates" (change)="currProduct.carbohydrates = convertToNumber(carbohydrates)">
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Вода (на 100 г в г)</mat-label>
           <input matInput name="water" #water [pattern]="decimalPattern"
-            [ngModel]="currProduct.water" (input)="currProduct.water = convertToNumber(water)">
+            [ngModel]="currProduct.water" (change)="currProduct.water = convertToNumber(water)">
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Зола (на 100 г в г)</mat-label>
           <input matInput name="ash" #ash [pattern]="decimalPattern"
-            [ngModel]="currProduct.ash" (input)="currProduct.ash = convertToNumber(cals)">
+            [ngModel]="currProduct.ash" (change)="currProduct.ash = convertToNumber(ash)">
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Цукор (на 100 г в г)</mat-label>
           <input matInput name="sugar" #sugar [pattern]="decimalPattern"
-            [ngModel]="currProduct.sugar" (input)="currProduct.sugar = convertToNumber(sugar)">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Крохмаль (на 100 г в г)</mat-label>
-          <input matInput #starch [pattern]="decimalPattern" [ngModel]="currProduct.starch"
-          name="starch" (input)="currProduct.starch = convertToNumber(starch)">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Холестерин (на 100 г в г)</mat-label>
-          <input matInput #cholesterol [pattern]="decimalPattern" [ngModel]="currProduct.cholesterol"
-            name="cholesterol" (input)="currProduct.cholesterol = convertToNumber(cholesterol)">
+            [ngModel]="currProduct.sugar" (change)="currProduct.sugar = convertToNumber(sugar)">
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Клітковина (на 100 г в г)</mat-label>
           <input matInput #cellulose [pattern]="decimalPattern" [ngModel]="currProduct.cellulose"
-            name="cellulose" (input)="currProduct.cellulose = convertToNumber(cellulose)">
+            name="cellulose" (change)="currProduct.cellulose = convertToNumber(cellulose)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Крохмаль (на 100 г в г)</mat-label>
+          <input matInput #starch [pattern]="decimalPattern" [ngModel]="currProduct.starch"
+          name="starch" (change)="currProduct.starch = convertToNumber(starch)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Холестерин (на 100 г в г)</mat-label>
+          <input matInput #cholesterol [pattern]="decimalPattern" [ngModel]="currProduct.cholesterol"
+            name="cholesterol" (change)="currProduct.cholesterol = convertToNumber(cholesterol)">
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Трансжири (на 100 г в г)</mat-label>
           <input matInput [pattern]="decimalPattern" [ngModel]="currProduct.transFats" #transFats
-            name="transFats" (input)="currProduct.transFats = convertToNumber(transFats)">
+            name="transFats" (change)="currProduct.transFats = convertToNumber(transFats)">
         </mat-form-field>
       </div>
       <mat-divider></mat-divider>
@@ -125,14 +145,14 @@
           color="primary"
           class="edit-button"
           *ngIf="!isNew"
-          (click)="onSave(productForm)">
+          (click)="onSave()">
           Оновити продукт</button>
         <button
           [disabled]="productForm.invalid"
           mat-raised-button
           [color]="isNew ? 'primary' : 'basic'"
           class="save-button"
-          (click)="onCreate(productForm)">
+          (click)="onCreate()">
           Створити новий продукт</button>
       </div>
     </form>
