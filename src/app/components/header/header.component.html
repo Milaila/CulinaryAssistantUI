@@ -35,6 +35,9 @@
           <button mat-menu-item routerLink="/recipes/search"
             routerLinkActive="link-active">Пошук рецептів</button>
       </mat-menu>
+      <mat-form-field style="font-size: 12px; margin-bottom: -16px">
+        <input matInput name="theme-input" #themeInput (change)="theme.changeTheme(themeInput.value)">
+      </mat-form-field>
       </div>
     </div>
     <div class="actions">
@@ -54,15 +57,21 @@
         <mat-icon>logout</mat-icon>
       </button>
       <button mat-icon-button class="menuItem" matTooltip="теми" [matMenuTriggerFor]="colors">
-        <mat-icon>color_lens</mat-icon>
+        <mat-icon>format_color_fill</mat-icon>
       </button>
       <mat-menu #colors="matMenu">
-        <button
+        <button [ngClass]="getThemeByCode(theme?.code)"
           mat-menu-item
           [class.list-item-active]="theme?.code === currThemeCode"
+          class="theme-button"
           *ngFor="let theme of themes"
           (click)="changeTheme(theme?.code)"
-        >{{ theme?.label }}</button>
+        >
+          {{ theme?.label }}
+          <mat-icon color="primary">style</mat-icon>
+          <mat-icon color="accent">style</mat-icon>
+        </button>
+        <!-- color_lens -->
         <!-- <mat-radio-button color="primary" *ngFor="let theme of themes"
           [checked]="theme?.code === currThemeCode"
           (click)="changeTheme(theme?.code)">

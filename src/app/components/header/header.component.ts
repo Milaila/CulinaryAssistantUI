@@ -55,6 +55,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.theme.changeTheme(code);
   }
 
+  getThemeByCode(code: string): string {
+    return this.theme.convertToThemeClass(code);
+  }
+
   get currThemeCode(): string {
     return this.theme.themeCode;
   }

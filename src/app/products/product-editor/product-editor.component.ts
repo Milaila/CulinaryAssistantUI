@@ -79,7 +79,6 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
     //   values.forEach(id => this.addCategory(id));
     //   // this.addCategory(values.pop());
     // });
-
     // this.categoryCtrl.valueChanges.subscribe(x => this.addCategory(x));
   }
 
