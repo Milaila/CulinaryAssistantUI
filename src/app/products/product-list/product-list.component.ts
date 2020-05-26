@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ServerHttpService } from 'src/app/services/server-http.service';
 import { IProduct, IProductModel, IProductDetails, IProductGeneralModel, IProductName, IProductView } from 'src/app/models/server/product-model';
-import { take, map, tap, filter, skip } from 'rxjs/operators';
+import { take, map, tap, filter, skip, delay } from 'rxjs/operators';
 import { Observable, of, Subscription } from 'rxjs';
 import { ImagesService } from 'src/app/services/images.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,8 +47,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.breadCrumbs = [];
-    this.subscriptions.add(this.route.params?.subscribe(x => {
-      this.openDetails = false;
+    this.subscriptions.add(this.route.params?.pipe(
+      tap(_ => {
+        this.openDetails = false;
+        this.currProducts = null;
+      }),
+      delay(50)
+    ).subscribe(x => {
       if (this.productStore.isUpdated) {
         this.setRootProduct(+x.id);
         this.productsForSearch = this.productStore.sortByNameProducts;

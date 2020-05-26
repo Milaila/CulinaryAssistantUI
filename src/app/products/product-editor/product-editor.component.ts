@@ -172,6 +172,11 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
     this.currProduct.image = this.currProduct.imageId = null;
   }
 
+  convertToNumberWithLimit(input: any, limit = 100): number {
+    const num = this.convertToNumber(input);
+    return num > limit ? limit : num;
+  }
+
   convertToNumber(input: any): number {
     const value = input.value;
     return +value || (value === '0' ? 0 : null);

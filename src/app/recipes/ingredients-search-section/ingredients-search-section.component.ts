@@ -6,7 +6,7 @@ import { MatRadioChange } from '@angular/material/radio';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { filter } from 'rxjs/operators';
+import { filter, delay, tap } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDetailsDialogComponent } from 'src/app/products/product-details/product-details.component';
@@ -22,7 +22,7 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
     'subcategories', 'name', 'requiredSelect', 'notRequiredSelect', 'calories',
     'fats', 'squirrels', 'carbohydrates', 'sugar',
   ];
-  productsSource: MatTableDataSource<IFilterProduct> = new MatTableDataSource([]);
+  productsSource: MatTableDataSource<IFilterProduct> = null;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -30,6 +30,7 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   products: IFilterProduct[];
   rootProductId: number;
   subscriptions = new Subscription();
+  columnHint = 'вміст в 100 грамах продукту';
 
   constructor(
     private filterService: FiltersService,
@@ -39,9 +40,12 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.add(this.filterService.currRootProductChanged$
       .subscribe(productId => this.rootProductId = productId));
-    const currProducts$ = this.filterService.currProductsChanged$.pipe(filter(p => !!p));
+    const currProducts$ = this.filterService.currProductsChanged$.pipe(
+      tap(_ => this.productsSource = null),
+      delay(200)
+    );
     this.subscriptions.add(currProducts$.subscribe(products => {
-      this.productsSource = new MatTableDataSource(products?.map(id => this.getProduct(id)));
+      this.productsSource = new MatTableDataSource(products?.map(id => this.getProduct(id)) || []);
       this.productsSource.sort = this.sort;
       this.productsSource.paginator = this.paginator;
     }));
@@ -152,6 +156,10 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
 
   get notRequiredHint(): string {
     return this.byAvailable ? 'опціональні продукти' : 'заборонені продукти';
+  }
+
+  get notRequireProductHint(): string {
+    return this.byAvailable ? 'опціональний продукт' : 'заборонений продукт';
   }
 
   changeProductStatus(productId: number) {

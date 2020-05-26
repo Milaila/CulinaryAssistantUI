@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProductDetailsDialogComponent } from 'src/app/products/product-details/product-details.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { RecipeDetailsDialogComponent } from '../recipe-details-dialog/recipe-details-dialog.component';
 
 @Component({
   selector: 'app-recipe-editor',
@@ -214,7 +215,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   uploadStepImage(stepIndex: number, event: any) {
     const file = event?.target?.files[0];
     const step = this.currRecipe.steps[stepIndex];
-    if (step) {
+    if (!step) {
       return;
     }
     step.imageId = 0;
@@ -233,24 +234,19 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  // private validateImage(file: File): boolean {
-  //   if (!this.imageService.validateFileExtension(file)) {
-  //     this.createNotification(
-  //       this.imageService.defaultInvalidExtensionTitle,
-  //       NotificationType.Error,
-  //       this.imageService.defaultInvalidExtensionContent
-  //     );
-  //     return false;
-  //   }
-  //   if (!this.imageService.validateImageSize(file)) {
-  //     this.createNotification(
-  //       this.imageService.defaultInvalidSizeTitle,
-  //       NotificationType.Error,
-  //       this.imageService.defaultInvalidSizeContent
-  //     );
-  //     return false;
-  //   }
-  //   return true;
+  // openCurrRecipePreview(): void {
+  //   const imageData = this.currRecipe.image?.data;
+  //   this.dialog.open(RecipeDetailsDialogComponent, {
+  //     width: '600px',
+  //     data: {
+  //       ...this.currRecipe,
+  //       imageSrc$: of(imageData ? 'data:image/jpeg;base64,' + imageData : null),
+  //       categoryNames: this.categories?.map(x => this.productService.getProduct(x)),
+  //       subcategoryNames: this.subcategories?.map(x => this.productService.getProduct(x)),
+  //     }
+  //   });
+
+  //   // this.subs.add(dialogRef.afterClosed().subscribe());
   // }
 
   setRecipe(id: number) {

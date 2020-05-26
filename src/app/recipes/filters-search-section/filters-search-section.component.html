@@ -17,9 +17,7 @@
           [checked]="currFilterId === filter.id"
           (change)="setFilter(filter?.id)">
           {{ filter?.filterTitle }}
-          <mat-chip-list *ngIf="filter.isDefault" selected="false">
-            <mat-chip selected="false">стандартний</mat-chip>
-          </mat-chip-list>
+          <div *ngIf="filter.isDefault" class="chip">стандартний</div>
         </mat-radio-button>
         <button mat-icon-button *ngIf="!filter.isDefault || auth.isAdmin" (click)="removeFilter(filter.id)">
           <mat-icon>clear</mat-icon>

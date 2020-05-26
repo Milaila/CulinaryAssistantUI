@@ -64,7 +64,7 @@
       </mat-chip-list>
       <mat-form-field class="relation-search">
         <mat-label>Підкатегорії продукту</mat-label>
-        <mat-select multiple [ngModel]="subcategories" (ngModelChange)="addSubcategories($event)" name="subcategories">
+        <mat-select multiple [ngModel]="subcategories" (ngModelChange)="addSubcategories($event)" name="subs">
           <ngx-mat-select-search ngModel name="productFilter2" (ngModelChange)="filterMyProducts($event)"
             [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукти не знайдено'">
           </ngx-mat-select-search>
@@ -80,61 +80,73 @@
           {{ getProductName(subcategory) }}<mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
       </mat-chip-list>
+      <div class="label">Приблизний хімічний склад та харчова цінність (на 100 г):</div>
       <div class="numbers">
         <mat-form-field appearance="outline" class="">
-          <mat-label>Калорійність (на 100 г в ккал)</mat-label>
+          <mat-label>Калорійність</mat-label>
           <input matInput name="calories" #cals [pattern]="decimalPattern"
             [ngModel]="currProduct.calories" (change)="currProduct.calories = convertToNumber(cals)">
+          <span matSuffix>ккал</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Жири (на 100 г в г)</mat-label>
+          <mat-label>Жири</mat-label>
           <input matInput name="fats" #fats [pattern]="decimalPattern"
-            [ngModel]="currProduct.fats" (change)="currProduct.fats = convertToNumber(fats)">
+            [ngModel]="currProduct.fats" (change)="currProduct.fats = convertToNumberWithLimit(fats)">
+          <span matSuffix>г</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Білки (на 100 г в г)</mat-label>
-          <input matInput name="squirrels" #squirrels [pattern]="decimalPattern"
-            [ngModel]="currProduct.squirrels" (change)="currProduct.squirrels = convertToNumber(squirrels)">
+          <mat-label>Білки</mat-label>
+          <input matInput #squirrels [pattern]="decimalPattern" [ngModel]="currProduct.squirrels"
+            name="squirrels" (change)="currProduct.squirrels = convertToNumberWithLimit(squirrels)">
+          <span matSuffix>г</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Вуглеводи (на 100г в г)</mat-label>
-          <input matInput name="carbohydrates" #carbohydrates [pattern]="decimalPattern"
-            [ngModel]="currProduct.carbohydrates" (change)="currProduct.carbohydrates = convertToNumber(carbohydrates)">
+          <mat-label>Вуглеводи</mat-label>
+          <input matInput [pattern]="decimalPattern" #carbohydrates [ngModel]="currProduct.carbohydrates"
+            name="carbohydrates" (change)="currProduct.carbohydrates = convertToNumberWithLimit(carbohydrates)">
+          <span matSuffix>г</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Вода (на 100 г в г)</mat-label>
-          <input matInput name="water" #water [pattern]="decimalPattern"
-            [ngModel]="currProduct.water" (change)="currProduct.water = convertToNumber(water)">
+          <mat-label>Вода</mat-label>
+          <input matInput #water [pattern]="decimalPattern" [ngModel]="currProduct.water"
+            name="water" (change)="currProduct.water = convertToNumberWithLimit(water)">
+          <span matSuffix>г</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Зола (на 100 г в г)</mat-label>
+          <mat-label>Зола</mat-label>
           <input matInput name="ash" #ash [pattern]="decimalPattern"
-            [ngModel]="currProduct.ash" (change)="currProduct.ash = convertToNumber(ash)">
+            [ngModel]="currProduct.ash" (change)="currProduct.ash = convertToNumberWithLimit(ash)">
+          <span matSuffix>г</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Цукор (на 100 г в г)</mat-label>
-          <input matInput name="sugar" #sugar [pattern]="decimalPattern"
-            [ngModel]="currProduct.sugar" (change)="currProduct.sugar = convertToNumber(sugar)">
+          <mat-label>Цукор</mat-label>
+          <input matInput #sugar [pattern]="decimalPattern" [ngModel]="currProduct.sugar"
+            name="sugar" (change)="currProduct.sugar = convertToNumberWithLimit(sugar)">
+          <span matSuffix>г</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Клітковина (на 100 г в г)</mat-label>
+          <mat-label>Клітковина</mat-label>
           <input matInput #cellulose [pattern]="decimalPattern" [ngModel]="currProduct.cellulose"
-            name="cellulose" (change)="currProduct.cellulose = convertToNumber(cellulose)">
+            name="cellulose" (change)="currProduct.cellulose = convertToNumberWithLimit(cellulose)">
+          <span matSuffix>г</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Крохмаль (на 100 г в г)</mat-label>
+          <mat-label>Крохмаль</mat-label>
           <input matInput #starch [pattern]="decimalPattern" [ngModel]="currProduct.starch"
-          name="starch" (change)="currProduct.starch = convertToNumber(starch)">
+            name="starch" (change)="currProduct.starch = convertToNumberWithLimit(starch)">
+          <span matSuffix>г</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Холестерин (на 100 г в г)</mat-label>
+          <mat-label>Холестерин</mat-label>
           <input matInput #cholesterol [pattern]="decimalPattern" [ngModel]="currProduct.cholesterol"
-            name="cholesterol" (change)="currProduct.cholesterol = convertToNumber(cholesterol)">
+            name="cholesterol" (change)="currProduct.cholesterol = convertToNumberWithLimit(cholesterol)">
+          <span matSuffix>г</span>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Трансжири (на 100 г в г)</mat-label>
+          <mat-label>Трансжири</mat-label>
           <input matInput [pattern]="decimalPattern" [ngModel]="currProduct.transFats" #transFats
-            name="transFats" (change)="currProduct.transFats = convertToNumber(transFats)">
+            name="transFats" (change)="currProduct.transFats = convertToNumberWithLimit(transFats)">
+          <span matSuffix>г</span>
         </mat-form-field>
       </div>
       <mat-divider></mat-divider>

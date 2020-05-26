@@ -21,23 +21,10 @@
         </mat-menu>
         <button *ngIf="!isAdmin; else fullProducts"
           mat-button class="menuItem" routerLink="/products"
-          routerLinkActive="link-active">
-          Продукти</button>
+          routerLinkActive="link-active">Продукти</button>
         <button mat-button *ngIf="!isAuthorized; else fullRecipes"
           class="menuItem" routerLink="/recipes"
-          routerLinkActive="link-active">
-          Рецепти</button>
-        <mat-menu #recipesMenu="matMenu">
-          <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
-            routerLinkActive="link-active">Мої рецепти</button>
-          <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/new"
-            routerLinkActive="link-active">Створення рецепта</button>
-          <button mat-menu-item routerLink="/recipes/search"
-            routerLinkActive="link-active">Пошук рецептів</button>
-      </mat-menu>
-      <mat-form-field style="font-size: 12px; margin-bottom: -16px">
-        <input matInput name="theme-input" #themeInput (change)="theme.changeTheme(themeInput.value)">
-      </mat-form-field>
+          routerLinkActive="link-active">Рецепти</button>
       </div>
     </div>
     <div class="actions">

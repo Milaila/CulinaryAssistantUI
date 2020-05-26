@@ -101,7 +101,8 @@ mat-list {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 32px;
+  margin-top: 28px;
+  margin-bottom: 28px;
   span {
     margin-top: 16px;
   }
@@ -122,6 +123,17 @@ p {
 
 .prev-page-icon {
   font-size: 26px;
+}
+
+mat-checkbox.green {
+  &.mat-checkbox-checked .mat-checkbox-ripple .mat-ripple-element {
+    opacity: 0.03 !important;
+    background-color: #24ae1f !important;
+  }
+
+  &.mat-checkbox-checked .mat-checkbox-background, &.mat-checkbox-indeterminate .mat-checkbox-background {
+    background-color: #24ae1f !important;
+  }
 }
 
 mat-radio-button.custom {
