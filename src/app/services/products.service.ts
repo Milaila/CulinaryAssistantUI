@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, combineLatest, Subject } from 'rxjs';
 import { ServerHttpService } from './server-http.service';
 import { AuthService } from './auth.service';
-import { take, filter, map, catchError, tap } from 'rxjs/operators';
+import { take, filter, map, catchError, tap, switchMap } from 'rxjs/operators';
 import { IProductModel, IProduct, IProductView, IProductName } from '../models/server/product-model';
 import { ImagesService } from './images.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { IConfirmData } from '../models/else/confirm-data';
+import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -19,27 +22,41 @@ export class ProductsService {
   constructor(
     private server: ServerHttpService,
     private imageStore: ImagesService,
-    private notifications: NotificationsService,
+    private dialog: MatDialog,
+    // private notifications: NotificationsService,
     private auth: AuthService
   ) {
   }
 
-  deleteProduct(id: number): Observable<any> {
-    if (this.auth.isAdmin) {
-      return this.server.deleteProduct(id).pipe(
+  deleteProduct(id: number, name?: string): Observable<any> {
+    if (!this.auth.isAdmin) {
+      return;
+    }
+    const data: IConfirmData = {
+      question: 'Видалити продукт' + (name ? ` "${name}"?` : '?'),
+      confirmation: 'Видалити',
+      cancellation: 'Скасувати'
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,
+      { width: '350px', data });
+
+    return dialogRef.afterClosed().pipe(
+      take(1),
+      filter(res => !!res),
+      switchMap(() => this.server.deleteProduct(id).pipe(
         take(1),
         tap(_ => {
           this.isUpdated = false;
           this.store.delete(id);
           this.updateSortByNameProducts();
-          this.createNotification('Продукт видалено');
+          // this.createNotification('Продукт видалено');
         }),
-        catchError(_ => {
-          this.createNotification('Продукт не видалено', NotificationType.Error, 'Помилка під час видалення продукту');
-          throw Error();
-        })
-      );
-    }
+        // catchError(_ => {
+        //   this.createNotification('Продукт не видалено', NotificationType.Error, 'Помилка під час видалення продукту');
+        //   throw Error();
+        // })
+      ))
+    );
   }
 
   getProduct(id: number) {
@@ -138,14 +155,14 @@ export class ProductsService {
     };
   }
 
-  createNotification(title: string, type = NotificationType.Success, content: string = '') {
-    this.notifications.create(title, content, type, {
-      timeOut: 3000,
-      showProgressBar: true,
-      pauseOnHover: true,
-      clickToClose: true
-    });
-  }
+  // createNotification(title: string, type = NotificationType.Success, content: string = '') {
+  //   this.notifications.create(title, content, type, {
+  //     timeOut: 3000,
+  //     showProgressBar: true,
+  //     pauseOnHover: true,
+  //     clickToClose: true
+  //   });
+  // }
 
   // getProductDetailsView(productId: number): Observable<IProductView> {
   //   const categories$ = this.server.getProductCategories(productId);

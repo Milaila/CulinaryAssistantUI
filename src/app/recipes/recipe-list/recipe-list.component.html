@@ -28,7 +28,8 @@
             <ng-container *ngIf="auth.isAuthorized">
               <a *ngIf="enableEditing" mat-stroked-button [routerLink]="['/recipes', recipe.id, 'edit']">
                 Редагувати</a>
-              <button *ngIf="enableEditing || auth.isAdmin" mat-stroked-button (click)="deleteRecipe(recipe.id)" color="warn">
+              <button *ngIf="enableEditing || auth.isAdmin" mat-stroked-button
+               (click)="deleteRecipe(recipe.id, recipe.title)" color="warn">
                 Видалити</button>
             </ng-container>
           </div>

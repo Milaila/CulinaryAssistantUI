@@ -10,6 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { MatDialog } from '@angular/material/dialog';
 import { RecipeDetailsDialogComponent } from '../recipe-details-dialog/recipe-details-dialog.component';
+import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
+import { IConfirmData } from 'src/app/models/else/confirm-data';
 
 @Component({
   selector: 'app-recipe-list',
@@ -77,31 +79,32 @@ export class RecipeListComponent implements OnInit {
       width: '700px',
       data: recipeId
     });
-
-    // dialogRef.afterClosed().subscribe();
   }
 
-  // viewRecipeDetails(id: number) {
-  //   this.router.navigate(['/recipes', id, 'details']);
-  // }
+  deleteRecipe(id: number, name: string) {
+    const data: IConfirmData = {
+      question: `Видалити рецепт "${name}"?`,
+      confirmation: 'Видалити',
+      cancellation: 'Скасувати'
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,
+      { width: '350px', data });
 
-  // editRecipe(id: number) {
-  //   this.router.navigate(['/recipes', id, 'edit']);
-  // }
-
-  deleteRecipe(id: number) {
-    this.server.deleteRecipe(id).subscribe(_ => {
-      // this.openSnackBar('Рецепт успішно видалено', null);
-      this.notifications.create('Рецепт успішно видалено', '', NotificationType.Success, {
-        timeOut: 3000,
-        showProgressBar: true,
-        pauseOnHover: true,
-        clickToClose: true
-      });
-      const index = this.allRecipes.findIndex(x => x.id === id);
-      this.currentPage = 0;
-      this.allRecipes?.splice(index, 1);
-      this.displayRecipesInRange();
+    dialogRef.afterClosed().subscribe(answer => {
+      if (answer) {
+        this.server.deleteRecipe(id).subscribe(_ => {
+          this.notifications.create('Рецепт успішно видалено', '', NotificationType.Success, {
+            timeOut: 3000,
+            showProgressBar: true,
+            pauseOnHover: true,
+            clickToClose: true
+          });
+          const index = this.allRecipes.findIndex(x => x.id === id);
+          this.currentPage = 0;
+          this.allRecipes?.splice(index, 1);
+          this.displayRecipesInRange();
+        });
+      }
     });
   }
 

@@ -10,6 +10,7 @@ import { ProductDetailsDialogComponent } from '../product-details/product-detail
 import { ProductsService } from 'src/app/services/products.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { NotificationType, NotificationsService } from 'angular2-notifications';
 
 @Component({
   selector: 'app-product-list',
@@ -35,6 +36,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private router: Router,
     public auth: AuthService,
     private server: ServerHttpService,
+    private notifications: NotificationsService,
     public dialog: MatDialog,
     private imageStore: ImagesService,
     private productStore: ProductsService,
@@ -72,13 +74,24 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }));
   }
 
-  // editProduct(productId: number) {
-  //   this.router.navigate(['products', productId, 'edit']);
-  // }
+  deleteProduct(productId: number, name: string) {
+    this.productStore.deleteProduct(productId, name)?.subscribe(_ => {
+      this.currProducts = null;
+      this.updateProducts(this.currProduct?.id);
+      this.createNotification('Продукт видалено');
+    },
+    error => {
+      this.createNotification('Продукт не видалено', NotificationType.Error, 'Помилка під час видалення продукту');
+    });
+  }
 
-  deleteProduct(productId: number) {
-    this.currProducts = null;
-    this.productStore.deleteProduct(productId).subscribe(_ => this.updateProducts(this.currProduct?.id));
+  createNotification(title: string, type = NotificationType.Success, content: string = '') {
+    this.notifications.create(title, content, type, {
+      timeOut: 3000,
+      showProgressBar: true,
+      pauseOnHover: true,
+      clickToClose: true
+    });
   }
 
   navigateToProduct(productId: number, saveBreadCrumb: boolean) {
