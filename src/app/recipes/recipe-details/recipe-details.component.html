@@ -16,15 +16,24 @@
     </mat-chip-list>
   </section>
   <mat-list class="ingredients container indent">
-    <h2 mat-subheader>Інгредієнти</h2>
-    <mat-list-item *ngFor="let ingredient of recipe.ingredients || []">
+    <div class="ingredients-header">
+      <h2 mat-subheader>Інгредієнти</h2>
+      <div class="portions" *ngIf="recipe.portions">
+        Порції:
+        <mat-form-field name="portionsChange">
+          <input matInput #portionsInput type="number" [ngModel]="recipe.portions"
+            (change)="portionsInput.value > 0 ? changeCurrPortions(portionsInput.value): portionsInput.value = 1">
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-list-item *ngFor="let ingredient of recipe.ingredients || []" [class.changed]="portionsCoef != 1">
       <button mat-icon-button color="primary" (click)="openProduct(ingredient?.product?.id)">
         <mat-icon matListIcon>info</mat-icon>
       </button>
       <span matLine [matTooltip]="ingredient.title">
         <strong>{{ ingredient.product?.name }}</strong>
         <span *ngIf="!ingredient.necessity" class="grey">&nbsp;(опціональний)</span>
-        &nbsp;- {{ ingredient.weight || '?' }} г
+        <span class="weight">&nbsp;- {{ ingredient.weight * portionsCoef || '?' }} г</span>
       </span>
       <p class="note" matLine *ngIf="ingredient.note" [matTooltip]="ingredient.title">
         {{ ingredient.note }}</p>
@@ -34,7 +43,7 @@
       {{ description }}
     </mat-list-item>
   </mat-list>
-    <mat-divider></mat-divider>
+  <mat-divider></mat-divider>
   <section class="steps" *ngIf="recipe.steps?.length">
     <div class="container indent" *ngFor="let step of recipe.steps">
       <div class="outer-container">

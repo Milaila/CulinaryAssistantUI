@@ -23,6 +23,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
   @Output() loadRecipeTitle = new EventEmitter();
   recipe: IRecipeModelView;
   backParam: string;
+  portionsCoef = 1;
   // @Input() recipe: IRecipeModel;
   readonly subscriptions = new Subscription();
 
@@ -32,11 +33,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private imageStore: ImagesService,
     private server: ServerHttpService,
-    // @Inject(MAT_DIALOG_DATA) data: number
   ) {
-    // if (data) {
-    //   this.updateRecipe(+data);
-    // }
   }
 
   ngOnDestroy(): void {
@@ -44,6 +41,17 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+  }
+
+  changeCurrPortions(portions: number) {
+    if (!(portions > 0 && this.defaultPortions > 0)) {
+      return;
+    }
+    this.portionsCoef = portions / this.defaultPortions;
+  }
+
+  get defaultPortions(): number {
+    return this.recipe?.portions;
   }
 
   private updateRecipe(id: number) {
@@ -64,40 +72,16 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
               imageSrc$: this.imageStore.getImage(step?.imageId)
             }))
         };
+        this.portionsCoef = 1;
       },
       error => this.router.navigate(['/404']) // TO DO: only for details page?
     ));
   }
 
   openProduct(productId: number): void {
-    const dialogRef = this.dialog.open(ProductDetailsDialogComponent, {
+    this.dialog.open(ProductDetailsDialogComponent, {
       width: '600px',
       data: productId
     });
-
-    // this.subscriptions.add(dialogRef.afterClosed().subscribe());
   }
-  //   this.recipeId = +this.route.snapshot.params.id;
-  //   this.subscriptions.add(this.route.queryParams.subscribe(x => this.backParam = x?.back));
-  //   this.subscriptions.add(this.server.getRecipeWithDetails(this.recipeId).subscribe(
-  //     recipe => this.recipe = {
-  //       ...recipe,
-  //       steps: recipe.steps?.sort((x, y) => x.orderNumber > y.orderNumber ? 1 : -1)
-  //     },
-  //     error => this.router.navigate(['/404'])
-  //   ));
-  // }
-
-  // get backUrl(): string[] | string {
-  //   return this.backParam ? ['/recipes', this.backParam ] : null;
-  // }
-
-  // openProduct(productId: number): void {
-  //   const dialogRef = this.dialog.open(ProductDetailsDialogComponent, {
-  //     width: '600px',
-  //     data: productId
-  //   });
-
-  //   this.subscriptions.add(dialogRef.afterClosed().subscribe());
-  // }
 }

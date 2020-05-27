@@ -9,6 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatLineModule, MatOptionModule, MatCommonModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -56,6 +57,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatTreeModule,
     MatDividerModule,
     MatToolbarModule,
+    MatProgressBarModule,
     MatSlideToggleModule,
     MatChipsModule,
     MatSnackBarModule,
@@ -71,6 +73,7 @@ import { ukrainianPaginatorIntl } from './ukrainian-paginator-intl';
     MatSlideToggleModule,
     MatFormFieldModule,
     MatGridListModule,
+    MatProgressBarModule,
     MatSelectModule,
     MatCheckboxModule,
     MatCardModule,
