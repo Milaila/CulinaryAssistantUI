@@ -11,8 +11,11 @@
         [matAutocomplete]="autoRequired"
         [matChipInputFor]="requiredList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="addRequiredTag($event)">
+        (matChipInputTokenEnd)="addRequiredTag($event); requiredTagInput.value = null">
     </mat-chip-list>
+    <button mat-icon-button matSuffix (click)="setRequiredTag(requiredTagInput.value); requiredTagInput.value = null">
+      <mat-icon>add</mat-icon>
+    </button>
     <mat-autocomplete #autoRequired="matAutocomplete" (optionSelected)="selectRequired($event)">
       <mat-option *ngFor="let tag of filteredRequiredTags$ | async" [value]="tag">
         {{ tag?.toLocaleLowerCase() }}
@@ -31,8 +34,11 @@
         [matAutocomplete]="autoForbidden"
         [matChipInputFor]="forbiddenList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="addForbiddenTag($event)">
+        (matChipInputTokenEnd)="addForbiddenTag($event); forbiddenTagInput.value = null">
     </mat-chip-list>
+    <button mat-icon-button matSuffix (click)="setForbiddenTag(forbiddenTagInput.value); forbiddenTagInput.value = null">
+      <mat-icon>add</mat-icon>
+    </button>
     <mat-autocomplete #autoForbidden="matAutocomplete" (optionSelected)="selectForbidden($event)">
       <mat-option *ngFor="let tag of filteredForbiddenTags$ | async" [value]="tag">
       {{ tag?.toLocaleLowerCase() }}

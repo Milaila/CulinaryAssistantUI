@@ -48,27 +48,23 @@ export class TagsSearchSectionComponent implements OnInit {
   }
 
   addRequiredTag(event: MatChipInputEvent): void {
-    const input = event.input;
-    const tag = event.value?.trim().toLocaleLowerCase();
+    this.setRequiredTag(event.value?.trim().toLocaleLowerCase());
+  }
 
+  addForbiddenTag(event: MatChipInputEvent): void {
+    this.setForbiddenTag(event.value?.trim().toLocaleLowerCase());
+  }
+
+  setRequiredTag(tag: string): void {
     if (tag) {
       this.filterService.selectTag(tag, true);
-    }
-    if (input) {
-      input.value = '';
     }
     this.requiredTagsCtrl.setValue(null);
   }
 
-  addForbiddenTag(event: MatChipInputEvent): void {
-    const input = event.input;
-    const tag = event.value?.trim().toLocaleLowerCase();
-
+  setForbiddenTag(tag: string): void {
     if (tag) {
       this.filterService.selectTag(tag, false);
-    }
-    if (input) {
-      input.value = '';
     }
     this.forbiddenTagsCtrl.setValue(null);
   }

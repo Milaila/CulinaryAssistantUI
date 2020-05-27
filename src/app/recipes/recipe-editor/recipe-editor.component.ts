@@ -85,12 +85,18 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   addTag(event: MatChipInputEvent): void {
     const input = event.input;
     const tag = event.value?.trim();
+    this.setTag(tag);
+    if (input) {
+      input.value = '';
+    }
+    this.tagsCtrl.setValue(null);
+  }
+
+  setTag(tag: string): void {
+    tag = tag?.trim();
 
     if (tag) {
       this.currRecipe.tags.push({ id: 0, tag });
-    }
-    if (input) {
-      input.value = '';
     }
     this.tagsCtrl.setValue(null);
   }

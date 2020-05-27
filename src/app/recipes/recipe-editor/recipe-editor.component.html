@@ -77,6 +77,9 @@
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             (matChipInputTokenEnd)="addTag($event)">
         </mat-chip-list>
+        <button mat-icon-button matSuffix (click)="setTag(tagInput.value); tagInput.value = null">
+          <mat-icon>add</mat-icon>
+        </button>
         <mat-autocomplete #autoRequired="matAutocomplete" (optionSelected)="selectTag($event)">
           <mat-option *ngFor="let tag of filteredTags$ | async" [value]="tag">
             {{ tag?.toLocaleLowerCase() }}

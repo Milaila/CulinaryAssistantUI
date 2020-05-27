@@ -7,12 +7,20 @@
     &.required {
       margin-top: 16px;
       mat-chip {
-        background-color: #d8ffd5;
+        background-color: #b9ffb4;
       }
     }
     &.forbidden {
       mat-chip {
-        background-color: #ffd5d5
+        background-color: #ffb9b9;
+      }
+    }
+
+    button.mat-icon-button {
+      width: 36px;
+      height: 36px;
+      mat-icon {
+        font-size: 24px;
       }
     }
   }
