@@ -37,7 +37,7 @@
         <span class="weight" *ngIf="ingredient.weight; else weightInGramsTemplate">
           {{ ingredient.weight * portionsCoef }}
           <span *ngIf="ingredient.weightMeasurement as value" [matTooltip]="getMeasurementTitle(value)">
-            {{ value }}</span>>
+            {{ value }}</span>
           <span *ngIf="ingredient.weightInGrams as grams" matTooltip="грам">
             ({{ ingredient.weightInGrams * portionsCoef }} г)</span>
         </span>

@@ -25,10 +25,6 @@ export class RecipeSearchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.filterService.needUpdate) {
-      this.filterService.updateProducts();
-    }
-
     this.currRecipes = null;
     if (this.recipeStore.isUpdated) {
       this.currRecipes = this.recipeStore.recipes;

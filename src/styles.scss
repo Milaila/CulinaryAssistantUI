@@ -58,25 +58,6 @@ body {
 
 
 
-// @import '~@angular/material/theming';
-// @include mat-core();
-
-// $primary: mat-palette($mat-cyan,800);
-//   $accent: mat-palette($mat-orange,400);
-
-//   $theme: mat-light-theme($primary, $accent);
-
-// @include angular-material-theme($theme);
-// // $dark-primary: mat-palette($mat-blue,800);
-// // $dark-accent: mat-palette($mat-orange,800);
-
-// // $dark-theme: mat-dark-theme($primary, $accent);
-
-// // .material-dark-theme {
-// //   @include angular-material-theme($dark-theme);
-// // }
-
-
 mat-toolbar {
   width: 100%;
 }
@@ -120,78 +101,94 @@ p {
   word-break: break-word;
 }
 
-
 .prev-page-icon {
   font-size: 26px;
 }
 
-mat-checkbox.green {
-  &.mat-checkbox-checked .mat-checkbox-ripple .mat-ripple-element {
-    opacity: 0.03 !important;
+.green {
+  &.mat-checkbox-checked .mat-checkbox-background,
+  &.mat-checkbox-indeterminate .mat-checkbox-background,
+  .mat-pseudo-checkbox-checked,
+  .mat-pseudo-checkbox-indeterminate,
+  .mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate {
     background-color: #24ae1f !important;
   }
-
-  &.mat-checkbox-checked .mat-checkbox-background, &.mat-checkbox-indeterminate .mat-checkbox-background {
-    background-color: #24ae1f !important;
+  .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-warn .mat-ripple-element,
+  .mat-checkbox:active:not(.mat-checkbox-disabled).mat-warn .mat-ripple-element {
+    background: #24ae1f !important;
   }
 }
 
-mat-radio-button.custom {
-  .mat-radio-container {
-    height: 16px;
-    width: 16px;
+.available {
+  .mat-checkbox-checked.mat-warn .mat-checkbox-background,
+  .mat-checkbox-indeterminate.mat-warn .mat-checkbox-background,
+  .mat-warn .mat-pseudo-checkbox-checked,
+  .mat-warn .mat-pseudo-checkbox-indeterminate,
+  .mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate {
+    background-color: orange !important;
   }
-  .mat-radio-outer-circle{
-    height: 16px;
-    width: 16px;
-  }
-  .mat-radio-inner-circle{
-    height: 16px;
-    width: 16px;
-  }
-  .mat-radio-button .mat-radio-ripple{
-    height: 32px; //double of your required circle radius
-    width: 32px;  //double of your required circle radius
-    left: calc(50% - 16px); //'10px'-same as your required circle radius
-    top: calc(50% - 16px); //'10px'-same as your required circle radius
-  }
-  &.red {
-    border-color: #bb2323 !important;
-    .mat-radio-outer-circle {
-      border-color: #bb2323 !important;
-    }
-    .mat-radio-inner-circle {
-      background-color: #bb2323 !important;
-    }
-  }
-  &.green {
-    border-color: #189c07 !important;
-    .mat-radio-outer-circle {
-      border-color: #189c07 !important;
-    }
-    .mat-radio-inner-circle {
-      background-color: #189c07 !important;
-    }
-  }
-  &.orange {
-    border-color: #f3b407 !important;
-    .mat-radio-outer-circle {
-      border-color: #f3b407 !important;
-    }
-    .mat-radio-inner-circle {
-      background-color: #f3b407 !important;
-    }
-  }
-  &.blue {
-    border-color: #294f96 !important;
-    .mat-radio-outer-circle {
-      border-color: #294f96 !important;
-    }
-    .mat-radio-inner-circle {
-      background-color: #294f96 !important;
-    }
+  .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-warn .mat-ripple-element,
+  .mat-checkbox:active:not(.mat-checkbox-disabled).mat-warn .mat-ripple-element {
+    background: orange !important;
   }
 }
+
+// mat-radio-button.custom {
+//   .mat-radio-container {
+//     height: 16px;
+//     width: 16px;
+//   }
+//   .mat-radio-outer-circle{
+//     height: 16px;
+//     width: 16px;
+//   }
+//   .mat-radio-inner-circle{
+//     height: 16px;
+//     width: 16px;
+//   }
+//   .mat-radio-button .mat-radio-ripple {
+//     height: 32px; //double of your required circle radius
+//     width: 32px;  //double of your required circle radius
+//     left: calc(50% - 16px); //'10px'-same as your required circle radius
+//     top: calc(50% - 16px); //'10px'-same as your required circle radius
+//   }
+//   &.red {
+//     border-color: #bb2323 !important;
+//     .mat-radio-outer-circle {
+//       border-color: #bb2323 !important;
+//     }
+//     .mat-radio-inner-circle {
+//       background-color: #bb2323 !important;
+//     }
+//   }
+//   &.green {
+//     border-color: #189c07 !important;
+//     .mat-radio-outer-circle {
+//       border-color: #189c07 !important;
+//     }
+//     .mat-radio-inner-circle {
+//       background-color: #189c07 !important;
+//     }
+//   }
+//   &.orange {
+//     border-color: #f3b407 !important;
+//     .mat-radio-outer-circle {
+//       border-color: #f3b407 !important;
+//     }
+//     .mat-radio-inner-circle {
+//       background-color: #f3b407 !important;
+//     }
+//   }
+//   &.blue {
+//     border-color: #294f96 !important;
+//     .mat-radio-outer-circle {
+//       border-color: #294f96 !important;
+//     }
+//     .mat-radio-inner-circle {
+//       background-color: #294f96 !important;
+//     }
+//   }
+// }
 
 mat-form-field[appearance="outline"] {
   margin-bottom: -16px;

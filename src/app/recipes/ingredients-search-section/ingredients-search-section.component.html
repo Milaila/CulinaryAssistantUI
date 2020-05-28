@@ -11,7 +11,7 @@
     Шукати за точною назвою продуктів
   </mat-slide-toggle>
   <mat-divider></mat-divider>
-  <div class="filter-header">
+  <div class="filter-header" *ngIf="isLoaded">
     <mat-form-field class="search">
       <mat-label>Фільтрація за назвою продукту</mat-label>
       <input matInput name="product-search"
@@ -19,6 +19,23 @@
       <button mat-icon-button matSuffix (click)="searchByName(searchProducts.value)">
         <mat-icon>search</mat-icon>
       </button>
+    </mat-form-field>
+    <mat-form-field class="search">
+      <mat-label>Перехід до продукту...</mat-label>
+      <input
+        placeholder="Назва продукту"
+        #productInput matInput
+        [matAutocomplete]="filteredProducts">
+      <button mat-icon-button matSuffix>
+        <mat-icon>search</mat-icon>
+      </button>
+      <mat-autocomplete #filteredProducts="matAutocomplete"
+        (optionSelected)="changeRootProduct($event?.option?.value); productInput.value = ''">
+        <mat-option *ngFor="let product of getFilteredProducts(productInput.value)" [matTooltip]="product?.name"
+          [value]="product?.id">
+          {{ product?.name }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
     <button mat-stroked-button color="primary"
       (click)="changeRootProduct(0)">
@@ -37,7 +54,7 @@
       <button *ngIf="rootProduct" mat-icon-button (click)="goBack()">
         <mat-icon class="mat-icon-rtl-mirror">keyboard_return</mat-icon>
       </button>
-      {{ rootProduct?.name || 'Список продуктів'}}
+      <span (click)="openProductDialog(rootProduct.id)">{{ rootProduct?.name || 'Список продуктів'}}</span>
       <mat-chip-list>
         <mat-chip *ngIf="rootProduct"
           class="ml-8"
@@ -50,7 +67,8 @@
     <mat-divider class="dotted"></mat-divider>
   </div>
   <div class="table-container">
-    <table *ngIf="productsSource; else loading" mat-table [dataSource]="productsSource" matSort>
+    <table *ngIf="productsSource; else loading" mat-table matSort
+      [dataSource]="productsSource" [class.available]="byAvailable">
       <ng-container matColumnDef="subcategories">
         <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
         <td mat-cell *matCellDef="let row">

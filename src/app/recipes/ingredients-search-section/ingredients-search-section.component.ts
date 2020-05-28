@@ -10,6 +10,8 @@ import { filter, delay, tap } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDetailsDialogComponent } from 'src/app/products/product-details/product-details.component';
+import { ProductsService } from 'src/app/services/products.service';
+import { IProductModel } from 'src/app/models/server/product-model';
 
 @Component({
   selector: 'app-ingredients-search-section',
@@ -27,27 +29,36 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  products: IFilterProduct[];
   rootProductId: number;
   subscriptions = new Subscription();
   columnHint = 'вміст в 100 грамах продукту';
+  isLoaded = false;
+
+  getFilteredProducts(name: string): IProductModel[] {
+    return this.productsService.filterProductsByName(name);
+  }
 
   constructor(
     private filterService: FiltersService,
+    private productsService: ProductsService,
     private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
+    if (this.filterService.needUpdate) {
+      this.filterService.updateProducts();
+    }
     this.subscriptions.add(this.filterService.currRootProductChanged$
       .subscribe(productId => this.rootProductId = productId));
     const currProducts$ = this.filterService.currProductsChanged$.pipe(
       tap(_ => this.productsSource = null),
-      delay(200)
+      delay(this.isLoaded ? 100 : 300),
     );
     this.subscriptions.add(currProducts$.subscribe(products => {
       this.productsSource = new MatTableDataSource(products?.map(id => this.getProduct(id)) || []);
       this.productsSource.sort = this.sort;
       this.productsSource.paginator = this.paginator;
+      this.isLoaded = true;
     }));
   }
 
