@@ -15,6 +15,8 @@ import { ProductDetailsDialogComponent } from 'src/app/products/product-details/
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { RecipeDetailsDialogComponent } from '../recipe-details-dialog/recipe-details-dialog.component';
+import { IMeasurement } from 'src/app/models/else/measurement';
+import { MEASUREMENTS } from 'src/app/shared/measurements.const';
 
 @Component({
   selector: 'app-recipe-editor',
@@ -29,11 +31,15 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   subscription = new Subscription();
   isNew = true;
 
-  @ViewChild('recipeForm') recipeForm: ElementRef;
+  @ViewChild('recipeForm') recipeFormRef: NgForm;
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
   tagsCtrl = new FormControl();
   separatorKeysCodes: number[] = [ENTER];
   filteredTags$: Observable<string[]>;
+
+  get measurements(): IMeasurement[] {
+    return MEASUREMENTS;
+  }
 
   constructor(
     private server: ServerHttpService,
@@ -62,6 +68,10 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     );
   }
 
+  getMeasurementTitle(value: string): string {
+    return MEASUREMENTS.find(x => x.value === value)?.title;
+  }
+
   private initRecipe(id: number) {
     if (id) {
       this.isNew = false;
@@ -71,6 +81,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       this.currRecipe = {
         id: 0,
         title: '',
+        portions: 1,
         ingredients: [],
         steps: [],
         tags: [],
@@ -125,6 +136,8 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   addIngredient() {
     this.currRecipe.ingredients.push({
       id: 0,
+      // weightInGrams: 0,
+      weightMeasurement: 'г',
       weight: 0,
       necessity: true,
       productId: null,
@@ -156,24 +169,16 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   }
 
   removeRecipeImage() {
-    // const imageId = this.currRecipe.image?.id;
-    // if (imageId) {
-    //   this.removedImages.push(imageId);
-    // }
     this.currRecipe.image = this.currRecipe.imageId = null;
   }
 
   removeStepImage(stepIndex: number) {
     const step = this.currRecipe.steps[stepIndex];
-    // const imageId = step.image?.id || step.imageId;
-    // if (imageId) {
-    //   this.removedImages.push(imageId);
-    // }
     step.image = step.imageId = null;
   }
 
-  onCreate(form: NgForm): void {
-    if (form.invalid) {
+  onCreate(): void {
+    if (this.recipeFormRef.invalid) {
       return;
     }
     const id = 0;
@@ -207,8 +212,8 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       ));
   }
 
-  onSave(form: NgForm): void {
-    if (form.invalid) {
+  onSave(): void {
+    if (this.recipeFormRef.invalid) {
       return;
     }
     this.subscription.add(this.server.editRecipe(this.currRecipe)

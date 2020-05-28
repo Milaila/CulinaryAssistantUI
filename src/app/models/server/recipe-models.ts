@@ -67,5 +67,7 @@ export interface IIngredientModel extends IModel {
   title?: string;
   note?: string;
   weight?: number;
+  weightInGrams?: number;
+  weightMeasurement?: string;
   necessity: boolean;
 }

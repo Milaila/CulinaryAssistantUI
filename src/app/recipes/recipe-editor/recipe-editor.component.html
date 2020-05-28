@@ -13,7 +13,7 @@
   </button> -->
   <button mat-icon-button
     matTooltip="збереження рецепту"
-    *ngIf="currRecipe && !recipeForm?.invalid"
+    *ngIf="currRecipe && !recipeFormRef?.invalid"
     (click)="isNew ? onCreate() : onSave()">
     <mat-icon>save</mat-icon>
   </button>
@@ -64,7 +64,7 @@
       <mat-form-field class="tags">
         <mat-chip-list #tagsList>
           <mat-chip class="mat-chip-selected" color="accent" (removed)="removeTag(index)"
-            *ngFor="let tag of currRecipe.tags; let index = index">
+            *ngFor="let tag of currRecipe.tags || []; let index = index">
             {{ tag?.tag }}<mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
           <input
@@ -113,19 +113,40 @@
                   {{ product.name }}</mat-option>
               </mat-select>
             </mat-form-field>
+            <section class="weight">
+              <mat-form-field appearance="outline">
+                <mat-label>Одиниця виміру</mat-label>
+                <mat-select name="measurement-{{index}}" required
+                  [matTooltip]="getMeasurementTitle(ingredient.weightMeasurement)"
+                  [(ngModel)]="ingredient.weightMeasurement"
+                  placeholder="Оберіть одиницю виміру">
+                  <mat-option *ngFor="let measurement of measurements" [matTooltip]="measurement.title || null"
+                    [value]="measurement.value">{{ measurement.value }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Кількість</mat-label>
+                <input matInput #weight name="weight-{{index}}" pattern="[0-9.]*" required
+                  [ngModel]="ingredient.weight" (change)="ingredient.weight = convertToNumber(weight)">
+                <span matSuffix
+                  *ngIf="ingredient.weightMeasurement as value"
+                  [matTooltip]="getMeasurementTitle(value)">{{ value }}</span>
+              </mat-form-field>
+            </section>
+            <mat-form-field *ngIf="ingredient.weightInGrams || ingredient.weightMeasurement !== 'г'"
+              appearance="outline">
+              <mat-label>Приблизна вага в грамах</mat-label>
+              <input matInput #weightInGrams pattern="[0-9.]*" [ngModel]="ingredient.weightInGrams"
+                name="weightInGrams-{{index}}" (change)="ingredient.weightInGrams = convertToNumber(weightInGrams)">
+              <span matSuffix>г</span>
+            </mat-form-field>
             <mat-form-field appearance="outline" class="">
               <mat-label>Примітка</mat-label>
               <textarea matInput name='ingredientName-{{index}}'
                 [(ngModel)]="ingredient.note"></textarea>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="">
-              <mat-label>Вага</mat-label>
-              <input matInput #weight name="weight-{{index}}" pattern="[0-9.]*"
-                [ngModel]="ingredient.weight" (change)="ingredient.weight = convertToNumber(weight)">
-              <span matSuffix>г</span>
-            </mat-form-field>
             <mat-checkbox name="necessity-{{index}}" color="primary" [(ngModel)]="ingredient.necessity">
-              Цей продукт обов'язковий</mat-checkbox>
+              Цей продукт є обов'язковим</mat-checkbox>
             <button (click)="removeIngredient(index)" class="indent" mat-stroked-button color="warn">Видалити</button>
           </mat-card>
         </div>
@@ -167,14 +188,14 @@
           color="primary"
           class="edit-button"
           *ngIf="!isNew"
-          (click)="onSave(recipeForm)">
+          (click)="onSave()">
           Зберегти рецепт</button>
         <button
           [disabled]="recipeForm.invalid"
           mat-raised-button
           [color]="isNew ? 'primary' : 'basic'"
           class="save-button"
-          (click)="onCreate(recipeForm)">
+          (click)="onCreate()">
           Створити новий рецепт</button>
       </div>
     </form>

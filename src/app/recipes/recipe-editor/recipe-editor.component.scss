@@ -34,14 +34,27 @@
   .Ingredients-list {
     display: flex;
     flex-wrap: wrap;
+    margin-right: -12px;
     mat-card {
-      margin: 8px;
+      margin-bottom: 12px;
+      margin-right: 12px;
+      margin-top: 0px;
       margin-left: 0px;
-      width: fit-content;
+      width: 260px;
       mat-card-header {
         align-items: center;
         button {
           margin-top: -16px;
+        }
+      }
+      .weight {
+        display: flex;
+        justify-content: space-between;
+        mat-form-field:first-of-type {
+          width: 45%;
+        }
+        mat-form-field:nth-of-type(2) {
+          width: 50%;
         }
       }
     }

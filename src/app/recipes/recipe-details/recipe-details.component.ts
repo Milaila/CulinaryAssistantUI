@@ -8,6 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductDetailsDialogComponent } from 'src/app/products/product-details/product-details.component';
 import { ImagesService } from 'src/app/services/images.service';
+import { MEASUREMENTS } from 'src/app/shared/measurements.const';
 
 @Component({
   selector: 'app-recipe-details',
@@ -52,6 +53,10 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
 
   get defaultPortions(): number {
     return this.recipe?.portions;
+  }
+
+  getMeasurementTitle(value: string): string {
+    return MEASUREMENTS.find(x => x.value === value)?.title;
   }
 
   private updateRecipe(id: number) {
