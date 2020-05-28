@@ -9,7 +9,7 @@
     justify-content: space-evenly;
 
     .recipe-card {
-      margin: 8px 16px;
+      margin: 8px 12px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -17,9 +17,10 @@
 
       &-content {
         display: flex;
-        height: 500px;
+        max-height: 500px;
         flex-direction: column;
         mat-card-title {
+          overflow: auto;
           word-break: break-word;
         }
         word-break: break-word;

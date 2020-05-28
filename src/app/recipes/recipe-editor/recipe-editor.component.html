@@ -33,12 +33,6 @@
       </mat-form-field>
       <div class="numbers">
         <mat-form-field appearance="outline" class="">
-          <mat-label>Калорійність (на 100 г)</mat-label>
-          <input matInput name="calories" #cals type="text" pattern="[0-9.]*"
-            [ngModel]="currRecipe.calories" (change)="currRecipe.calories = convertToNumber(cals)">
-          <span matSuffix>ккал</span>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="">
           <mat-label>Кількість порцій</mat-label>
           <input matInput type="text" #portions name="portions" pattern="[0-9]*"
             [ngModel]="currRecipe.portions" (change)="currRecipe.portions = convertToNumber(portions)">
@@ -48,6 +42,12 @@
           <input matInput type="text" #duration name="duration" pattern="[0-9]*"
             [ngModel]="currRecipe.duration" (change)="currRecipe.duration = convertToNumber(duration)">
           <span matSuffix>хв</span>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="">
+          <mat-label>Калорійність (на 100 г)</mat-label>
+          <input matInput name="calories" #cals type="text" pattern="[0-9.]*"
+            [ngModel]="currRecipe.calories" (change)="currRecipe.calories = convertToNumber(cals)">
+          <span matSuffix>ккал</span>
         </mat-form-field>
       </div>
       <section class="main-image">
@@ -106,31 +106,31 @@
                 <ngx-mat-select-search ngModel name="productFilter" (ngModelChange)="filterMyProducts($event)"
                   [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукти не знайдено'">
                 </ngx-mat-select-search>
-                <!-- <ngx-mat-select-search [(ngModel)]="searchCtrl" [placeholderLabel]="'Search...'"
-                      [noEntriesFoundLabel]="'Not found'" name="search"></ngx-mat-select-search> -->
-                <!-- <input placeholder="Оберіть продукт" class="matSearch" matInput> -->
                 <mat-option *ngFor="let product of filteredProducts" [matTooltip]="product.name" [value]="product.id">
                   {{ product.name }}</mat-option>
               </mat-select>
             </mat-form-field>
             <section class="weight">
-              <mat-form-field appearance="outline">
-                <mat-label>Одиниця виміру</mat-label>
-                <mat-select name="measurement-{{index}}" required
-                  [matTooltip]="getMeasurementTitle(ingredient.weightMeasurement)"
-                  [(ngModel)]="ingredient.weightMeasurement"
-                  placeholder="Оберіть одиницю виміру">
-                  <mat-option *ngFor="let measurement of measurements" [matTooltip]="measurement.title || null"
-                    [value]="measurement.value">{{ measurement.value }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Кількість</mat-label>
-                <input matInput #weight name="weight-{{index}}" pattern="[0-9.]*" required
+              <mat-form-field appearance="outline" matTooltip="Кількість" matTooltipPosition="above">
+                <mat-label matTooltip="Кількість">Кількість</mat-label>
+                <input matInput #weight name="weight-{{index}}" pattern="[0-9.]*" maxlength="10" required
                   [ngModel]="ingredient.weight" (change)="ingredient.weight = convertToNumber(weight)">
-                <span matSuffix
-                  *ngIf="ingredient.weightMeasurement as value"
-                  [matTooltip]="getMeasurementTitle(value)">{{ value }}</span>
+              </mat-form-field>
+              <mat-form-field appearance="outline" matTooltip="Одиниця виміру" matTooltipPosition="above">
+                <mat-label>Одиниця виміру</mat-label>
+                <input matInput required #measurement
+                  name="measurement-{{index}}"
+                  maxlength="32"
+                  [ngModel]="ingredient.weightMeasurement"
+                  (input)="setMeasurement(ingredient, measurement.value)"
+                  [matTooltip]="getMeasurementTitle(ingredient.weightMeasurement)"
+                  [matAutocomplete]="autoMeasurements">
+                <mat-autocomplete #autoMeasurements="matAutocomplete"
+                  (optionSelected)="setMeasurement(ingredient, $event?.option.value)">
+                  <mat-option *ngFor="let measurement of measurements"
+                    [matTooltip]="measurement.title || null"
+                    [value]="measurement.value">{{ measurement.value }}</mat-option>
+                </mat-autocomplete>
               </mat-form-field>
             </section>
             <mat-form-field *ngIf="ingredient.weightInGrams || ingredient.weightMeasurement !== 'г'"

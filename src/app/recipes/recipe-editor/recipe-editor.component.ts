@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, FormControl, NgForm } from '@angular/forms';
 import { Subscription, Observable, combineLatest } from 'rxjs';
-import { IRecipeModel } from 'src/app/models/server/recipe-models';
+import { IRecipeModel, IIngredientModel } from 'src/app/models/server/recipe-models';
 import { IProduct } from 'src/app/models/server/product-model';
 import { ServerHttpService } from 'src/app/services/server-http.service';
 import { ImagesService } from 'src/app/services/images.service';
@@ -91,6 +91,10 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  setMeasurement(ingredient: IIngredientModel, measurement: string) {
+    ingredient.weightMeasurement = measurement?.trim().toLocaleLowerCase();
   }
 
   addTag(event: MatChipInputEvent): void {
