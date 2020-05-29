@@ -12,18 +12,26 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Повне ім'я</mat-label>
-      <input matInput formControlName="fullName">
+      <input matInput formControlName="fullName" autocomplete="off">
     </mat-form-field>
     <div formGroupName="passwords" class="passwords">
       <mat-form-field>
         <mat-label>Пароль</mat-label>
-        <input type="password" matInput formControlName="password" required>
+        <input type="password" matInput formControlName="password" required autocomplete="new-password">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Підтвердження паролю</mat-label>
-        <input type="password" matInput formControlName="confirmPassword" required>
+        <input type="password" matInput required
+          formControlName="confirmPassword" autocomplete="new-password">
+        <mat-error *ngIf="confirmPswrdCtrl.hasError('passwordMismatch')">Паролі не збігаються</mat-error>
       </mat-form-field>
     </div>
+    <mat-checkbox *ngIf="auth.isAdmin"
+      color="primary"
+      [(ngModel)]="createAdmin"
+      [ngModelOptions]="{ standalone: true }">
+      Зареєструвати як адміністратора
+    </mat-checkbox>
     <button mat-raised-button
       class="submit"
       color="primary"

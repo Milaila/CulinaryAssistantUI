@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { FormGroup, FormBuilder, FormArray, FormControl, NgForm } from '@angular/forms';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { IRecipeModel, IIngredientModel } from 'src/app/models/server/recipe-models';
-import { IProduct } from 'src/app/models/server/product-model';
+import { IProduct, IProductModel, IProductGeneralModel } from 'src/app/models/server/product-model';
 import { ServerHttpService } from 'src/app/services/server-http.service';
 import { ImagesService } from 'src/app/services/images.service';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
@@ -17,6 +17,7 @@ import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { RecipeDetailsDialogComponent } from '../recipe-details-dialog/recipe-details-dialog.component';
 import { IMeasurement } from 'src/app/models/else/measurement';
 import { MEASUREMENTS } from 'src/app/shared/measurements.const';
+import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-recipe-editor',
@@ -44,6 +45,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   constructor(
     private server: ServerHttpService,
     private imageService: ImagesService,
+    private productStore: ProductsService,
     private notifications: NotificationsService,
     private route: ActivatedRoute,
     private auth: AuthService,
@@ -60,12 +62,22 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     // this.initRecipe(id);
     this.subscription.add(this.route.params.subscribe(x => this.initRecipe(+x.id)));
     const existingTags$ = this.server.getTags().pipe(share());
-    this.subscription.add(this.server.getProducts().subscribe(products => {
-      this.filteredProducts = this.products = products.sort((x, y) => x.name > y.name ? 1 : -1);
-    }));
     this.filteredTags$ = combineLatest([this.tagsCtrl.valueChanges, existingTags$]).pipe(
       map(([tag, tags]) => tag ? this.filterTags(tags, tag) : tags)
     );
+    this.subscribeOnProducts();
+  }
+
+  private subscribeOnProducts() {
+    if (this.productStore.isUpdated) {
+      this.initProducts(this.productStore.products);
+      return;
+    }
+    this.subscription.add(this.server.getProducts().subscribe(products => this.initProducts(products)));
+  }
+
+  private initProducts(products: IProductGeneralModel[]) {
+    this.filteredProducts = this.products = products.sort((x, y) => x.name > y.name ? 1 : -1);
   }
 
   getMeasurementTitle(value: string): string {

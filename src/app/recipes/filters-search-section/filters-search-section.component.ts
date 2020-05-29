@@ -40,7 +40,6 @@ export class FiltersSearchSectionComponent implements OnInit, OnDestroy {
   }
 
   setFilter(id: number) {
-    console.log('Set filter ' + id);
     this.currFilterId = id;
     this.filterService.applyFilter(id);
   }

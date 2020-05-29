@@ -4,10 +4,10 @@
       <img [src]="image" alt="">
     </div>
     <div class="description container">
-      <p><strong>Тривалість приготування:</strong>&nbsp;{{ recipe.duration || '?' }} хв</p>
-      <p><strong>Калорійність на 100 г:</strong>&nbsp;{{ recipe.calories || '?' }} ккал</p>
-      <p><strong>Кількість порцій:</strong>&nbsp;{{ recipe.portions || '?' }}</p>
-      <p>{{ recipe.description }}</p>
+      <p><strong>Тривалість приготування:</strong>&nbsp;{{ durationStr }}</p>
+      <p><strong>Калорійність на 100 г:</strong>&nbsp;&nbsp;{{ recipe.calories ? recipe.calories +'&nbsp;ккал' : 'н/д' }}</p>
+      <p><strong>Кількість порцій:</strong>&nbsp;&nbsp;{{ recipe.portions || 'н/д' }}</p>
+      <p *ngIf="recipe.description">{{ recipe.description }}</p>
     </div>
   </section>
   <section class="tags indent" *ngIf="recipe.tags as tags">

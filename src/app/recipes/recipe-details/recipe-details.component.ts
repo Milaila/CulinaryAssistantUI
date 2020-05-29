@@ -10,6 +10,9 @@ import { ProductDetailsDialogComponent } from 'src/app/products/product-details/
 import { ImagesService } from 'src/app/services/images.service';
 import { MEASUREMENTS } from 'src/app/shared/measurements.const';
 
+const MINUTES_IN_DAY = 1440;
+const MINUTES_IN_HOUR = 60;
+
 @Component({
   selector: 'app-recipe-details',
   templateUrl: './recipe-details.component.html',
@@ -57,6 +60,28 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
 
   getMeasurementTitle(value: string): string {
     return MEASUREMENTS.find(x => x.value === value)?.title;
+  }
+
+  get durationStr(): string {
+    let duration = this.recipe?.duration;
+    if (!duration && duration !== 0) {
+      return ' н/д';
+    }
+    let message = '';
+    const days = Math.floor(duration / MINUTES_IN_DAY);
+    duration = duration - days * MINUTES_IN_DAY;
+    const hours = Math.floor(duration / MINUTES_IN_HOUR);
+    const minutes = duration - hours * MINUTES_IN_HOUR;
+    if (days) {
+      message += ` ${days} доб`;
+    }
+    if (hours) {
+      message += ` ${hours} год`;
+    }
+    if (minutes) {
+      message += ` ${minutes} хв`;
+    }
+    return message;
   }
 
   private updateRecipe(id: number) {

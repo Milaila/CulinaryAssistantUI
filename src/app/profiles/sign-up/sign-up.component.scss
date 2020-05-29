@@ -5,12 +5,16 @@
   }
 
   .submit {
-    max-width: 100px;
+    max-width: 120px;
     margin-top: 8px;
   }
 
   h2 {
     color: grey;
     font-weight: 300;
+  }
+
+  mat-checkbox {
+    margin: 16px 0;
   }
 }

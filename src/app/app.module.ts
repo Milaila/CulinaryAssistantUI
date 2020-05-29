@@ -5,26 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MatInputModule } from '@angular/material/input';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSelectModule } from '@angular/material/select';
 import { SimpleNotificationsModule } from 'angular2-notifications';
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-// import { RegistrationComponent } from './components/user/registration/registration.component';
 import { UserService } from './services/user.service';
 import { BaseService } from './services/base.service';
-// import { LoginComponent } from './components/user/login/login.component';
-import { HomeComponent } from './components/home/home.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { ServerHttpService } from './services/server-http.service';
 import { MatLineModule, MatOptionModule, MatCommonModule } from '@angular/material/core';
@@ -45,8 +30,6 @@ import { AdminGuard } from './auth/admin.guard';
 @NgModule({
   declarations: [
     AppComponent,
-    // OwnTestComponent,
-    HomeComponent,
     HeaderComponent,
     NotFoundComponent,
     ImageDialogComponent,

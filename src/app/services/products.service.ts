@@ -18,6 +18,8 @@ export class ProductsService {
   store: Map<number, IProductModel> = new Map();
   sortByNameProducts: IProductModel[] = [];
   isUpdated = false;
+  updatedProducts$ = new Subject<IProductModel[]>();
+  private sendForUpdate = false;
 
   constructor(
     private server: ServerHttpService,
@@ -104,16 +106,22 @@ export class ProductsService {
 
   updateProducts(): Observable<IProductModel[]> {
     this.isUpdated = false;
-    const updated$ = new Subject<IProductModel[]>();
-    this.server.getProductsWithRelations().pipe(take(1)).subscribe(products => {
-      this.store.clear();
-      this.isUpdated = true;
-      products?.filter(product => !!product).forEach(product =>
-        this.store.set(product?.id, product));
-      this.updateSortByNameProducts();
-      updated$.next(products);
-    });
-    return updated$;
+    if (!this.sendForUpdate) {
+      this.sendForUpdate = true;
+      this.server.getProductsWithRelations().pipe(take(1)).subscribe(
+        products => {
+          this.sendForUpdate = false;
+          this.store.clear();
+          this.isUpdated = true;
+          products?.filter(product => !!product).forEach(product =>
+            this.store.set(product?.id, product));
+          this.updateSortByNameProducts();
+          this.updatedProducts$.next(products);
+        },
+        _ => this.sendForUpdate = false
+      );
+    }
+    return this.updatedProducts$;
   }
 
   sortProductsByNameAndType(products: IProductView[]): IProductModel[] {

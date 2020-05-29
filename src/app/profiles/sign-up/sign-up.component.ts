@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService } from '../../services/user.service';
 import { ServerHttpService } from '../../services/server-http.service';
 import { FormGroup, FormBuilder, Validators, AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { map } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { ISignUpModel } from 'src/app/models/server/sign-up-model';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,41 +15,49 @@ import { Observable, Subscription } from 'rxjs';
 export class SignUpComponent implements OnInit, OnDestroy {
 
   checkSubs = new Subscription();
+  subs = new Subscription();
   loginCtrl = this.formBuilder.control('', Validators.required);
+  passwordCtrl = this.formBuilder.control('', [Validators.required, Validators.minLength(4)]);
+  confirmPswrdCtrl = this.formBuilder.control({ value: '', disabled: true },
+    [Validators.required, Validators.minLength(4)]);
+  createAdmin: boolean;
+
   formModel: FormGroup = this.formBuilder.group({
     login: this.loginCtrl,
     email: ['', Validators.email],
     fullName: [''],
     passwords: this.formBuilder.group({
-      password: ['', [Validators.required, Validators.minLength(3)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(3)]],
+      password: this.passwordCtrl,
+      confirmPassword: this.confirmPswrdCtrl,
     }, { validator: this.comparePasswords }),
   });
 
   constructor(
     private formBuilder: FormBuilder,
     private notifications: NotificationsService,
-    private serverService: ServerHttpService
+    private serverService: ServerHttpService,
+    public auth: AuthService
   ) { }
 
   ngOnDestroy(): void {
     this.checkSubs.unsubscribe();
+    this.subs.unsubscribe();
   }
 
   ngOnInit(): void {
-    // this.userService.formModel.reset();
+    this.createAdmin = this.auth.isAdmin;
+    this.formModel.reset();
+    this.subs.add(this.passwordCtrl.valueChanges.subscribe(password =>
+      (!this.passwordCtrl?.errors && password)
+        ? this.confirmPswrdCtrl.enable()
+        : this.confirmPswrdCtrl.disable()
+    ));
   }
 
   onSubmit() {
-    this.serverService.signUp({
-      login: this.formModel.value.login,
-      email: this.formModel.value.email,
-      fullName: this.formModel.value.fullName,
-      password: this.formModel.value.passwords.password,
-    }).subscribe(
+    this.signUpRequest.subscribe(
       (res: any) => {
         if (res.succeeded) {
-          this.formModel.reset();
           this.createNotification('Реєстрація пройшла успішно', '', NotificationType.Success);
         }
         else {
@@ -69,28 +78,19 @@ export class SignUpComponent implements OnInit, OnDestroy {
     );
   }
 
+  private get signUpRequest(): Observable<any> {
+    const model: ISignUpModel = {
+      login: this.formModel.value.login,
+      email: this.formModel.value.email,
+      fullName: this.formModel.value.fullName,
+      password: this.formModel.value.passwords.password,
+    };
 
-
-  // onSubm44it() {
-  //   this.serverService.signIn(this.formModel).subscribe(
-  //     res => {
-  //       this.authService.signIn(res);
-  //       this.createNotification('Успішна авторизація', '', NotificationType.Success);
-  //       this.router.navigateByUrl('/home');
-  //     },
-  //     err => {
-  //       if (err.status === 400) {
-  //         this.createNotification('Вхід не виконан', 'Некоректні дані');
-  //       }
-  //       else if (err.status === 401) {
-  //         this.createNotification('Вхід не виконан', 'Неправильний логін чи пароль');
-  //       }
-  //       else {
-  //         this.createNotification('Вхід не виконан', 'Помилка авторизації');
-  //       }
-  //     }
-  //   );
-  // }
+    if (this.createAdmin && this.auth.isAdmin) {
+      return this.serverService.signUpAdmin(model);
+    }
+    return this.serverService.signUp(model);
+  }
 
   createNotification(title: string, content: string = '', type = NotificationType.Error) {
     this.notifications.create(title, content, type, {
@@ -113,37 +113,15 @@ export class SignUpComponent implements OnInit, OnDestroy {
     }
   }
 
+  // get disableConfirmPassword(): boolean {
+  //   return !(this.passwordCtrl?.errors && this.passwordCtrl.value);
+  // }
+
   checkLogin() {
     const login = this.loginCtrl.value;
     if (login) {
-      // this.checkSubs.unsubscribe();
       this.checkSubs = this.serverService.isLoginUnique(login)
         .subscribe(unique => this.loginCtrl.setErrors(unique ? null : { unique: true }));
     }
   }
-
-  // register() {
-  //   const body = {
-  //     userName: this.formModel.value.userName,
-  //     email: this.formModel.value.email,
-  //     fullName: this.formModel.value.fullName,
-  //     password: this.formModel.value.passwords.password,
-  //   };
-  //   return this.http.post('https://localhost:44351/api/auth/signup', body);
-  // }
-
-  // login(model: { userName: string, password: string}) {
-  //   const body = {
-  //     userName: model.userName,
-  //     password: model.password,
-  //   };
-  //   return this.http.post('https://localhost:44351/api/auth/signin', body);
-  // }
-
-  // getUserProfile() {
-  //   // const tokenHeader = new HttpHeaders({
-  //   //   Authorization: `Bearer ${localStorage.getItem('token')}`
-  //   // });
-  //   return this.http.get('https://localhost:44351/api/profiles/current'); // , { headers: tokenHeader });
-  // }
 }
