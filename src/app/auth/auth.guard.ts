@@ -19,6 +19,7 @@ export class AuthGuard implements CanActivate {
       return true;
     }
     else {
+      this.router.navigate(['404']);
       this.createNotification('Нема прав доступу', 'Необхідна авторизація');
       return false;
     }

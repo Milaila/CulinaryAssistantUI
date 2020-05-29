@@ -1,6 +1,10 @@
 <div class="Auth">
   <mat-card>
     <nav mat-tab-nav-bar mat-align-tabs="center">
+      <a  mat-tab-link routerLink="changepassword"
+          *ngIf="auth.isAuthorized"
+          routerLinkActive #changePswr="routerLinkActive"
+          [active]="changePswr.isActive">Зміна паролю</a>
       <a  mat-tab-link routerLink="signup"
           routerLinkActive #signup="routerLinkActive"
           [active]="signup.isActive">Реєстрація</a>

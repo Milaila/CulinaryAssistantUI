@@ -4,6 +4,8 @@ import { ProfileDetailsComponent } from './profile-details/profile-details.compo
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { UserComponent } from './user/user.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { AuthGuard } from '../auth/auth.guard';
 
 
 const routes: Routes = [
@@ -26,6 +28,11 @@ const routes: Routes = [
         path: 'signin',
         component: SignInComponent
       },
+      {
+        path: 'changepassword',
+        component: ChangePasswordComponent,
+        canActivate: [ AuthGuard ]
+      }
     ]
   },
   // {

@@ -13,6 +13,8 @@
         <button mat-button class="menuItem" routerLink="/profiles" routerLinkActive="link-active"
         [matMenuTriggerFor]="profileMenu">Обліковий запис</button>
         <mat-menu #profileMenu="matMenu">
+          <button mat-menu-item *ngIf="isAuthorized" routerLink="/profiles/user/changepassword"
+            routerLinkActive="link-active">Зміна паролю</button>
           <button mat-menu-item *ngIf="!isAuthorized" routerLink="/profiles/user/signin"
             routerLinkActive="link-active">Вхід</button>
           <button mat-menu-item routerLink="/profiles/user/signup"

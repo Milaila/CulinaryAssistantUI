@@ -17,7 +17,11 @@
     <div formGroupName="passwords" class="passwords">
       <mat-form-field>
         <mat-label>Пароль</mat-label>
-        <input type="password" matInput formControlName="password" required autocomplete="new-password">
+        <input matInput [type]="hidePswrd ? 'password' : 'text'" formControlName="password" required autocomplete="new-password">
+        <button [disabled]="passwordCtrl.value ? null : true" class="visibility"
+          color="primary" mat-icon-button matSuffix (click)="hidePswrd = !hidePswrd">
+          <mat-icon>{{ hidePswrd ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Підтвердження паролю</mat-label>
@@ -26,18 +30,20 @@
         <mat-error *ngIf="confirmPswrdCtrl.hasError('passwordMismatch')">Паролі не збігаються</mat-error>
       </mat-form-field>
     </div>
-    <mat-checkbox *ngIf="auth.isAdmin"
-      color="primary"
-      [(ngModel)]="createAdmin"
-      [ngModelOptions]="{ standalone: true }">
-      Зареєструвати як адміністратора
-    </mat-checkbox>
-    <button mat-raised-button
-      class="submit"
-      color="primary"
-      [disabled]="!formModel.valid"
-      (click)="onSubmit()">
-      Реєстрація
-    </button>
+    <div class="actions">
+      <button mat-raised-button
+        color="primary"
+        [disabled]="!formModel.valid"
+        (click)="onSubmit()">
+        Реєстрація
+      </button>
+      <button mat-raised-button
+        class="submit-admin"
+        color="accent"
+        [disabled]="!formModel.valid"
+        (click)="onSubmit(true)">
+        Реєстрація адміністратора
+      </button>
+    </div>
   </form>
 </div>

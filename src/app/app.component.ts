@@ -45,7 +45,6 @@ export class AppComponent {
       },
       {
         label: 'Продукти',
-        // visible: () => this.authService.isAuthorized,
         routerLink: '/products/list',
       },
       {
@@ -63,11 +62,11 @@ export class AppComponent {
         visible: () => this.authService.isAuthorized,
         routerLink: '/recipes/new',
       },
-      // {
-      //   label: 'Вхід в обліковий запис',
-      //   visible: () => this.authService.isAuthorized,
-      //   routerLink: '/profiles/user/login',
-      // },
+      {
+        label: 'Зміна паролю',
+        visible: () => this.authService.isAuthorized,
+        routerLink: '/profiles/user/changepassword',
+      },
       {
         label: 'Вхід в обліковий запис',
         visible: () => !this.authService.isAuthorized,

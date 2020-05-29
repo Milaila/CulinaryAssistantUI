@@ -12,6 +12,7 @@ import { map, tap } from 'rxjs/operators';
 import { IProfileGeneralModel, IProfileModel } from '../models/server/profile-models';
 import { IImageModel } from '../models/server/image-model';
 import { IProductModel, IProductGeneralModel, IProductManageModel } from '../models/server/product-model';
+import { IChangePasswordModel } from '../models/server/change-password-model';
 
 @Injectable({
   providedIn: 'root'
@@ -106,6 +107,11 @@ export class ServerHttpService {
 
   signUpAdmin(model: ISignUpModel): Observable<any> {
     const url = `${serverUrls.auth}/signup/admin`;
+    return this.http.post<any>(url, model).pipe(tap(x => console.log(x)));
+  }
+
+  changePassword(model: IChangePasswordModel): Observable<any> {
+    const url = `${serverUrls.auth}/passwords/change`;
     return this.http.post<any>(url, model).pipe(tap(x => console.log(x)));
   }
 

@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../shared/shared.module';
 import { UserComponent } from './user/user.component';
 import { MaterialModule } from '../shared/material.module';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 // import { AuthService } from 'app/services/auth.service';
 
 
@@ -35,7 +36,8 @@ import { MaterialModule } from '../shared/material.module';
     SignUpComponent,
     SignInComponent,
     ProfileEditorComponent,
-    UserComponent
+    UserComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,

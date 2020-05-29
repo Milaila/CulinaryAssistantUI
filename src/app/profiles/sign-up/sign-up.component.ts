@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
   passwordCtrl = this.formBuilder.control('', [Validators.required, Validators.minLength(4)]);
   confirmPswrdCtrl = this.formBuilder.control({ value: '', disabled: true },
     [Validators.required, Validators.minLength(4)]);
-  createAdmin: boolean;
+  hidePswrd = true;
 
   formModel: FormGroup = this.formBuilder.group({
     login: this.loginCtrl,
@@ -45,7 +45,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.createAdmin = this.auth.isAdmin;
     this.formModel.reset();
     this.subs.add(this.passwordCtrl.valueChanges.subscribe(password =>
       (!this.passwordCtrl?.errors && password)
@@ -54,8 +53,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
     ));
   }
 
-  onSubmit() {
-    this.signUpRequest.subscribe(
+  onSubmit(isAdmin = false) {
+    this.getsignUpRequest(isAdmin).subscribe(
       (res: any) => {
         if (res.succeeded) {
           this.createNotification('Реєстрація пройшла успішно', '', NotificationType.Success);
@@ -78,7 +77,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     );
   }
 
-  private get signUpRequest(): Observable<any> {
+  private getsignUpRequest(isAdmin: boolean): Observable<any> {
     const model: ISignUpModel = {
       login: this.formModel.value.login,
       email: this.formModel.value.email,
@@ -86,7 +85,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       password: this.formModel.value.passwords.password,
     };
 
-    if (this.createAdmin && this.auth.isAdmin) {
+    if (isAdmin && this.auth.isAdmin) {
       return this.serverService.signUpAdmin(model);
     }
     return this.serverService.signUp(model);
