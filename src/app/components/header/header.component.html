@@ -86,7 +86,7 @@
     [matMenuTriggerFor]="recipesMenu">Рецепти</button>
   <mat-menu #recipesMenu="matMenu">
     <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/my"
-      routerLinkActive="link-active">Мої рецепти</button>
+      routerLinkActive="link-active">Керування рецептами</button>
     <button mat-menu-item *ngIf="isAuthorized" routerLink="/recipes/new"
       routerLinkActive="link-active">Створення рецепту</button>
     <button mat-menu-item routerLink="/recipes/search"

@@ -4,11 +4,27 @@
       <img [src]="image" alt="">
     </div>
     <div class="description container">
-      <p><strong>Тривалість приготування:</strong>&nbsp;{{ durationStr }}</p>
-      <p><strong>Калорійність на 100 г:</strong>&nbsp;&nbsp;{{ recipe.calories ? recipe.calories +'&nbsp;ккал' : 'н/д' }}</p>
-      <p><strong>Кількість порцій:</strong>&nbsp;&nbsp;{{ recipe.portions || 'н/д' }}</p>
-      <p *ngIf="recipe.description">{{ recipe.description }}</p>
+      <div class="text">
+        <p><strong>Тривалість приготування:</strong>&nbsp;{{ durationStr }}</p>
+        <p><strong>Калорійність на 100 г:</strong>&nbsp;
+          {{ recipe.calories ? recipe.calories +'&nbsp;ккал' : 'н/д' }}</p>
+        <p><strong>Вага однієї порції:</strong>&nbsp;
+          {{ recipe.servingWeight ? recipe.servingWeight +'&nbsp;г' : 'н/д' }}</p>
+          <p><strong>Кількість порцій:</strong>&nbsp;&nbsp;{{ recipe.portions || 'н/д' }}</p>
+        <p *ngIf="recipe.description">{{ recipe.description }}</p>
+      </div>
+      <div class="author-time">
+        <div class="author" *ngIf="recipe.authorName as author">
+          <mat-icon matTooltip="автор рецепту" color="primary">account_circle</mat-icon>
+          <a>{{ author }}</a>
+        </div>
+        <div class="time" *ngIf="recipe.time as time">
+          <mat-icon matTooltip="дата створення" color="primary">schedule</mat-icon>
+          {{ time | date:"dd/MM/yyyy hh:mm:ss" }}
+        </div>
+      </div>
     </div>
+
   </section>
   <section class="tags indent" *ngIf="recipe.tags as tags">
     <mat-chip-list>
@@ -35,16 +51,16 @@
         <span *ngIf="!ingredient.necessity" class="grey">&nbsp;(опціональний)</span>
         &nbsp;-
         <span class="weight" *ngIf="ingredient.weight; else weightInGramsTemplate">
-          {{ ingredient.weight * portionsCoef }}
+          {{ ingredient.weight * portionsCoef | number: '1.0-3' }}
           <span *ngIf="ingredient.weightMeasurement as value" [matTooltip]="getMeasurementTitle(value)">
             {{ value }}</span>
           <span *ngIf="ingredient.weightInGrams as grams" matTooltip="грам">
-            ({{ ingredient.weightInGrams * portionsCoef }} г)</span>
+            ({{ ingredient.weightInGrams * portionsCoef | number: '1.0-3' }} г)</span>
         </span>
       </span>
       <ng-template #weightInGramsTemplate>
         <span class="weight" matTooltip="грам">
-          {{ ingredient.weightInGrams * portionsCoef || '?' }} г</span>
+          {{ (ingredient.weightInGrams * portionsCoef | number: '1.0-3') || '?' }} г</span>
       </ng-template>
       <p class="note" matLine *ngIf="ingredient.note" [matTooltip]="ingredient.title">
         {{ ingredient.note }}</p>

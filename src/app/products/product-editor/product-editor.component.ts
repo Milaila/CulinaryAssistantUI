@@ -53,10 +53,6 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    if (!this.auth.isAuthorized) {
-      this.createNotification('Нема прав доступу', 'Необхідна авторизація', NotificationType.Error);
-      this.router.navigate(['404']);
-    }
     this.subs.add(combineLatest([this.route.params, this.route.queryParams])
       .subscribe(([params, query]) => {
         this.fromProductPageId = query?.from;

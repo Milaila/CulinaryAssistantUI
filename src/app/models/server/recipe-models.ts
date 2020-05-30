@@ -16,6 +16,8 @@ export interface IRecipeDetails {
   calories?: number;
   portions?: number;
   duration?: number;
+  authorName?: string;
+  servingWeight?: number;
   ingredients?: IIngredientModel[];
   ingredientsDescription?: string;
   steps?: IRecipeStepModel[];
@@ -24,6 +26,8 @@ export interface IRecipeDetails {
 
 export interface IRecipeModelView extends IRecipeGeneralModel {
   calories?: number;
+  authorName?: string;
+  servingWeight?: number;
   portions?: number;
   duration?: number;
   imageSrc$?: Observable<string>;

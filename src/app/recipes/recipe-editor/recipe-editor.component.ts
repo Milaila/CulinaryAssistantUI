@@ -198,7 +198,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       return;
     }
     const id = 0;
-    const recipe = {
+    const recipe: IRecipeModel = {
       id,
       imageId: 0,
       title: this.currRecipe.title,
@@ -207,6 +207,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       calories: this.currRecipe.calories,
       portions: this.currRecipe.portions,
       duration: this.currRecipe.duration,
+      servingWeight: this.currRecipe.servingWeight,
       ingredients: this.currRecipe.ingredients?.map(x => ({ ...x, id })),
       ingredientsDescription: this.currRecipe.ingredientsDescription,
       steps: this.currRecipe.steps?.map(step => ({

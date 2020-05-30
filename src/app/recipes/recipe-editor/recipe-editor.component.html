@@ -37,13 +37,19 @@
           <input matInput type="text" #portions name="portions" pattern="[0-9]*"
             [ngModel]="currRecipe.portions" (change)="currRecipe.portions = convertToNumber(portions)">
         </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Вага однієї порції</mat-label>
+          <input matInput #servingWeight [ngModel]="currRecipe.servingWeight" name="servingWeight"
+            type="text" pattern="[0-9.]*" (change)="currRecipe.servingWeight = convertToNumber(servingWeight)">
+          <span matSuffix>г</span>
+        </mat-form-field>
         <mat-form-field appearance="outline" class="">
-          <mat-label>Час приготування (в хвилинах)</mat-label>
+          <mat-label>Час приготування</mat-label>
           <input matInput type="text" #duration name="duration" pattern="[0-9]*"
             [ngModel]="currRecipe.duration" (change)="currRecipe.duration = convertToNumber(duration)">
           <span matSuffix>хв</span>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="">
+        <mat-form-field matTooltipPosition="above" appearance="outline" matTooltip="калорійність у 100 г готової страви">
           <mat-label>Калорійність (на 100 г)</mat-label>
           <input matInput name="calories" #cals type="text" pattern="[0-9.]*"
             [ngModel]="currRecipe.calories" (change)="currRecipe.calories = convertToNumber(cals)">

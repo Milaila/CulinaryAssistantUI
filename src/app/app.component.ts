@@ -48,7 +48,7 @@ export class AppComponent {
         routerLink: '/products/list',
       },
       {
-        label: 'Мої рецепти',
+        label: 'Керування рецептами',
         visible: () => this.authService.isAuthorized,
         routerLink: '/recipes/my',
       },
