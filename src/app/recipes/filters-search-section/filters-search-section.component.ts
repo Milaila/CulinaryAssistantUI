@@ -32,9 +32,9 @@ export class FiltersSearchSectionComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.filterService.filtersChanged$.subscribe(newFilters =>
       this.filters = newFilters?.sort((x, y) => {
         if (x.isDefault === y.isDefault) {
-          return x.filterTitle > y.filterTitle ? 1 : -1;
+          return x.filterTitle?.localeCompare(y.filterTitle);
         }
-        return x.isDefault && !y.isDefault  ? -1 : 1;
+        return x.isDefault && !y.isDefault ? -1 : 1;
       }) || []
     ));
   }

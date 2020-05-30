@@ -66,7 +66,7 @@ export class ProductsService {
   }
 
   private updateSortByNameProducts() {
-    this.sortByNameProducts = this.products.sort((x, y) => x.name > y.name ? 1 : -1);
+    this.sortByNameProducts = this.products.sort((x, y) => x.name?.localeCompare(y.name));
   }
 
   get products(): IProductModel[] {
@@ -130,7 +130,7 @@ export class ProductsService {
         const xChildren = x.subcategories?.length ? 1 : 0;
         const yChildren = y.subcategories?.length ? 1 : 0;
         if (xChildren === yChildren) {
-          return x.name > y.name ? 1 : -1;
+          return x.name?.localeCompare(y.name);
         }
         return yChildren - xChildren;
       });

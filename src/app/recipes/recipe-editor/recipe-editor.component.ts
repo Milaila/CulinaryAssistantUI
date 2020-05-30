@@ -77,7 +77,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   }
 
   private initProducts(products: IProductGeneralModel[]) {
-    this.filteredProducts = this.products = products.sort((x, y) => x.name > y.name ? 1 : -1);
+    this.filteredProducts = this.products = products.sort((x, y) => x.name?.localeCompare(y.name));
   }
 
   getMeasurementTitle(value: string): string {

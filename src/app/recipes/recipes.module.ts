@@ -25,6 +25,7 @@ import { ProductDetailsDialogComponent } from '../products/product-details/produ
 import { SharedModule } from '../shared/shared.module';
 import { RecipeDetailsPageComponent } from './recipe-details-page/recipe-details-page.component';
 import { RecipeDetailsDialogComponent } from './recipe-details-dialog/recipe-details-dialog.component';
+import { ProfileRecipesComponent } from './profile-recipes/profile-recipes.component';
 // import { ImageDialogComponent } from '../components/image-dialog/image-dialog.component';
 
 
@@ -44,6 +45,7 @@ import { RecipeDetailsDialogComponent } from './recipe-details-dialog/recipe-det
     MyRecipesComponent,
     RecipeDetailsPageComponent,
     RecipeDetailsDialogComponent,
+    ProfileRecipesComponent,
   ],
   imports: [
     RecipesRoutingModule,

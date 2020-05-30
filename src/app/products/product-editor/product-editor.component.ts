@@ -61,12 +61,12 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
     );
     if (this.productService.isUpdated) {
       this.filteredProducts = this.allProducts = this.productService.products
-        .sort((x, y) => x.name > y.name ? 1 : -1).filter(x => x.id !== this.currProduct?.id);
+        .sort((x, y) => x.name?.localeCompare(y.name)).filter(x => x.id !== this.currProduct?.id);
     }
     else {
       this.subs.add(this.productService.updateProducts().subscribe(products => {
         this.filteredProducts = this.allProducts = (products || [])
-          .sort((x, y) => x.name > y.name ? 1 : -1).filter(x => x.id !== this.currProduct?.id);
+          .sort((x, y) => x.name?.localeCompare(y.name)).filter(x => x.id !== this.currProduct?.id);
       }));
     }
 

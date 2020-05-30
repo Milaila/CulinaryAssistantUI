@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ServerHttpService } from 'src/app/services/server-http.service';
 import { IActionItem } from 'src/app/models/else/menu-item';
@@ -7,6 +7,8 @@ import { IRecipeGeneralModel } from 'src/app/models/server/recipe-models';
 import { take, filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { RecipesService } from 'src/app/services/recipes.service';
+import { RecipeSort } from '../recipes-sort-type';
+// import { RecipeSortType } from '../recipes-sort-type';
 
 @Component({
   selector: 'app-recipe-search',
@@ -14,49 +16,63 @@ import { RecipesService } from 'src/app/services/recipes.service';
   styleUrls: ['./recipe-search.component.scss']
 })
 export class RecipeSearchComponent implements OnInit {
-  currRecipes: IRecipeGeneralModel[] = null;
-  // resultRecipes: IRecipeGeneralModel[] = null;
+  // currRecipes: IRecipeGeneralModel[] = null;
+  // sortType: RecipeSortType = 'TITLE_ASC';
 
   constructor(
     private authService: AuthService,
-    private recipeStore: RecipesService,
+    public recipes: RecipesService,
     public filterService: FiltersService,
     private serverService: ServerHttpService,
   ) { }
 
   ngOnInit(): void {
-    this.currRecipes = null;
-    if (this.recipeStore.isUpdated) {
-      this.currRecipes = this.recipeStore.recipes;
-    }
-    else {
+    // this.currRecipes = null;
+    if (!this.recipes.isUpdated) {
       this.displayAllRecipes();
     }
   }
 
   displayAllRecipes() {
     this.serverService.getRecipes().pipe(take(1)).subscribe(
-      recipes => this.recipeStore.recipes = this.currRecipes = recipes
-      // _ => alert('Error during getting recipes')
+      recipes => {
+        this.recipes.setRecipes(recipes);
+      }
     );
   }
 
+  get currentRecipes(): IRecipeGeneralModel[] {
+    return this.recipes.currRecipes;
+  }
+
+  setSortType(sortType: RecipeSort) {
+    this.recipes.sortType = sortType;
+  }
+
+  // sortRecipes(sortType: RecipeSortType) {
+  //   this.currRecipes = null;
+  //   this.recipeStore.sortCurrentRecipes(sortType);
+  //   this.currRecipes = this.recipeStore.recipes;
+  //   // this.recipeStore.sortType = sortType;
+  // }
+
   onSearch() {
-    this.currRecipes = this.recipeStore.recipes = null;
-    // this.sortRecipesByName(
+    this.recipes.clearRecipes();
     this.filterService.getRecipesByCurrentFilter()
       .subscribe (
-        recipes => this.currRecipes = this.recipeStore.recipes = recipes,
-        // _ => alert('Error during filtering recipes')
+        recipes => {
+          this.recipes.setRecipes(recipes);
+        }
       );
   }
 
   onSearchByFilter(filterId: number) {
-    this.currRecipes = this.recipeStore.recipes = null;
-    this.sortRecipesByName(this.filterService.getRecipesByFilter(+filterId))
+    this.recipes.clearRecipes();
+    this.filterService.getRecipesByFilter(+filterId).pipe(take(1))
       .subscribe(
-        recipes => this.currRecipes = this.recipeStore.recipes = recipes || [],
-        // _ => alert('Error during filtering recipes by filter id')
+        recipes => {
+          this.recipes.setRecipes(recipes);
+        }
       );
   }
 
@@ -64,20 +80,15 @@ export class RecipeSearchComponent implements OnInit {
     this.filterService.resetCurrentFilter();
   }
 
-  searchByRecipeName(name: string) {
-    const check = new RegExp(name, 'i');
-    this.currRecipes = this.recipeStore.recipes?.filter(r => check.test(r.title));
-  }
+//   searchByRecipeName(name: string) {
+//     const check = new RegExp(name, 'i');
+//     this.currRecipes = this.recipeStore.recipes?.filter(r => check.test(r.title));
+//   }
 
-  private sortRecipesByName(recipes$: Observable<IRecipeGeneralModel[]>): Observable<IRecipeGeneralModel[]> {
-    return recipes$.pipe(
-      take(1),
-      map(recipes => recipes?.sort((x, y) => {
-        if (!x.title) {
-          return 1;
-        }
-        return x.title > y.title ? 1 : -1;
-      }))
-    );
-  }
+//   private sortRecipesByName(recipes$: Observable<IRecipeGeneralModel[]>): Observable<IRecipeGeneralModel[]> {
+//     return recipes$.pipe(
+//       take(1),
+//       map(recipes => this.recipeStore.sortRecipesByTitle(recipes))
+//     );
+//   }
 }

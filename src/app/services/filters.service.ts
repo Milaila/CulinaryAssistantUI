@@ -201,7 +201,7 @@ export class FiltersService {
         const xChildren = x.subcategories?.length ? 1 : 0;
         const yChildren = y.subcategories?.length ? 1 : 0;
         if (xChildren === yChildren) {
-          return x.name > y.name ? 1 : -1;
+          return x.name?.localeCompare(y.name);
         }
         return yChildren - xChildren;
       })
@@ -374,7 +374,7 @@ export class FiltersService {
           this.filters.set(id, filterModel);
           this.currFilter.id = 0;
           this.onChangeFilters();
-          this.createNotification(`Фільтр "${filterName}" збережено`, '', NotificationType.Success);
+          this.createNotification(`Фільтр "${filterName}" збережено`, '', NotificationType.Success, 300);
         },
         _ => this.createNotification('Фільтр не збережено', 'Помилка під час збереження фільтру')
       );
@@ -424,9 +424,9 @@ export class FiltersService {
     this.onCurrFilterChanged$.next(this.currFilter);
   }
 
-  createNotification(title: string, content: string = '', type = NotificationType.Error) {
+  createNotification(title: string, content: string = '', type = NotificationType.Error, time: number = 3000) {
     this.notifications.create(title, content, type, {
-      timeOut: 3000,
+      timeOut: time,
       showProgressBar: true,
       pauseOnHover: true,
       clickToClose: true
