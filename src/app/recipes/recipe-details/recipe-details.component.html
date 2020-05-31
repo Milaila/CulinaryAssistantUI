@@ -43,7 +43,9 @@
       </div>
     </div>
     <mat-list-item *ngFor="let ingredient of recipe.ingredients || []" [class.changed]="portionsCoef != 1">
-      <button mat-icon-button color="primary" (click)="openProduct(ingredient?.product?.id)">
+      <button mat-icon-button color="primary"
+        [disabled]="ingredient.product ? null : true"
+        (click)="openProduct(ingredient.product?.id)">
         <mat-icon matListIcon>info</mat-icon>
       </button>
       <span matLine>

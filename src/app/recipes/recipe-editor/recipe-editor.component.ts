@@ -208,7 +208,11 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       portions: this.currRecipe.portions,
       duration: this.currRecipe.duration,
       servingWeight: this.currRecipe.servingWeight,
-      ingredients: this.currRecipe.ingredients?.map(x => ({ ...x, id })),
+      ingredients: this.currRecipe.ingredients?.map(x => ({
+        ...x,
+        title: this.getProductName(x.productId),
+        id
+      })),
       ingredientsDescription: this.currRecipe.ingredientsDescription,
       steps: this.currRecipe.steps?.map(step => ({
         ...step,
@@ -233,11 +237,19 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     if (this.recipeFormRef.invalid) {
       return;
     }
+    this.currRecipe.ingredients = this.currRecipe.ingredients?.map(x => ({
+      ...x,
+      title: this.getProductName(x.productId) || x.title,
+    })),
     this.subscription.add(this.server.editRecipe(this.currRecipe)
       .subscribe(
         x => this.createNotification('Рецепт оновлено'),
         _ => this.createNotification('Рецепт не оновлено', NotificationType.Error, 'Помилка при оновленні рецепту')
       ));
+  }
+
+  private getProductName(productId: number): string {
+    return this.products.find(x => x.id === productId)?.name;
   }
 
   uploadStepImage(stepIndex: number, event: any) {

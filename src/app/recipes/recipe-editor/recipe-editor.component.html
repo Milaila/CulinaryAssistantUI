@@ -106,7 +106,7 @@
             </mat-card-header>
             <mat-form-field appearance="outline">
               <mat-label>Продукт</mat-label>
-              <mat-select name="productSelect-{{index}}" required
+              <mat-select name="productSelect-{{index}}"
                 [(ngModel)]="ingredient.productId"
                 placeholder="Оберіть продукт">
                 <ngx-mat-select-search ngModel name="productFilter" (ngModelChange)="filterMyProducts($event)"
