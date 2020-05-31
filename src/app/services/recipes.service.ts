@@ -2,7 +2,7 @@ import { Injectable, ChangeDetectorRef } from '@angular/core';
 import { IRecipeModel, IRecipeGeneralModel } from '../models/server/recipe-models';
 import { ServerHttpService } from './server-http.service';
 import { take } from 'rxjs/operators';
-import { RecipeSort } from '../recipes/recipes-sort-type';
+import { RecipeSort } from '../recipes/recipes-sort.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -47,10 +47,10 @@ export class RecipesService {
 
   sortRecipes(recipes: IRecipeGeneralModel[], sort: RecipeSort = this.currSortType): IRecipeGeneralModel[] {
     switch (sort) {
-      case 'TITLE_ASC': return this.sortRecipesByTitle(recipes, true);
-      case 'TITLE_DESC': return this.sortRecipesByTitle(recipes, false);
-      case 'DATE_ASC': return this.sortRecipesByDate(recipes, true);
-      case 'DATE_DESC': return this.sortRecipesByDate(recipes, false);
+      case RecipeSort.TitleAsc: return this.sortRecipesByTitle(recipes, true);
+      case RecipeSort.TitleDesc: return this.sortRecipesByTitle(recipes, false);
+      case RecipeSort.DateAsc: return this.sortRecipesByDate(recipes, true);
+      case RecipeSort.DateDesc: return this.sortRecipesByDate(recipes, false);
       default: return recipes;
     }
   }

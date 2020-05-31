@@ -65,22 +65,27 @@
       <button mat-raised-button color="basic" class="search-button" (click)="displayAllRecipes()">
         Усі рецепти<mat-icon>all_inclusive</mat-icon>
       </button>
-      <mat-form-field appearance="fill">
-        <mat-label>Пошук серед результатів</mat-label>
-        <input matInput placeholder="Назва рецепту..." #searchRecipes (input)="recipes.filterRecipesByTitle(searchRecipes.value)">
-        <button mat-icon-button matSuffix (click)="recipes.filterRecipesByTitle(searchRecipes.value)">
-          <mat-icon>search</mat-icon>
+      <div class="filters">
+        <mat-form-field appearance="fill">
+          <mat-label>Пошук серед результатів</mat-label>
+          <input matInput placeholder="Назва рецепту..." #searchRecipes (input)="recipes.filterRecipesByTitle(searchRecipes.value)">
+          <button mat-icon-button matSuffix (click)="recipes.filterRecipesByTitle(searchRecipes.value)">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-icon-button class="sort-select" matTooltip="сортування рецептів" [matMenuTriggerFor]="editMenu">
+          <mat-icon>sort</mat-icon>
         </button>
-      </mat-form-field>
-      <mat-form-field class="sort-select" appearance="fill">
-        <mat-label>Сортування рецептів</mat-label>
-        <mat-select [ngModel]="recipes.sortType" (ngModelChange)="setSortType($event)" name="sort">
-          <mat-option value="TITLE_ASC">За назвою (від А до Я)</mat-option>
-          <mat-option value="TITLE_DESC">За назвою (від Я до А)</mat-option>
-          <mat-option value="DATE_ASC">За датою створення (від нових до старих)</mat-option>
-          <mat-option value="DATE_DESC">За датою створення (від старих до нових)</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-menu #editMenu="matMenu">
+          <button mat-menu-item
+            [class.list-item-active]="option.type === recipes.sortType"
+            *ngFor="let option of sortOptions"
+            (click)="setSortType(option.type)"
+            [matTooltip]="option.title">
+            {{ option.name }}
+          </button>
+        </mat-menu>
+      </div>
     </mat-toolbar>
     <app-recipe-list [recipes]="recipes.currRecipes" noRecipesLabel="Нема рецептів, що відповідають заданому пошуку"></app-recipe-list>
   </div>

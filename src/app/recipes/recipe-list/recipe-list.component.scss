@@ -19,15 +19,24 @@
         display: flex;
         max-height: 500px;
         flex-direction: column;
+        word-break: break-word;
         mat-card-title {
           overflow: auto;
           word-break: break-word;
+          min-height: 30px;
         }
-        word-break: break-word;
       }
 
       mat-card-content {
         overflow: auto;
+      }
+
+      .time {
+        font-size: 13px;
+        font-weight: 300;
+        margin-left: auto;
+        width: fit-content;
+        margin-bottom: 8px;
       }
 
       .imageContainer {

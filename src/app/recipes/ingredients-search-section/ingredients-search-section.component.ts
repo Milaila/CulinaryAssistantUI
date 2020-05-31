@@ -26,8 +26,8 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   ];
   productsSource: MatTableDataSource<IFilterProduct> = null;
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   rootProductId: number;
   subscriptions = new Subscription();
@@ -57,7 +57,8 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
     this.subscriptions.add(currProducts$.subscribe(products => {
       this.productsSource = new MatTableDataSource(products?.map(id => this.getProduct(id)) || []);
       this.productsSource.sort = this.sort;
-      this.productsSource.paginator = this.paginator;
+      this.productsSource.filterPredicate = (data: IFilterProduct, name: string) => new RegExp(name, 'i').test(data.name);
+      // this.productsSource.paginator = this.paginator;
       this.isLoaded = true;
     }));
   }

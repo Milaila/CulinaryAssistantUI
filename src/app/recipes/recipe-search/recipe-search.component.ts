@@ -7,7 +7,9 @@ import { IRecipeGeneralModel } from 'src/app/models/server/recipe-models';
 import { take, filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { RecipesService } from 'src/app/services/recipes.service';
-import { RecipeSort } from '../recipes-sort-type';
+import { RecipeSort } from '../recipes-sort.enum';
+import { ISortOption } from 'src/app/models/else/sort-option';
+import { RECIPE_SORT_OPTIONS } from '../recipes-sort-options';
 // import { RecipeSortType } from '../recipes-sort-type';
 
 @Component({
@@ -16,8 +18,7 @@ import { RecipeSort } from '../recipes-sort-type';
   styleUrls: ['./recipe-search.component.scss']
 })
 export class RecipeSearchComponent implements OnInit {
-  // currRecipes: IRecipeGeneralModel[] = null;
-  // sortType: RecipeSortType = 'TITLE_ASC';
+  sortOptions = RECIPE_SORT_OPTIONS;
 
   constructor(
     private authService: AuthService,
@@ -27,7 +28,6 @@ export class RecipeSearchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.currRecipes = null;
     if (!this.recipes.isUpdated) {
       this.displayAllRecipes();
     }
@@ -48,13 +48,6 @@ export class RecipeSearchComponent implements OnInit {
   setSortType(sortType: RecipeSort) {
     this.recipes.sortType = sortType;
   }
-
-  // sortRecipes(sortType: RecipeSortType) {
-  //   this.currRecipes = null;
-  //   this.recipeStore.sortCurrentRecipes(sortType);
-  //   this.currRecipes = this.recipeStore.recipes;
-  //   // this.recipeStore.sortType = sortType;
-  // }
 
   onSearch() {
     this.recipes.clearRecipes();
@@ -79,16 +72,4 @@ export class RecipeSearchComponent implements OnInit {
   resetFilter() {
     this.filterService.resetCurrentFilter();
   }
-
-//   searchByRecipeName(name: string) {
-//     const check = new RegExp(name, 'i');
-//     this.currRecipes = this.recipeStore.recipes?.filter(r => check.test(r.title));
-//   }
-
-//   private sortRecipesByName(recipes$: Observable<IRecipeGeneralModel[]>): Observable<IRecipeGeneralModel[]> {
-//     return recipes$.pipe(
-//       take(1),
-//       map(recipes => this.recipeStore.sortRecipesByTitle(recipes))
-//     );
-//   }
 }

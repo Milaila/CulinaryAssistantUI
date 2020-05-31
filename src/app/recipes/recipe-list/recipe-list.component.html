@@ -19,6 +19,9 @@
           </mat-card-content>
         </div>
         <div class="recipe-card-footer">
+          <div class="time" matTooltip="дата створення" *ngIf="recipe.time as time">
+            {{ time | date:"dd/MM/yyyy hh:mm:ss" }}
+          </div>
           <mat-divider></mat-divider>
           <div class="actions">
             <a mat-stroked-button
