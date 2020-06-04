@@ -14,7 +14,6 @@ import { MatDialog } from '@angular/material/dialog';
   providedIn: 'root'
 })
 export class ProductsService {
-  // private readonly products: Map<number, BehaviorSubject<IProduct>> = new Map();
   store: Map<number, IProductModel> = new Map();
   sortByNameProducts: IProductModel[] = [];
   isUpdated = false;
@@ -25,7 +24,6 @@ export class ProductsService {
     private server: ServerHttpService,
     private imageStore: ImagesService,
     private dialog: MatDialog,
-    // private notifications: NotificationsService,
     private auth: AuthService
   ) {
   }
@@ -51,7 +49,6 @@ export class ProductsService {
           this.isUpdated = false;
           this.store.delete(id);
           this.updateSortByNameProducts();
-          // this.createNotification('Продукт видалено');
         }),
         // catchError(_ => {
         //   this.createNotification('Продукт не видалено', NotificationType.Error, 'Помилка під час видалення продукту');
@@ -162,27 +159,4 @@ export class ProductsService {
       subcategoryNames: this.getSubcategoriesNames(product)
     };
   }
-
-  // createNotification(title: string, type = NotificationType.Success, content: string = '') {
-  //   this.notifications.create(title, content, type, {
-  //     timeOut: 3000,
-  //     showProgressBar: true,
-  //     pauseOnHover: true,
-  //     clickToClose: true
-  //   });
-  // }
-
-  // getProductDetailsView(productId: number): Observable<IProductView> {
-  //   const categories$ = this.server.getProductCategories(productId);
-  //   const subcategories$ = this.server.getProductSubcategories(productId);
-  //   const product$ = this.server.getProductWithFullDetails(productId);
-
-  //   return combineLatest([product$, categories$, subcategories$]).pipe(
-  //     map(([product, categories, subcategories]) => ({
-  //       ...product,
-  //       categoryNames: categories?.map(x => x.name),
-  //       subcategoryNames: subcategories?.map(x => x.name)
-  //     }))
-  //   );
-  // }
 }

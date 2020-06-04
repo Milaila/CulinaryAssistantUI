@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { Router } from '@angular/router';
@@ -19,7 +18,6 @@ export class SignInComponent implements OnInit {
   };
 
   constructor(
-    public userService: UserService,
     private authService: AuthService,
     private notifications: NotificationsService,
     private serverService: ServerHttpService,

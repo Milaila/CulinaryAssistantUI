@@ -35,16 +35,6 @@ export class RecipesService {
     return this.resultRecipes;
   }
 
-  // set recipes(value: IRecipeGeneralModel[]) {
-  //   this.isUpdated = value ? true : false;
-  //   this.currRecipes = this.resultRecipes = value;
-  // }
-
-  // searchByRecipeName(name: string) {
-  //   const check = new RegExp(name, 'i');
-  //   this.currRecipes = this.resultRecipes?.filter(r => check.test(r.title));
-  // }
-
   sortRecipes(recipes: IRecipeGeneralModel[], sort: RecipeSort = this.currSortType): IRecipeGeneralModel[] {
     switch (sort) {
       case RecipeSort.TitleAsc: return this.sortRecipesByTitle(recipes, true);

@@ -18,7 +18,7 @@ export class AppComponent {
 
   constructor(
     private renderer: Renderer2,
-    private authService: AuthService,
+    public authService: AuthService,
     private themeService: ThemeService
   ) {
     // this.renderer.addClass(document.body, this.themeService.themeClass);
@@ -48,7 +48,7 @@ export class AppComponent {
         routerLink: '/products/list',
       },
       {
-        label: 'Керування рецептами',
+        label: 'Керувати рецептами',
         visible: () => this.authService.isAuthorized,
         routerLink: '/recipes/my',
       },
@@ -63,7 +63,7 @@ export class AppComponent {
         routerLink: '/recipes/new',
       },
       {
-        label: 'Зміна паролю',
+        label: 'Змінити пароль',
         visible: () => this.authService.isAuthorized,
         routerLink: '/profiles/user/changepassword',
       },

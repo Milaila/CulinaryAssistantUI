@@ -3,9 +3,10 @@ import { IRecipeGeneralModel } from 'src/app/models/server/recipe-models';
 import { AuthService } from 'src/app/services/auth.service';
 import { ServerHttpService } from 'src/app/services/server-http.service';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { take, catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { of, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-my-recipes',
@@ -23,21 +24,28 @@ export class MyRecipesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // if (!this.authService.isAuthorized) {
-    //   this.router.navigate(['/404']);
-    // }
+    const myRecipes$ = this.serverService.getMyRecipes().pipe(
+      take(1),
+      catchError(() => {
+        this.createNotification('Помилка під час завантаження власних рецептів');
+        return of([]);
+      })
+    );
 
     if (this.authService.isAdmin) {
-      this.serverService.getDefaultRecipes().pipe(take(1)).subscribe(
-        recipes => this.recipes = recipes,
-        _ => this.createNotification('Помилка під час завантаження рецептів')
+      const defaultRecipes$ = this.serverService.getDefaultRecipes().pipe(
+        take(1),
+        catchError(() => {
+          this.createNotification('Помилка під час завантаження стандартних рецептів');
+          return of([]);
+        })
       );
+      combineLatest([defaultRecipes$, myRecipes$]).subscribe(([admin, my]) => {
+        this.recipes = admin ? (my || [])?.concat(admin) : my;
+      });
     }
     else {
-      this.serverService.getMyRecipes().pipe(take(1)).subscribe(
-        recipes => this.recipes = recipes,
-        _ => this.createNotification('Помилка під час завантаження рецептів')
-      );
+      myRecipes$.pipe(take(1)).subscribe(recipes => this.recipes = recipes);
     }
   }
 

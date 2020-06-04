@@ -35,7 +35,7 @@ export class TagsSearchSectionComponent implements OnInit {
     this.availableTags$ = this.server.getTags().pipe(
       share(),
       catchError(_ => {
-        alert('Error during retriving tags!');
+        console.log('Error during retriving tags!');
         return of([]);
       })
     );

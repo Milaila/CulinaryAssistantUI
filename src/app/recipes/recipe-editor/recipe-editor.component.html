@@ -5,12 +5,6 @@
     <mat-icon class="prev-page-icon">arrow_back</mat-icon>
   </button>
   <h1>{{ isNew ? 'Створення рецепту' : 'Редагування рецепту' }}</h1>
-  <!-- <button mat-icon-button
-    *ngIf="currRecipe"
-    matTooltip="перегляд прев'ю продукту"
-    (click)="openCurrProductPreview()">
-    <mat-icon>visibility</mat-icon>
-  </button> -->
   <button mat-icon-button
     matTooltip="збереження рецепту"
     *ngIf="currRecipe && !recipeFormRef?.invalid"

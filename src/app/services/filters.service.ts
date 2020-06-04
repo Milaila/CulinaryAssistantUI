@@ -20,11 +20,8 @@ export class FiltersService {
   private breadCrumbs: number[] = [];
   private currProducts: number[] = [];
   readonly products: Map<number, IFilterProduct> = new Map();
-  // get products():
 
   readonly filtersChanged$: BehaviorSubject<IFilterGeneralModel[]> = new BehaviorSubject<IFilterGeneralModel[]>(null);
-  // productsChanged: BehaviorSubject<IFilterGeneralProduct[]> = new BehaviorSubject<IFilterGeneralProduct[]>(null);
-  // filtersChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
   readonly currProductsChanged$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null);
   readonly onProductsUpdated$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   readonly currRootProductChanged$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
@@ -209,9 +206,6 @@ export class FiltersService {
   }
 
   setRootProduct(id: number, saveBreadCrumb = true) {
-    // if (this.currRootProductId === id) {
-    //   return;
-    // }
     if (!id) {
       this.breadCrumbs = [];
     }
@@ -324,7 +318,6 @@ export class FiltersService {
   }
 
   clearProductsNecessity(needUpdate = true) {
-    // const necessity = byAvailableProducts ? ProductNecessity.Forbidden : ProductNecessity.Available;
     this.products?.forEach(product => product.necessity = ProductNecessity.Undefined);
     if (needUpdate) {
       this.onProductsUpdated$.next(true);

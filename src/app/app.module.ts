@@ -8,8 +8,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { UserService } from './services/user.service';
-import { BaseService } from './services/base.service';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { ServerHttpService } from './services/server-http.service';
 import { MatLineModule, MatOptionModule, MatCommonModule } from '@angular/material/core';
@@ -71,14 +69,12 @@ import { AdminGuard } from './auth/admin.guard';
     BrowserAnimationsModule,
   ],
   providers: [
-    UserService,
     AuthService,
     AuthGuard,
     AdminGuard,
     ProductsService,
     ImagesService,
     ServerHttpService,
-    BaseService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

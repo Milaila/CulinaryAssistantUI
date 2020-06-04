@@ -33,10 +33,32 @@
     mat-icon {
       font-size: 20px;
     }
+
+    mat-list-item {
+      height: fit-content;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+    }
   }
 
   .filter-name {
     margin-top: 16px;
     margin-right: 8px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    .filter-save {
+      margin-right: 8px;
+    }
+    button {
+      height: fit-content;
+      margin-bottom: 7px;
+    }
   }
 }

@@ -61,8 +61,9 @@
         </span>
       </span>
       <ng-template #weightInGramsTemplate>
-        <span class="weight" matTooltip="грам">
-          {{ (ingredient.weightInGrams * portionsCoef | number: '1.0-3') || '?' }} г</span>
+        <span *ngIf="ingredient.weightInGrams" class="weight" matTooltip="грам">
+          {{ ingredient.weightInGrams * portionsCoef | number: '1.0-3' }} г</span>
+        <span *ngIf="!ingredient.weightInGrams">?</span>
       </ng-template>
       <p class="note" matLine *ngIf="ingredient.note" [matTooltip]="ingredient.title">
         {{ ingredient.note }}</p>
@@ -74,7 +75,7 @@
   </mat-list>
   <mat-divider></mat-divider>
   <section class="steps" *ngIf="recipe.steps?.length">
-    <div class="container indent" *ngFor="let step of recipe.steps">
+    <div class="container" *ngFor="let step of recipe.steps">
       <div class="outer-container">
         <div class="image-container" *ngIf="(step?.imageSrc$ | async) as image">
           <img [src]="image" alt="">

@@ -1,13 +1,11 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { IMenuItem } from '../../models/else/menu-item';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { IMenuItemsGroup } from '../../models/else/menu-items-group';
 import { AuthService } from '../../services/auth.service';
-import { IProfile, IProfileModel } from '../../models/server/profile-models';
+import { IProfileModel } from '../../models/server/profile-models';
 import { ServerHttpService } from '../../services/server-http.service';
-import { switchMap } from 'rxjs/operators';
-import { ThemeService, ITheme } from 'src/app/services/theme.service';
+import { ThemeService } from 'src/app/services/theme.service';
+import { ITheme } from 'src/app/models/else/theme';
 
 @Component({
   selector: 'app-header',
@@ -23,11 +21,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   toggleDrawer = new EventEmitter();
 
   constructor(
-    private router: Router,
     public authService: AuthService,
     public server: ServerHttpService,
     public theme: ThemeService,
-    private route: ActivatedRoute
   ) { }
 
   ngOnDestroy(): void {
@@ -36,15 +32,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.themes = this.theme.themes;
-    // this.subscriptions.add(this.authService.tokenChanged$.pipe(
-    //   switchMap(token => {
-    //     if (token) {
-    //       return this.server.getCurrentProfile();
-    //     }
-    //     return of(null);
-    //   }),
-    // ).subscribe(profile => this.currProfile = profile));
-    // this.menuItems = this.createMenuItems();
   }
 
   get userName(): string {
@@ -62,14 +49,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   get currThemeCode(): string {
     return this.theme.themeCode;
   }
-  // onClickItem(item: IMenuItem) {
-  //   if (item?.click) {
-  //     item.click();
-  //   }
-  //   if (item?.routerLink) {
-  //     this.router.navigate([item.routerLink], { relativeTo: this.route });
-  //   }
-  // }
 
   get isAuthorized(): boolean {
    return this.authService.isAuthorized;

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ITheme } from '../models/else/theme';
 
 @Injectable({
   providedIn: 'root'
@@ -62,9 +63,4 @@ export class ThemeService {
   convertToThemeClass(themeCode?: string): string {
     return themeCode ? 'theme-' + themeCode : 'theme';
   }
-}
-
-export interface ITheme {
-  label: string;
-  code: string;
 }

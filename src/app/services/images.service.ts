@@ -132,7 +132,7 @@ export class ImagesService {
       map(image => 'data:image/jpeg;base64,' + image.data)
     ).subscribe(
       newImage => imageSubj.next(newImage),
-      _ => alert('Error during getting image')
+      _ => console.log('Error during getting image')
     );
   }
 

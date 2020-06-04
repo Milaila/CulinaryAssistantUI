@@ -11,7 +11,7 @@
       <mat-card class="recipe-card" *ngFor="let recipe of currRecipes">
         <div class="recipe-card-content" (click)="openRecipeDialog(recipe.id)">
           <div class="imageContainer" *ngIf="recipe.imageSrc$ | async as image">
-            <img mat-card-image [src]="image">
+            <img [src]="image">
           </div>
           <mat-card-title>{{ recipe.title }}</mat-card-title>
           <mat-card-content>

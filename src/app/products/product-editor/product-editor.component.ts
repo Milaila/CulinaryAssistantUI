@@ -69,13 +69,6 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
           .sort((x, y) => x.name?.localeCompare(y.name)).filter(x => x.id !== this.currProduct?.id);
       }));
     }
-
-    // this.categoryCtrl.valueChanges.subscribe(values => {
-    //   console.log(values);
-    //   values.forEach(id => this.addCategory(id));
-    //   // this.addCategory(values.pop());
-    // });
-    // this.categoryCtrl.valueChanges.subscribe(x => this.addCategory(x));
   }
 
   get backUrl(): string[] | string {
@@ -158,8 +151,6 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
       this.currProduct = {
         id: 0,
         name: '',
-        // categories: [],
-        // subcategories: []
       };
     }
   }
@@ -273,7 +264,6 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
       data: productId
     });
 
-    // this.subs.add(dialogRef.afterClosed().subscribe());
   }
 
   openCurrProductPreview(): void {
@@ -287,7 +277,5 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
         subcategoryNames: this.subcategories?.map(x => this.productService.getProduct(x)),
       }
     });
-
-    // this.subs.add(dialogRef.afterClosed().subscribe());
   }
 }

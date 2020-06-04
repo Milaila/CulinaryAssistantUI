@@ -34,10 +34,6 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   columnHint = 'вміст в 100 грамах продукту';
   isLoaded = false;
 
-  getFilteredProducts(name: string): IProductModel[] {
-    return this.productsService.filterProductsByName(name);
-  }
-
   constructor(
     private filterService: FiltersService,
     private productsService: ProductsService,
@@ -53,15 +49,21 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
     const currProducts$ = this.filterService.currProductsChanged$.pipe(
       tap(_ => this.productsSource = null),
       delay(this.isLoaded ? 100 : 300),
+      tap(products => {
+        this.productsSource = new MatTableDataSource(products?.map(id => this.getProduct(id)) || []);
+        this.productsSource.filterPredicate = (data: IFilterProduct, name: string) => new RegExp(name, 'i').test(data.name);
+        this.isLoaded = true;
+      }),
+      delay(100),
+      tap(_ => this.productsSource.sort = this.sort)
     );
-    this.subscriptions.add(currProducts$.subscribe(products => {
-      this.productsSource = new MatTableDataSource(products?.map(id => this.getProduct(id)) || []);
-      this.productsSource.sort = this.sort;
-      this.productsSource.filterPredicate = (data: IFilterProduct, name: string) => new RegExp(name, 'i').test(data.name);
-      // this.productsSource.paginator = this.paginator;
-      this.isLoaded = true;
-    }));
+    this.subscriptions.add(currProducts$.subscribe());
   }
+
+  getFilteredProducts(name: string): IProductModel[] {
+    return this.productsService.filterProductsByName(name);
+  }
+
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();

@@ -40,6 +40,7 @@
       <button mat-raised-button
         class="submit-admin"
         color="accent"
+        *ngIf="auth.isAdmin"
         [disabled]="!formModel.valid"
         (click)="onSubmit(true)">
         Реєстрація адміністратора

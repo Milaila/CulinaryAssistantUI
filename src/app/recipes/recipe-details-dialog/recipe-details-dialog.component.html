@@ -1,19 +1,11 @@
-<!-- <ng-container *ngIf="currProduct; else loading"> -->
-  <h1 *ngIf="recipeId" mat-dialog-title>{{ recipeTitle }}</h1>
-  <mat-divider></mat-divider>
-  <mat-dialog-content>
-    <app-recipe-details [recipeId]="recipeId" (loadRecipeTitle)="recipeTitle = $event">
-    </app-recipe-details>
-  </mat-dialog-content>
-<!-- </ng-container> -->
+<h1 *ngIf="recipeId" mat-dialog-title>{{ recipeTitle }}</h1>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <app-recipe-details [recipeId]="recipeId" (loadRecipeTitle)="recipeTitle = $event">
+  </app-recipe-details>
+</mat-dialog-content>
 <div mat-dialog-actions>
   <button mat-button [mat-dialog-close]="null" cdkFocusInitial>
     Закрити
   </button>
 </div>
-<!-- <ng-template #loading>
-  <div class="spinner-container">
-    <mat-spinner></mat-spinner>
-    <span>Завантаження продукту...</span>
-  </div>
-</ng-template> -->

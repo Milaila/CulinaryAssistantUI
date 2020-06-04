@@ -150,6 +150,12 @@
   }
 }
 
+.steps {
+  .container {
+    margin-bottom: -1px;
+  }
+}
+
 .image-container {
   width: calc(50% - 32px);
   flex-shrink: 0;

@@ -14,6 +14,7 @@
     <div class="filters-list">
       <mat-list-item role="listitem" *ngFor="let filter of filters">
         <mat-radio-button color="primary"
+          class="wrap"
           [checked]="currFilterId === filter.id"
           (change)="setFilter(filter?.id)">
           {{ filter?.filterTitle }}
@@ -25,7 +26,7 @@
       </mat-list-item>
     </div>
   </mat-list>
-  <ng-container *ngIf="auth.isAuthorized">
+  <div class="actions" *ngIf="auth.isAuthorized">
     <mat-form-field class="filter-name" appearance="outline" required>
       <mat-label>Назва фільтру</mat-label>
       <input matInput name="filters-search" #filterName>
@@ -33,7 +34,9 @@
     <button mat-stroked-button
       [disabled]="filterName.value?.trim() ? null : true"
       color="primary"
-      (click)="saveFilter(filterName.value)">
+      class="filter-save"
+      (click)="saveFilter(filterName.value?.trim()); filterName.value = null">
       Зберегти поточний фільтр</button>
-  </ng-container>
+    <button mat-stroked-button (click)="setFilter(0)" color="warn">Скинути фільтр</button>
+  </div>
 </div>
