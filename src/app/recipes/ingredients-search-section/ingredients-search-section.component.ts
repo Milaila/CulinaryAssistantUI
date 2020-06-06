@@ -13,26 +13,74 @@ import { ProductDetailsDialogComponent } from 'src/app/products/product-details/
 import { ProductsService } from 'src/app/services/products.service';
 import { IProductModel } from 'src/app/models/server/product-model';
 
+export interface IColumn {
+  column: string;
+  name: string;
+}
+
 @Component({
   selector: 'app-ingredients-search-section',
   templateUrl: './ingredients-search-section.component.html',
   styleUrls: ['./ingredients-search-section.component.scss']
 })
 export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
-
-  displayedColumns: string[] = [
-    'subcategories', 'name', 'requiredSelect', 'notRequiredSelect', 'calories',
-    'fats', 'squirrels', 'carbohydrates', 'sugar',
-  ];
-  productsSource: MatTableDataSource<IFilterProduct> = null;
-
   @ViewChild(MatSort) sort: MatSort;
-  // @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
+  private areColumnsChanged = false;
+  productsSource: MatTableDataSource<IFilterProduct> = null;
   rootProductId: number;
   subscriptions = new Subscription();
   columnHint = 'вміст в 100 грамах продукту';
   isLoaded = false;
+  defaultColumns: string[] = [ 'requiredSelect', 'notRequiredSelect', 'name', 'subcategories' ];
+  selectedColumns: string[] = [ 'calories', 'fats', 'squirrels', 'carbohydrates', 'sugar' ];
+  displayedColumns: string[];
+  optionalColumns: IColumn[] = [
+    {
+      column: 'calories',
+      name: 'Калорії'
+    },
+    {
+      column: 'fats',
+      name: 'Жири'
+    },
+    {
+      column: 'squirrels',
+      name: 'Білки'
+    },
+    {
+      column: 'carbohydrates',
+      name: 'Вуглеводи'
+    },
+    {
+      column: 'sugar',
+      name: 'Цукор'
+    },
+    {
+      column: 'water',
+      name: 'Вода'
+    },
+    {
+      column: 'ash',
+      name: 'Зола'
+    },
+    {
+      column: 'cellulose',
+      name: 'Клітковина'
+    },
+    {
+      column: 'starch',
+      name: 'Крохмаль'
+    },
+    {
+      column: 'cholesterol',
+      name: 'Холестерин'
+    },
+    {
+      column: 'transfats',
+      name: 'Транс жири'
+    }
+  ];
 
   constructor(
     private filterService: FiltersService,
@@ -41,6 +89,7 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.displayedColumns = this.defaultColumns.concat(this.selectedColumns);
     if (this.filterService.needUpdate) {
       this.filterService.updateProducts();
     }
@@ -64,6 +113,17 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
     return this.productsService.filterProductsByName(name);
   }
 
+  selectColumns(cols: string[]) {
+    this.selectedColumns = cols || [];
+    this.areColumnsChanged = true;
+  }
+
+  updateColumns() {
+    if (this.areColumnsChanged) {
+      this.areColumnsChanged = false;
+      this.displayedColumns = this.defaultColumns.concat(this.selectedColumns);
+    }
+  }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
@@ -103,10 +163,6 @@ export class IngredientsSearchSectionComponent implements OnInit, OnDestroy {
     if (value !== this.byExactProducts) {
       this.filterService.currFilter.onlyProducts = value;
     }
-  }
-
-  log(event, object) {
-    console.log(event, object);
   }
 
   get byAvailable(): boolean {

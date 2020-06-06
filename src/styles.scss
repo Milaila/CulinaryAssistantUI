@@ -2,6 +2,7 @@
 
 // @import '~@angular/material/prebuilt-themes/deeppurple-amber';
 @import 'src/app/styles/theme.scss';
+@import 'src/app/styles/table.scss';
 
 html, body {
   // background-color: #acc8e7;
@@ -153,60 +154,5 @@ mat-form-field[appearance="outline"] {
   margin-top: 4px;
   input {
     line-height: 16px;
-  }
-}
-
-
-.table-container {
-  max-height: 500px;
-  // width: 800px;
-  overflow: auto;
-
-  table {
-    width: 100%;
-    td.mat-column-name {
-      width: 200px;
-      // word-wrap: break-word;
-    }
-
-    td, th {
-      align-items: center;
-      padding: 4px;
-    }
-
-    td {
-      word-break: break-word;
-    }
-
-    th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
-      padding-left: 0px;
-    }
-    th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
-      padding-right: 0px;
-    }
-
-    @media screen and (max-width: 660px) {
-      .mat-column {
-        &-squirrels, &-carbohydrates, &-fats {
-          display: none;
-        }
-      }
-    }
-
-    td.mat-column-subcategories {
-      width: 48px;
-    }
-
-    td.mat-column-requiredSelect {
-      min-width: 20px;
-      max-width: 32px;
-      margin-left: 8px;
-    }
-
-    td.mat-column-notRequiredSelect {
-      min-width: 20px;
-      max-width: 32px;
-      margin-left: 8px;
-    }
   }
 }
