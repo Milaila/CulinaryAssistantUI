@@ -10,7 +10,6 @@ import { RecipesService } from 'src/app/services/recipes.service';
 import { RecipeSort } from '../recipes-sort.enum';
 import { ISortOption } from 'src/app/models/else/sort-option';
 import { RECIPE_SORT_OPTIONS } from '../recipes-sort-options';
-// import { RecipeSortType } from '../recipes-sort-type';
 
 @Component({
   selector: 'app-recipe-search',

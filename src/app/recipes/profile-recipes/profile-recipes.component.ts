@@ -7,6 +7,9 @@ import { ServerHttpService } from 'src/app/services/server-http.service';
 import { take, catchError } from 'rxjs/operators';
 import { of, combineLatest, Subscription } from 'rxjs';
 import { IProfileModel } from 'src/app/models/server/profile-models';
+import { RECIPE_SORT_OPTIONS } from '../recipes-sort-options';
+import { RecipeSort } from '../recipes-sort.enum';
+import { RecipesService } from 'src/app/services/recipes.service';
 
 @Component({
   selector: 'app-profile-recipes',
@@ -15,14 +18,17 @@ import { IProfileModel } from 'src/app/models/server/profile-models';
 })
 export class ProfileRecipesComponent implements OnInit, OnDestroy {
   recipes: IRecipeGeneralModel[] = null;
+  // displayRecipes: IRecipeGeneralModel[];
   profile: IProfileModel;
   isRecipeCtrl: boolean;
+  sortOptions = RECIPE_SORT_OPTIONS;
   readonly subs = new Subscription();
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+    private recipeService: RecipesService,
     private notifications: NotificationsService,
     private serverService: ServerHttpService,
   ) { }
@@ -91,11 +97,15 @@ export class ProfileRecipesComponent implements OnInit, OnDestroy {
   get pageTitle(): string {
     return this.isRecipeCtrl
       ? 'Керування рецептами'
-      : `Рецепти ©${this.profile?.displayName || this.profile?.fullName}`;
+      : `Рецепти ©${this.profile?.displayName || this.profile?.fullName || ''}`;
   }
 
   get profileName(): string {
     return this.profile?.displayName || this.profile?.fullName;
+  }
+
+  sortRecipes(sortType: RecipeSort) {
+    this.recipes = [ ...(this.recipeService.sortRecipes(this.recipes, sortType) || [])];
   }
 
   createNotification(title: string, content: string = '', type = NotificationType.Error) {

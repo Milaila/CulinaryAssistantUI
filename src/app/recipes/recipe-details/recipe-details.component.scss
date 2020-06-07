@@ -10,6 +10,7 @@
 
     .mat-subheader {
       font-size: 24px;
+      font-weight: 400;
     }
 
     .outer-container {
@@ -52,7 +53,7 @@
 .container {
   border-radius: 8px;
   padding: 16px;
-  border: 1px solid #c2c1c1;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   &.ingredients {
     p.note {
       white-space: normal;

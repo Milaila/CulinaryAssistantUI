@@ -2,6 +2,12 @@
   width: 100%;
 }
 
+mat-toolbar {
+  button {
+    margin-left: 4px;
+  }
+}
+
 .ProfileRecipes {
   &.container {
     width: 100%;

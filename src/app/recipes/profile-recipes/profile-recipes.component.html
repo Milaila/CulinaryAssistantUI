@@ -1,9 +1,21 @@
 <mat-toolbar color="primary">
   <h1>{{ pageTitle }}</h1>
-  <h1 *ngIf="isRecipeCtrl"></h1>
+  <button mat-icon-button class="sort-select" *ngIf="recipes?.length"
+    matTooltip="сортування рецептів" [matMenuTriggerFor]="editMenu">
+    <mat-icon>sort</mat-icon>
+  </button>
+  <mat-menu #editMenu="matMenu">
+    <button mat-menu-item
+      *ngFor="let option of sortOptions"
+      (click)="sortRecipes(option.type)"
+      [matTooltip]="option.title">
+      {{ option.name }}
+    </button>
+  </mat-menu>
 </mat-toolbar>
 <div class="ProfileRecipes container">
   <div class="content">
-    <app-recipe-list [recipes]="recipes" [enableEditing]="isRecipeCtrl" noRecipesLabel="Нема доступних рецептів"></app-recipe-list>
+    <app-recipe-list [recipes]="recipes" [enableEditing]="isRecipeCtrl" noRecipesLabel="Нема доступних рецептів">
+    </app-recipe-list>
   </div>
 </div>
