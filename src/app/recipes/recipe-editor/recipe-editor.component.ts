@@ -31,6 +31,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   filteredProducts: IProduct[] = [];
   subscription = new Subscription();
   isNew = true;
+  backParam: string;
 
   @ViewChild('recipeForm') recipeFormRef: NgForm;
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
@@ -54,18 +55,24 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // const id = +this.route.snapshot.params.id;
     if (!this.auth.isAuthorized) {
       this.createNotification('Нема прав доступу', NotificationType.Error, 'Необхідна авторизація');
       this.router.navigate(['users/signup']);
     }
-    // this.initRecipe(id);
+    this.backParam = this.route.snapshot.queryParams?.from;
     this.subscription.add(this.route.params.subscribe(x => this.initRecipe(+x.id)));
     const existingTags$ = this.server.getTags().pipe(share());
     this.filteredTags$ = combineLatest([this.tagsCtrl.valueChanges, existingTags$]).pipe(
       map(([tag, tags]) => tag ? this.filterTags(tags, tag) : tags)
     );
     this.subscribeOnProducts();
+  }
+
+  get backUrl(): string[] | string {
+    if (+this.backParam) {
+      return ['/recipes', this.backParam, 'details'];
+    }
+    return this.backParam ? ['/recipes', this.backParam ] : null;
   }
 
   private subscribeOnProducts() {
@@ -227,7 +234,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       .subscribe(
         newId => {
           this.createNotification('Рецепт створено');
-          this.router.navigate(['recipes', newId, 'edit']);
+          this.router.navigate(['recipes', newId, 'edit'], { queryParams: { from: this.backParam } });
         },
         error => this.createNotification('Рецепт не створен', NotificationType.Error, 'Помилка при створенні рецепту')
       ));

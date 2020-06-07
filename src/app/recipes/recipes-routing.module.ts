@@ -4,9 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { RecipeSearchComponent } from './recipe-search/recipe-search.component';
 import { RecipeEditorComponent } from './recipe-editor/recipe-editor.component';
 import { RecipeDetailsComponent } from './recipe-details/recipe-details.component';
-import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { RecipeDetailsPageComponent } from './recipe-details-page/recipe-details-page.component';
+import { ProfileRecipesComponent } from './profile-recipes/profile-recipes.component';
 
 
 const routes: Routes = [
@@ -36,16 +36,12 @@ const routes: Routes = [
   {
     path: 'my',
     canActivate: [ AuthGuard ],
-    component: MyRecipesComponent
+    component: ProfileRecipesComponent
   },
-  // {
-  //   path: 'edit',
-  //   component: RecipeEditorComponent
-  // },
-  // {
-  //   path: '',
-  //   component: RecipeSearchComponent
-  // },
+  {
+    path: 'profile/:id',
+    component: ProfileRecipesComponent
+  },
 ];
 
 @NgModule({

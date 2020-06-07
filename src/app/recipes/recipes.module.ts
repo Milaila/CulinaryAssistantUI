@@ -19,7 +19,6 @@ import { PreviewSearchSectionComponent } from './preview-search-section/preview-
 import { ExpansionPanelComponent } from '../components/expansion-panel/expansion-panel.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MaterialModule } from '../shared/material.module';
-import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 import { FiltersService } from '../services/filters.service';
 import { ProductDetailsDialogComponent } from '../products/product-details/product-details.component';
 import { SharedModule } from '../shared/shared.module';
@@ -42,7 +41,6 @@ import { ProfileRecipesComponent } from './profile-recipes/profile-recipes.compo
     TagsSearchSectionComponent,
     LimitsSearchSectionComponent,
     PreviewSearchSectionComponent,
-    MyRecipesComponent,
     RecipeDetailsPageComponent,
     RecipeDetailsDialogComponent,
     ProfileRecipesComponent,

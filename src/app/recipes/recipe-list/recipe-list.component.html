@@ -29,9 +29,11 @@
               [routerLink]="['/recipes', recipe.id, 'details']"
               [queryParams]="{ back: backParam }">Деталі</a>
             <ng-container *ngIf="auth.isAuthorized">
-              <a *ngIf="enableEditing" mat-stroked-button [routerLink]="['/recipes', recipe.id, 'edit']">
+              <a *ngIf="canEditRecipe(recipe.authorId)" mat-stroked-button
+                [routerLink]="['/recipes', recipe.id, 'edit']"
+                [queryParams]="{ from: backParam }">
                 Редагувати</a>
-              <button *ngIf="enableEditing || auth.isAdmin" mat-stroked-button
+              <button *ngIf="canDeleteRecipe(recipe.authorId)" mat-stroked-button
                (click)="deleteRecipe(recipe.id, recipe.title)" color="warn">
                 Видалити</button>
             </ng-container>

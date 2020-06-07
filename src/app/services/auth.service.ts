@@ -9,47 +9,59 @@ export class AuthService {
   readonly tokenChanged$: BehaviorSubject<string> = new BehaviorSubject(null);
 
   get isAuthorized(): boolean {
-    return !!this.getToken();
+    return !!this.token;
   }
 
   get isAdmin(): boolean {
     return !!localStorage.getItem('admin') && this.isAuthorized;
   }
 
-  get name(): string {
-    return localStorage.getItem('name');
-  }
-
-  getToken(): string {
-    return localStorage.getItem('token');
-  }
-
-  setToken(token: string): void {
-    if (token) {
-      localStorage.setItem('token', token);
-    }
-    else {
-      localStorage.removeItem('token');
-    }
-    this.tokenChanged$.next(token);
-  }
-
-  setName(name: string): void {
-    if (name) {
-      localStorage.setItem('name', name);
-    }
-    else {
-      localStorage.removeItem('name');
-    }
-    this.tokenChanged$.next(name);
-  }
-
-  setIsAdmin(isAdmin: boolean): void {
-    if (isAdmin) {
+  set isAdmin(value: boolean) {
+    if (value) {
       localStorage.setItem('admin', 'true');
     }
     else {
       localStorage.removeItem('admin');
+    }
+  }
+
+  get name(): string {
+    return localStorage.getItem('name');
+  }
+
+  set name(value: string) {
+    if (value) {
+      localStorage.setItem('name', value);
+    }
+    else {
+      localStorage.removeItem('name');
+    }
+  }
+
+  get token(): string {
+    return localStorage.getItem('token');
+  }
+
+  set token(value: string) {
+    if (value) {
+      localStorage.setItem('token', value);
+    }
+    else {
+      localStorage.removeItem('token');
+    }
+    this.tokenChanged$.next(value);
+  }
+
+  get profileId(): number {
+    return +localStorage.getItem('profileId');
+  }
+
+  set profileId(value: number) {
+    if (value) {
+      localStorage.setItem('profileId', value?.toString());
+    }
+    else {
+      localStorage.removeItem('profileId');
     }
   }
 
@@ -59,14 +71,16 @@ export class AuthService {
   }
 
   signIn(model: ISignInResponse) {
-    this.setIsAdmin(model?.isAdmin);
-    this.setToken(model?.token);
-    this.setName(model?.displayName);
+    this.isAdmin = model?.isAdmin;
+    this.token = model?.token;
+    this.name = model?.displayName;
+    this.profileId = model?.profileId;
   }
 
   logout(): void {
     this.clearToken();
-    localStorage.removeItem('admin');
-    localStorage.removeItem('name');
+    this.isAdmin = null;
+    this.name = null;
+    this.profileId = null;
   }
 }

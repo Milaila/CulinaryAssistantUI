@@ -137,6 +137,10 @@
       }
       .author {
         font-size: 14px;
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
       }
       .time {
         font-size: 13px;

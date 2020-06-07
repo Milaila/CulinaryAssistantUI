@@ -16,7 +16,8 @@
       <div class="author-time">
         <div class="author" *ngIf="recipe.authorName as author">
           <mat-icon matTooltip="автор рецепту" color="primary">account_circle</mat-icon>
-          <a>{{ author }}</a>
+          <a matTooltip="перехід до списку рецептів автора" [routerLink]="'/recipes/profile/' + recipe.authorId"
+            [queryParams]="{ name: recipe.authorName }">{{ author }}</a>
         </div>
         <div class="time" *ngIf="recipe.time as time">
           <mat-icon matTooltip="дата створення" color="primary">schedule</mat-icon>

@@ -6,7 +6,10 @@ import { ServerHttpService } from 'src/app/services/server-http.service';
 import { Observable, Subscription } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { ProductDetailsDialogComponent } from 'src/app/products/product-details/product-details.component';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { IConfirmData } from 'src/app/models/else/confirm-data';
+import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-recipe-details-page',
@@ -16,16 +19,17 @@ import { ProductDetailsDialogComponent } from 'src/app/products/product-details/
 export class RecipeDetailsPageComponent implements OnInit, OnDestroy {
 
   recipeId: number;
-  // recipe: IRecipeModel;
   backParam: string;
-  recipeTitle: string;
+  recipe: IRecipeModel;
   readonly subscriptions = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private notifications: NotificationsService,
     private dialog: MatDialog,
-    private server: ServerHttpService
+    private server: ServerHttpService,
+    public auth: AuthService,
   ) { }
 
   ngOnDestroy(): void {
@@ -35,27 +39,37 @@ export class RecipeDetailsPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.recipeId = +this.route.snapshot.params.id;
     this.backParam = this.route.snapshot.queryParams?.back;
-    // this.recipe
-    // this.subscriptions.add(this.route.queryParams.subscribe(x => this.backParam = x?.back));
-    // this.subscriptions.add(this.server.getRecipeWithDetails(this.recipeId).subscribe(
-    //   recipe => this.recipe = {
-    //     ...recipe,
-    //     steps: recipe.steps?.sort((x, y) => x.orderNumber > y.orderNumber ? 1 : -1)
-    //   },
-    //   error => this.router.navigate(['/404'])
-    // ));
   }
 
   get backUrl(): string[] | string {
+    if (+this.backParam) {
+      return ['/recipes', 'profile', this.backParam ];
+    }
     return this.backParam ? ['/recipes', this.backParam ] : null;
   }
 
-  // openProduct(productId: number): void {
-  //   const dialogRef = this.dialog.open(ProductDetailsDialogComponent, {
-  //     width: '600px',
-  //     data: productId
-  //   });
+  deleteRecipe() {
+    const id = this.recipe?.id;
+    const name = this.recipe?.title;
+    const data: IConfirmData = {
+      question: `Видалити рецепт "${name}"?`,
+      confirmation: 'Видалити',
+      cancellation: 'Скасувати'
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, { width: '350px', data });
 
-  //   this.subscriptions.add(dialogRef.afterClosed().subscribe());
-  // }
+    dialogRef.afterClosed().subscribe(answer => {
+      if (!answer) {
+        return;
+      }
+      this.server.deleteRecipe(id).subscribe(_ => {
+        this.notifications.create('Рецепт успішно видалено', '', NotificationType.Success, {
+          timeOut: 3000,
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true
+        });
+      });
+    });
+  }
 }

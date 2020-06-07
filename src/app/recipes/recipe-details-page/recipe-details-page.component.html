@@ -1,21 +1,43 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button
+  <a mat-icon-button
     *ngIf="backParam"
     [routerLink]="backUrl"
     matTooltip="повернення до списку рецептів">
     <mat-icon class="prev-page-icon">arrow_back</mat-icon>
-  </button>
+  </a>
   <h1>Перегляд рецепту</h1>
+  <ng-container *ngIf="recipe && auth.isAuthorized">
+    <a mat-icon-button matTooltip="редагувати продукт"
+      *ngIf="recipe.authorId && auth.profileId === recipe.authorId"
+      [routerLink]="['/recipes', recipe.id, 'edit']"
+      [queryParams]="{ from: recipe.id }">
+      <mat-icon>edit</mat-icon>
+    </a>
+    <a mat-icon-button matTooltip="видалити продукт"
+      *ngIf="auth.isAdmin || (recipe.authorId && auth.profileId === recipe.authorId)"
+      (click)="deleteRecipe()">
+      <mat-icon>delete_forever</mat-icon>
+    </a>
+    <!-- <button mat-icon-button [matMenuTriggerFor]="editMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #editMenu="matMenu">
+      <a mat-menu-item
+        [routerLink]="['/products', currProduct.id, 'edit']"
+        [queryParams]="{ from: currProduct?.id }">Редагувати</a>
+      <button mat-menu-item (click)="deleteProduct(currProduct.id)">Видалити</button>
+    </mat-menu> -->
+  </ng-container>
 </mat-toolbar>
 <div class="RecipeDetails-container">
   <div class="RecipeDetails-content">
     <mat-card>
       <mat-card-header color="primary">
-        <mat-card-title color="primary" *ngIf="recipeTitle">{{ recipeTitle }}</mat-card-title>
+        <mat-card-title color="primary" *ngIf="recipe">{{ recipe?.title }}</mat-card-title>
       </mat-card-header>
       <mat-divider></mat-divider>
       <mat-card-content>
-        <app-recipe-details [recipeId]="recipeId" (loadRecipeTitle)="recipeTitle = $event">
+        <app-recipe-details [recipeId]="recipeId" (loadRecipe)="recipe = $event">
         </app-recipe-details>
       </mat-card-content>
     </mat-card>

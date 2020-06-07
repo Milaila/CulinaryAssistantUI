@@ -4,7 +4,7 @@ import { ImagesService } from 'src/app/services/images.service';
 import { Observable, of } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ServerHttpService } from 'src/app/services/server-http.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
@@ -41,6 +41,7 @@ export class RecipeListComponent implements OnInit {
   constructor(
     public auth: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private notifications: NotificationsService,
     private server: ServerHttpService,
     private snackBar: MatSnackBar,
@@ -71,7 +72,16 @@ export class RecipeListComponent implements OnInit {
   }
 
   get backParam(): string {
-    return this.enableEditing ? 'my' : 'search';
+    const profileId = this.route.snapshot.params?.id;
+    return this.enableEditing ? 'my' : profileId || 'search';
+  }
+
+  canEditRecipe(authorId: number): boolean {
+    return this.enableEditing || (authorId && authorId === this.auth.profileId);
+  }
+
+  canDeleteRecipe(authorId: number): boolean {
+    return this.enableEditing || this.auth.isAdmin || (authorId && authorId === this.auth.profileId);
   }
 
   openRecipeDialog(recipeId: number): void {

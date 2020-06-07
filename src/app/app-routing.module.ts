@@ -20,7 +20,7 @@ const routes: Routes = [
     loadChildren: () => ProductsModule
   },
   { path: '404', component: NotFoundComponent },
-  { path: '', redirectTo: 'profiles', pathMatch: 'full' },
+  { path: '', redirectTo: 'recipes', pathMatch: 'full' },
   { path: '**', redirectTo: '404', pathMatch: 'full'},
 ];
 

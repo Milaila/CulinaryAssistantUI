@@ -24,7 +24,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
   set recipeId(value: number) {
     this.updateRecipe(value);
   }
-  @Output() loadRecipeTitle = new EventEmitter();
+  @Output() loadRecipe = new EventEmitter();
   recipe: IRecipeModelView;
   backParam: string;
   portionsCoef = 1;
@@ -91,7 +91,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     }
     this.subscriptions.add(this.server.getRecipeWithDetails(+id).subscribe(
       recipe => {
-        this.loadRecipeTitle.emit(recipe.title);
+        this.loadRecipe.emit(recipe);
         this.recipe = {
           ...recipe,
           imageSrc$: this.imageStore.getImage(recipe.imageId),

@@ -23,5 +23,5 @@ export interface IProfileDetails {
   birthDay?: Date;
   description?: string;
   avatarId?: number;
-  avater?: IImageModel;
+  avatar?: IImageModel;
 }

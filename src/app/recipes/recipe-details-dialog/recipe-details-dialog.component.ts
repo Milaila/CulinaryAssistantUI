@@ -18,5 +18,4 @@ export class RecipeDetailsDialogComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

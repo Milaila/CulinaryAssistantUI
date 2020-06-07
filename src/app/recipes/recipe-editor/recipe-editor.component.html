@@ -1,9 +1,10 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button
-    routerLink="/recipes/my"
+  <a mat-icon-button
+    *ngIf="backParam"
+    [routerLink]="backUrl"
     matTooltip="повернення до списку рецептів">
     <mat-icon class="prev-page-icon">arrow_back</mat-icon>
-  </button>
+  </a>
   <h1>{{ isNew ? 'Створення рецепту' : 'Редагування рецепту' }}</h1>
   <button mat-icon-button
     matTooltip="збереження рецепту"
@@ -106,6 +107,7 @@
                 <ngx-mat-select-search ngModel name="productFilter" (ngModelChange)="filterMyProducts($event)"
                   [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукти не знайдено'">
                 </ngx-mat-select-search>
+                <mat-option>-----</mat-option>
                 <mat-option *ngFor="let product of filteredProducts" [matTooltip]="product.name" [value]="product.id">
                   {{ product.name }}</mat-option>
               </mat-select>
