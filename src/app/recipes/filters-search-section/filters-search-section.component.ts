@@ -3,6 +3,7 @@ import { FiltersService } from 'src/app/services/filters.service';
 import { IFilterGeneralModel, IFilterGeneralProduct } from 'src/app/models/server/filter-models';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-filters-search-section',
@@ -29,14 +30,16 @@ export class FiltersSearchSectionComponent implements OnInit, OnDestroy {
     this.filterService.updateFilters();
     this.subscriptions.add(this.filterService.onCurrFilterChanged$
       .subscribe(filter => this.currFilterId = filter.id));
-    this.subscriptions.add(this.filterService.filtersChanged$.subscribe(newFilters =>
-      this.filters = newFilters?.sort((x, y) => {
-        if (x.isDefault === y.isDefault) {
-          return x.filterTitle?.localeCompare(y.filterTitle);
-        }
-        return x.isDefault && !y.isDefault ? -1 : 1;
-      }) || []
-    ));
+    this.subscriptions.add(this.filterService.filtersChanged$.pipe(delay(200))
+      .subscribe(newFilters =>
+        this.filters = newFilters?.sort((x, y) => {
+          if (x.isDefault === y.isDefault) {
+            return x.filterTitle?.localeCompare(y.filterTitle);
+          }
+          return x.isDefault && !y.isDefault ? -1 : 1;
+        }) || []
+      )
+    );
   }
 
   setFilter(id: number) {

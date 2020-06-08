@@ -15,7 +15,7 @@
           (click)="sidenav.close()"
         >{{ item.label }}</a>
       </ng-container>
-      <a mat-list-item *ngIf="authService.isAuthorized" (click)="authService.logout()">
+      <a mat-list-item *ngIf="authService.isAuthorized" (click)="logout()">
         Вихід</a>
     </mat-nav-list>
   </mat-sidenav>

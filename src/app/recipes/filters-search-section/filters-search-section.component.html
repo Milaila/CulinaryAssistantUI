@@ -1,9 +1,4 @@
 <div class="FiltersSearchSection">
-  <!-- <mat-card *ngFor="let filter of filters">
-    <h3>{{ filter.filterTitle }}</h3>
-    <button mat-stroked-button color="primary" (click)="setFilter(filter.id)">Використати</button>
-    <button mat-stroked-button color="primary" (click)="search.emit(filter.id)">Миттєвий пошук</button>
-  </mat-card> -->
   <mat-list role="filtersList">
     <mat-list-item role="listitem">
       <mat-radio-button color="primary" (change)="setFilter(0)" [checked]="!currFilterId">
@@ -12,18 +7,20 @@
     </mat-list-item>
     <mat-divider></mat-divider>
     <div class="filters-list">
-      <mat-list-item role="listitem" *ngFor="let filter of filters">
-        <mat-radio-button color="primary"
-          class="wrap"
-          [checked]="currFilterId === filter.id"
-          (change)="setFilter(filter?.id)">
-          {{ filter?.filterTitle }}
-          <div *ngIf="filter.isDefault" class="chip">стандартний</div>
-        </mat-radio-button>
-        <button mat-icon-button *ngIf="!filter.isDefault || auth.isAdmin" (click)="removeFilter(filter.id)">
-          <mat-icon>clear</mat-icon>
-        </button>
-      </mat-list-item>
+      <ng-container *ngIf="filters else loading">
+        <mat-list-item role="listitem" *ngFor="let filter of filters">
+          <mat-radio-button color="primary"
+            class="wrap"
+            [checked]="currFilterId === filter.id"
+            (change)="setFilter(filter?.id)">
+            {{ filter?.filterTitle }}
+            <div *ngIf="filter.isDefault" class="chip">стандартний</div>
+          </mat-radio-button>
+          <button mat-icon-button *ngIf="!filter.isDefault || auth.isAdmin" (click)="removeFilter(filter.id)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-list-item>
+      </ng-container>
     </div>
   </mat-list>
   <div class="actions" *ngIf="auth.isAuthorized">
@@ -40,3 +37,9 @@
     <button mat-stroked-button (click)="setFilter(0)" color="warn">Скинути фільтр</button>
   </div>
 </div>
+<ng-template #loading>
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+    <span>Завантаження фільтрів...</span>
+  </div>
+</ng-template>

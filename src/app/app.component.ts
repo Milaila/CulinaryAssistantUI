@@ -3,6 +3,9 @@ import { ThemeService } from './services/theme.service';
 import { ThemePalette } from '@angular/material/core';
 import { IMenuItem } from './models/else/menu-item';
 import { AuthService } from './services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { IConfirmData } from './models/else/confirm-data';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +22,7 @@ export class AppComponent {
   constructor(
     private renderer: Renderer2,
     public authService: AuthService,
+    private dialog: MatDialog,
     private themeService: ThemeService
   ) {
     // this.renderer.addClass(document.body, this.themeService.themeClass);
@@ -34,6 +38,21 @@ export class AppComponent {
       }
       this.prevTheme = theme;
       this.renderer.addClass(document.body, theme);
+    });
+  }
+
+  public logout() {
+    const data: IConfirmData = {
+      question: `Вийти з облікового запису?`,
+      confirmation: 'Вийти',
+      cancellation: 'Скасувати'
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, { width: '350px', data });
+
+    dialogRef.afterClosed().subscribe(answer => {
+      if (answer) {
+        this.authService.logout();
+      }
     });
   }
 

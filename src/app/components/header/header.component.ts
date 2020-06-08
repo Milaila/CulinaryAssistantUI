@@ -6,6 +6,9 @@ import { IProfileModel } from '../../models/server/profile-models';
 import { ServerHttpService } from '../../services/server-http.service';
 import { ThemeService } from 'src/app/services/theme.service';
 import { ITheme } from 'src/app/models/else/theme';
+import { MatDialog } from '@angular/material/dialog';
+import { IConfirmData } from 'src/app/models/else/confirm-data';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -24,6 +27,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public authService: AuthService,
     public server: ServerHttpService,
     public theme: ThemeService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnDestroy(): void {
@@ -59,6 +63,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authService.logout();
+    const data: IConfirmData = {
+      question: `Вийти з облікового запису?`,
+      confirmation: 'Вийти',
+      cancellation: 'Скасувати'
+    };
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, { width: '350px', data });
+
+    dialogRef.afterClosed().subscribe(answer => {
+      if (answer) {
+        this.authService.logout();
+      }
+    });
   }
 }
