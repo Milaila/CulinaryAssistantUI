@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RecipeDetailsDialogComponent } from '../recipe-details-dialog/recipe-details-dialog.component';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { IConfirmData } from 'src/app/models/else/confirm-data';
+import { RecipesService } from 'src/app/services/recipes.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -46,6 +47,7 @@ export class RecipeListComponent implements OnInit {
     private server: ServerHttpService,
     private snackBar: MatSnackBar,
     private imageStore: ImagesService,
+    private recipeService: RecipesService,
     private dialog: MatDialog
   ) { }
 
@@ -112,6 +114,7 @@ export class RecipeListComponent implements OnInit {
           const index = this.allRecipes.findIndex(x => x.id === id);
           this.currentPage = 0;
           this.allRecipes?.splice(index, 1);
+          this.recipeService.deleteRecipe(id);
           this.displayRecipesInRange();
         });
       }

@@ -10,6 +10,7 @@ import { NotificationsService, NotificationType } from 'angular2-notifications';
 import { IConfirmData } from 'src/app/models/else/confirm-data';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { RecipesService } from 'src/app/services/recipes.service';
 
 @Component({
   selector: 'app-recipe-details-page',
@@ -30,6 +31,7 @@ export class RecipeDetailsPageComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private server: ServerHttpService,
     public auth: AuthService,
+    private recipeService: RecipesService
   ) { }
 
   ngOnDestroy(): void {
@@ -41,35 +43,10 @@ export class RecipeDetailsPageComponent implements OnInit, OnDestroy {
     this.backParam = this.route.snapshot.queryParams?.back;
   }
 
-  get backUrl(): string[] | string {
+  get backUrl(): string[] {
     if (+this.backParam) {
       return ['/recipes', 'profile', this.backParam ];
     }
-    return this.backParam ? ['/recipes', this.backParam ] : null;
-  }
-
-  deleteRecipe() {
-    const id = this.recipe?.id;
-    const name = this.recipe?.title;
-    const data: IConfirmData = {
-      question: `Видалити рецепт "${name}"?`,
-      confirmation: 'Видалити',
-      cancellation: 'Скасувати'
-    };
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, { width: '350px', data });
-
-    dialogRef.afterClosed().subscribe(answer => {
-      if (!answer) {
-        return;
-      }
-      this.server.deleteRecipe(id).subscribe(_ => {
-        this.notifications.create('Рецепт успішно видалено', '', NotificationType.Success, {
-          timeOut: 3000,
-          showProgressBar: true,
-          pauseOnHover: true,
-          clickToClose: true
-        });
-      });
-    });
+    return this.backParam ? ['/recipes', this.backParam ] : ['/recipes'];
   }
 }

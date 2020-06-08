@@ -81,4 +81,18 @@ export class RecipesService {
     this.currRecipes = this.resultRecipes?.filter(r => check.test(r.title));
     this.sortType = RecipeSort.TitleAsc;
   }
+
+  deleteRecipe(recipeId: number) {
+    const indexRes = this.resultRecipes?.findIndex(x => x.id === recipeId);
+    if (indexRes > -1) {
+      this.resultRecipes.splice(indexRes, 1);
+    }
+    else {
+      return;
+    }
+    const indexCurr = this.currRecipes?.findIndex(x => x.id === recipeId);
+    if (indexCurr > -1) {
+      this.currRecipes.splice(indexCurr, 1);
+    }
+  }
 }

@@ -39,13 +39,6 @@
     </a>
   </div>
   <mat-form-field class="products-search" appearance="fill">
-    <!-- <mat-select name="productSelect" placeholder="Оберіть продукт">
-      <ngx-mat-select-search ngModel name="productFilter" (ngModelChange)="filterProductsByName($event)"
-        [placeholderLabel]="'Пошук продуктів...'" [noEntriesFoundLabel]="'Продукт не знайдено'">
-      </ngx-mat-select-search>
-      <mat-option *ngFor="let product of productsForSearch" [matTooltip]="product.name" [value]="product.id">
-        {{ product.name }}</mat-option>
-    </mat-select> -->
     <mat-label>Пошук продукту...</mat-label>
     <input
       placeholder="Назва продукту"
@@ -62,13 +55,6 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
-  <!-- <mat-form-field appearance="fill">
-    <mat-label>Пошук серед результатів</mat-label>
-    <input matInput placeholder="Назва рецепту..." #searchRecipes (input)="searchByRecipeName(searchRecipes.value)">
-    <button mat-icon-button matSuffix (click)="searchByRecipeName(searchRecipes.value)">
-      <mat-icon>search</mat-icon>
-    </button>
-  </mat-form-field> -->
 </mat-toolbar>
 <div class="ProductsList container">
   <div class="content">
