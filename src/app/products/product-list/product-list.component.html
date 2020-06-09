@@ -13,16 +13,20 @@
       <mat-icon class="prev-page-icon">arrow_back</mat-icon>
     </button>
     <h1>{{ currProduct?.name || 'Список основних продуктів'}}</h1>
+    <button mat-icon-button *ngIf="displayProducts?.length && currProduct" class="all"
+      [matTooltip]="toggleSubcategoriesTitle" (click)="toggleSubcategories()">
+      <mat-icon>{{ areAllSubcategories ? 'remove' : 'select_all' }}</mat-icon>
+    </button>
     <ng-container *ngIf="currProduct && auth.isAdmin">
       <a mat-icon-button matTooltip="редагувати продукт"
         [routerLink]="['/products', currProduct?.id, 'edit']"
         [queryParams]="{ from: currProduct?.id }">
         <mat-icon>edit</mat-icon>
       </a>
-      <a mat-icon-button matTooltip="видалити продукт"
+      <button mat-icon-button matTooltip="видалити продукт"
         (click)="deleteProduct(currProduct.id, currProduct.name)">
         <mat-icon>delete_forever</mat-icon>
-      </a>
+      </button>
       <!-- <button mat-icon-button [matMenuTriggerFor]="editMenu">
         <mat-icon>more_vert</mat-icon>
       </button>
@@ -58,7 +62,7 @@
 </mat-toolbar>
 <div class="ProductsList container">
   <div class="content">
-    <ng-container *ngIf="currProducts; else loading">
+    <ng-container *ngIf="displayProducts; else loading">
       <div *ngIf="currProduct" class="details" color="basic">
         <mat-expansion-panel [(expanded)]="openDetails">
           <mat-expansion-panel-header>
@@ -102,19 +106,21 @@
                       {{ currProduct.transFats || 'н/д' }}<span>&nbsp;&nbsp;(г)</span></p>
                   </div>
                 </div>
-                <!-- <p><strong>: </strong>{{ currProduct. + ' ккал' || 'н/д' }} г</p>
-                <p><strong>: </strong>{{ currProduct. }} г</p> -->
               </div>
             </div>
             <div class="description">
               <p *ngIf="currProduct.description as description">{{ description }}</p>
               <div class="categories">
-                <mat-chip-list *ngIf="currProduct.categoryNames as categories">
-                  <mat-chip color="accent" selected (click)="navigateToProduct(category?.id, true)"
-                    *ngFor="let category of categories">
-                    {{ category.name }}
-                  </mat-chip>
-                </mat-chip-list>
+                <ng-container *ngIf="categories; else simpleLoading">
+                  <mat-chip-list *ngIf="categories.length">
+                    <mat-chip color="accent" selected (click)="navigateToProduct(category?.id, true)"
+                      *ngFor="let category of categories">
+                      {{ category?.name }}
+                    </mat-chip>
+                    <mat-chip [matTooltip]="this.areAllCategories ? 'Сховати додаткові категорії' : 'Показати усі категорії'"
+                      selected color="primary" (click)="toggleCategories()">...</mat-chip>
+                  </mat-chip-list>
+                </ng-container>
               </div>
             </div>
           </ng-template>
@@ -122,7 +128,7 @@
       </div>
       <mat-divider></mat-divider>
       <div class="grid">
-        <mat-card class="product-card" *ngFor="let product of currProducts">
+        <mat-card class="product-card" *ngFor="let product of displayProducts">
           <div class="card-content">
             <div class="card-header">
               <mat-card-header (click)="navigateToProduct(product?.id, true)">

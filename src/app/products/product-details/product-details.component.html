@@ -47,19 +47,27 @@
       <p>{{ currProduct.description }}</p>
       <div class="categories">
         <p><strong>Категорії:</strong></p>
-        <mat-chip-list *ngIf="currProduct.categoryNames as categories">
-          <mat-chip color="accent" selected (click)="updateProduct(category.id)"
-            *ngFor="let category of categories">
-            {{ category?.name }}
-          </mat-chip>
-        </mat-chip-list>
+        <ng-container *ngIf="categories; else simpleLoading">
+          <mat-chip-list *ngIf="categories.length">
+            <mat-chip color="accent" selected (click)="updateProduct(category.id)"
+              *ngFor="let category of categories">
+              {{ category?.name }}
+            </mat-chip>
+            <button mat-stroked-button color="primary" (click)="toggleCategories()">
+              {{ this.areAllCategories ? 'Сховати' : 'Показати усі категорії' }}</button>
+          </mat-chip-list>
+        </ng-container>
         <p><strong>Продукти:</strong></p>
-        <mat-chip-list *ngIf="currProduct.subcategoryNames as subcategories">
-          <mat-chip color="primary" selected (click)="updateProduct(subcategory.id)"
-            *ngFor="let subcategory of subcategories">
-            {{ subcategory?.name }}
-          </mat-chip>
-        </mat-chip-list>
+        <ng-container *ngIf="subcategories; else simpleLoading">
+          <mat-chip-list *ngIf="subcategories.length">
+            <mat-chip color="primary" selected (click)="updateProduct(subcategory.id)"
+              *ngFor="let subcategory of subcategories">
+              {{ subcategory?.name }}
+            </mat-chip>
+            <button mat-stroked-button color="primary" (click)="toggleSubcategories()">
+              {{ this.areAllSubcategories ? 'Сховати' : 'Показати усі продукти' }}</button>
+          </mat-chip-list>
+        </ng-container>
       </div>
     </div>
   </mat-dialog-content>
@@ -73,5 +81,10 @@
   <div class="spinner-container">
     <mat-spinner></mat-spinner>
     <span>Завантаження продукту...</span>
+  </div>
+</ng-template>
+<ng-template #simpleLoading>
+  <div class="spinner-container-simple">
+    <mat-spinner diameter="50"></mat-spinner>
   </div>
 </ng-template>

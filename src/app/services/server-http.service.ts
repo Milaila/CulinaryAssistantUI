@@ -235,6 +235,16 @@ export class ServerHttpService {
     return this.http.get<IProductGeneralModel[]>(url).pipe(tap(x => console.log(x)));
   }
 
+  getAllProductCategories(productId: number): Observable<IProductGeneralModel[]> {
+    const url = `${serverUrls.products}/${productId}/categories/all`;
+    return this.http.get<IProductGeneralModel[]>(url).pipe(tap(x => console.log(x)));
+  }
+
+  getAllProductSubcategories(productId: number): Observable<IProductGeneralModel[]> {
+    const url = `${serverUrls.products}/${productId}/subcategories/all`;
+    return this.http.get<IProductGeneralModel[]>(url).pipe(tap(x => console.log(x)));
+  }
+
   createProduct(product: IProductManageModel): Observable<number> {
     const url = serverUrls.products + '/create';
     return this.http.post<number>(url, product).pipe(tap(x => console.log(x)));

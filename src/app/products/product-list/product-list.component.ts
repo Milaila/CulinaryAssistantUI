@@ -18,9 +18,11 @@ import { NotificationType, NotificationsService } from 'angular2-notifications';
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent implements OnInit, OnDestroy {
-  // products: IProductWithImage[] = [];
-  // products: Map<number, IProductView> = new Map();
+  areAllCategories: boolean;
+  areAllSubcategories: boolean;
+  categories: IProductName[];
   currProducts: IProductView[];
+  displayProducts: IProductView[];
   currProduct: IProductView;
   breadCrumbs: number[] = [];
   subscriptions = new Subscription();
@@ -52,7 +54,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.route.params?.pipe(
       tap(_ => {
         this.openDetails = false;
+        this.displayProducts = null;
+        this.categories = null;
         this.currProducts = null;
+        this.areAllCategories = false;
+        this.areAllSubcategories = false;
       }),
       delay(50)
     ).subscribe(x => {
@@ -65,18 +71,45 @@ export class ProductListComponent implements OnInit, OnDestroy {
     }));
   }
 
-  private updateProducts(productId: number) {
-    this.subscriptions.add(this.productStore.updateProducts().subscribe(products => {
-      if (products) {
-        this.setRootProduct(productId, true);
-      }
-      this.productsForSearch = this.productStore.sortByNameProducts;
-    }));
+  get toggleCategoriesTitle(): string {
+    return this.areAllCategories ? 'Сховати додаткові категорії' : 'Показати усі категорії';
+  }
+
+  get toggleSubcategoriesTitle(): string {
+    return this.areAllSubcategories ? 'Сховати додаткові продукти' : 'Показати усі продукти категорії';
+  }
+
+  toggleCategories() {
+    if (this.areAllCategories) {
+      this.categories = this.currProduct.categoryNames;
+    }
+    else {
+      this.categories = null;
+      this.subscriptions.add(this.server.getAllProductCategories(this.currProduct?.id)
+        .subscribe(products => this.categories = products));
+    }
+    this.areAllCategories = !this.areAllCategories;
+  }
+
+  toggleSubcategories() {
+    if (this.areAllSubcategories) {
+      this.displayProducts = this.currProducts;
+    }
+    else {
+      this.displayProducts = null;
+      this.subscriptions.add(this.server.getAllProductSubcategories(this.currProduct?.id).pipe(delay(1000))
+        .subscribe(products => this.displayProducts = products.map(product => ({
+          ...product,
+          imageSrc$: this.imageStore.getImage(product?.imageId),
+          categoryNames: this.productStore.getCategoriesNames(product)
+        }))));
+    }
+    this.areAllSubcategories = !this.areAllSubcategories;
   }
 
   deleteProduct(productId: number, name: string) {
     this.productStore.deleteProduct(productId, name)?.subscribe(_ => {
-      this.currProducts = null;
+      this.displayProducts = null;
       this.updateProducts(this.currProduct?.id);
       this.createNotification('Продукт видалено');
     },
@@ -111,6 +144,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.productsForSearch = this.productStore.filterProductsByName(name);
   }
 
+  returnBack() {
+    this.navigateToProduct(this.breadCrumbs.pop(), false);
+  }
+
   private setRootProduct(rootProduct?: number, force: boolean = false) {
     if (rootProduct === this.currProduct?.id && !force) {
       return;
@@ -121,17 +158,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
     let products = this.productStore.products;
     this.currProduct = this.products.get(rootProduct);
+    this.areAllCategories = false;
+    this.areAllSubcategories = false;
 
     if (this.currProduct) {
       this.currProduct.imageSrc$ = this.imageStore.getImage(this.currProduct.imageId);
-      this.currProduct.categoryNames = this.productStore.getCategoriesNames(this.currProduct);
+      this.categories = this.currProduct.categoryNames = this.productStore.getCategoriesNames(this.currProduct);
       products = this.currProduct?.subcategories.map(id => this.products.get(id));
       this.openDetails = !products?.length;
     }
     else {
       products = products.filter(x => !x.categories?.length);
     }
-    this.currProducts = this.productStore.sortProductsByNameAndType(products)
+    this.displayProducts = this.currProducts = this.productStore.sortProductsByNameAndType(products)
       .map(product => ({
         ...product,
         imageSrc$: this.imageStore.getImage(product?.imageId),
@@ -139,7 +178,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
       }));
   }
 
-  returnBack() {
-    this.navigateToProduct(this.breadCrumbs.pop(), false);
+  private updateProducts(productId: number) {
+    this.subscriptions.add(this.productStore.updateProducts().subscribe(products => {
+      if (products) {
+        this.setRootProduct(productId, true);
+      }
+      this.productsForSearch = this.productStore.sortByNameProducts;
+    }));
   }
 }
