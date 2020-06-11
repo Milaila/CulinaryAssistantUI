@@ -34,10 +34,6 @@ export class TagsSearchSectionComponent implements OnInit {
   ngOnInit(): void {
     this.availableTags$ = this.server.getTags().pipe(
       share(),
-      catchError(_ => {
-        console.log('Error during retriving tags!');
-        return of([]);
-      })
     );
     this.filteredRequiredTags$ = combineLatest([this.requiredTagsCtrl.valueChanges, this.availableTags$]).pipe(
       map(([tag, tags]) => tag ? this.filterTags(tags, tag) : tags)

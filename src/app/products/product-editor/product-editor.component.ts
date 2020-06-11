@@ -173,10 +173,10 @@ export class ProductEditorComponent implements OnInit, OnDestroy {
     const file = event?.target?.files[0];
     this.currProduct.imageId = 0;
     if (this.imageService.validateImageWithNotifications(file)) {
-      console.log('here');
       this.subs.add(this.imageService.transformFileToImage(file)
         .subscribe(image => this.currProduct.image = image));
     }
+    event.target.value = '';
   }
 
   onCreate(): void {

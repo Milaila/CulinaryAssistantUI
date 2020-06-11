@@ -270,6 +270,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       this.subscription.add(this.imageService.transformFileToImage(file)
         .subscribe(image => step.image = image));
     }
+    event.target.value = '';
   }
 
   uploadRecipeImage(event: any) {
@@ -279,6 +280,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       this.subscription.add(this.imageService.transformFileToImage(file)
         .subscribe(image => this.currRecipe.image = image));
     }
+    event.target.value = '';
   }
 
   // openCurrRecipePreview(): void {

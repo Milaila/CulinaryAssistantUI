@@ -61,9 +61,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
         }
         else {
           this.createNotification('Помилка під час реєстрації');
-          res.errors.array.forEach(err => {
-            console.log(err);
-          });
         }
       },
       err => {
