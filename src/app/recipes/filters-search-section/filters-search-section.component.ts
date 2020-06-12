@@ -47,9 +47,9 @@ export class FiltersSearchSectionComponent implements OnInit, OnDestroy {
     this.filterService.applyFilter(id);
   }
 
-  saveFilter(title: string) {
+  saveFilter(title: string, isDefault: boolean = false) {
     if (title?.trim()) {
-      this.filterService.saveCurrFilter(title);
+      this.filterService.saveCurrFilter(title, isDefault);
     }
   }
 

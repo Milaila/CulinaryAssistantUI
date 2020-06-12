@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Subscription, of } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { IMenuItemsGroup } from '../../models/else/menu-items-group';
 import { AuthService } from '../../services/auth.service';
 import { IProfileModel } from '../../models/server/profile-models';
@@ -9,6 +9,7 @@ import { ITheme } from 'src/app/models/else/theme';
 import { MatDialog } from '@angular/material/dialog';
 import { IConfirmData } from 'src/app/models/else/confirm-data';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { NotificationsService, NotificationType } from 'angular2-notifications';
 
 @Component({
   selector: 'app-header',
@@ -25,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     public authService: AuthService,
+    public notifications: NotificationsService,
     public server: ServerHttpService,
     public theme: ThemeService,
     public dialog: MatDialog,
@@ -73,6 +75,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(answer => {
       if (answer) {
         this.authService.logout();
+        this.notifications.create('Виконано вихід з облікового запису', '', NotificationType.Success, {
+          showProgressBar: true,
+          pauseOnHover: true,
+          clickToClose: true
+        });
       }
     });
   }

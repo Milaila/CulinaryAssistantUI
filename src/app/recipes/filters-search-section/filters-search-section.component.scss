@@ -48,6 +48,10 @@
     margin-right: 8px;
   }
 
+  .hidden {
+    display: none;
+  }
+
   .actions {
     display: flex;
     flex-wrap: wrap;
@@ -58,6 +62,10 @@
     button {
       height: fit-content;
       margin-bottom: 7px;
+    }
+    mat-checkbox {
+      margin-right: 8px;
+      margin-bottom: 6px;
     }
   }
 }

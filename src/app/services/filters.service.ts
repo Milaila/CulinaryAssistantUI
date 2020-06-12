@@ -355,9 +355,9 @@ export class FiltersService {
     return this.server.getRecipesByFilterId(filterId);
   }
 
-  saveCurrFilter(filterName: string) {
+  saveCurrFilter(filterName: string, isDefault = false) {
     const filterModel = this.getCurrentFilterModel(filterName);
-    if (this.auth.isAdmin) {
+    if (this.auth.isAdmin && isDefault) {
       filterModel.isDefault = true;
     }
     return this.server.createFilter(filterModel).pipe(take(1))

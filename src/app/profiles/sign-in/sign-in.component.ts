@@ -32,7 +32,7 @@ export class SignInComponent implements OnInit {
       res => {
         this.authService.signIn(res);
         this.createNotification('Виконано вхід у систему', '', NotificationType.Success);
-        this.router.navigateByUrl('/recipes');
+        // this.router.navigateByUrl('/recipes');
       },
       err => {
         if (err.status === 400) {

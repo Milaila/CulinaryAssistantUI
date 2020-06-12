@@ -23,16 +23,20 @@
       </ng-container>
     </div>
   </mat-list>
-  <div class="actions" *ngIf="auth.isAuthorized">
-    <mat-form-field class="filter-name" appearance="outline" required>
+  <div class="actions">
+    <mat-form-field [class.hidden]="!auth.isAuthorized || null" class="filter-name" appearance="outline">
       <mat-label>Назва фільтру</mat-label>
-      <input matInput name="filters-search" #filterName>
+      <input matInput name="filters-search" ngModel #filterName maxlength="512" required pattern=".*\S+.*">
     </mat-form-field>
+    <mat-checkbox #defaultFilter [hidden]="!auth.isAdmin || null" name="default-filter"
+      color="primary">Стандартний</mat-checkbox>
     <button mat-stroked-button
-      [disabled]="filterName.value?.trim() ? null : true"
+      [class.hidden]="!auth.isAuthorized || null"
+      [disabled]="filterName?.value?.trim() ? null : true"
+      matTooltip="спочатку потрібно вказати назву"
       color="primary"
       class="filter-save"
-      (click)="saveFilter(filterName.value?.trim()); filterName.value = null">
+      (click)="saveFilter(filterName?.value?.trim(), defaultFilter?.checked); filterName.value = null">
       Зберегти поточний фільтр</button>
     <button mat-stroked-button (click)="setFilter(0)" color="warn">Скинути фільтр</button>
   </div>

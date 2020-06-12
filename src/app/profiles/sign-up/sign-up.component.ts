@@ -16,7 +16,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
   checkSubs = new Subscription();
   subs = new Subscription();
-  loginCtrl = this.formBuilder.control('', Validators.required);
+  loginCtrl = this.formBuilder.control('', [Validators.required, Validators.pattern(/^\S*$/)]);
   passwordCtrl = this.formBuilder.control('', [Validators.required, Validators.minLength(4)]);
   confirmPswrdCtrl = this.formBuilder.control({ value: '', disabled: true },
     [Validators.required, Validators.minLength(4)]);
