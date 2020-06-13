@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { IConfirmData } from 'src/app/models/else/confirm-data';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { NotificationsService, NotificationType } from 'angular2-notifications';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public server: ServerHttpService,
     public theme: ThemeService,
     public dialog: MatDialog,
+    public router: Router,
   ) { }
 
   ngOnDestroy(): void {
@@ -76,6 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (answer) {
         this.authService.logout();
         this.notifications.create('Виконано вихід з облікового запису', '', NotificationType.Success, {
+          timeOut: 1000,
           showProgressBar: true,
           pauseOnHover: true,
           clickToClose: true

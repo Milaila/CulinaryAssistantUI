@@ -191,7 +191,7 @@ export class ServerHttpService {
 
   getImage(id: number): Observable<IImageModel> {
     const url = `${serverUrls.images}/${id}`;
-    return this.http.get<IImageModel>(url).pipe(tap(x => console.log('get image')));
+    return this.http.get<IImageModel>(url);
   }
 
   getImages(images: number[]): Observable<IImageModel[]> {

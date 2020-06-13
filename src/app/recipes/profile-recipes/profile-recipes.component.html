@@ -4,6 +4,10 @@
     matTooltip="сортування рецептів" [matMenuTriggerFor]="editMenu">
     <mat-icon>sort</mat-icon>
   </button>
+  <a *ngIf="isRecipeCtrl" mat-icon-button matTooltip="створити рецепт"
+    routerLink="/recipes/new" [queryParams]="{ from: 'my' }">
+    <mat-icon>add</mat-icon>
+  </a>
   <mat-menu #editMenu="matMenu">
     <button mat-menu-item
       *ngFor="let option of sortOptions"
